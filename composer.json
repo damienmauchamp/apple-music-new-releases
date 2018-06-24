@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "AppleMusic\\": "classes/"
+    }
+  },
+  "require": {
+    "monolog/monolog": "^1.23"
+  }
+}

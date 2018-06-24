@@ -6,10 +6,17 @@
  * Time: 20:30
  */
 
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+//use AppleMusic\DB as db;
+//
+//$db = new db();
+
 ini_set("allow_url_fopen", 1);
 ini_set("max_execution_time", 0);
 
-//header("Content-type:application/json");
+header("Content-type:application/json");
+
 
 // Init
 $id = 481488005;
@@ -34,7 +41,7 @@ $results = json_decode($output, true);
 foreach ($results["results"] as $collection) {
     if ($collection["wrapperType"] === "collection") {
         $album = array(
-            "_id" => null,
+//            "_id" => null,
             "id" => $collection["collectionId"],
             "name" => $collection["collectionName"],
             "artistName" => $collection["artistName"],
@@ -42,9 +49,21 @@ foreach ($results["results"] as $collection) {
             "artwork" => $collection["artworkUrl100"],
 //            "link" => $collection["collectionViewUrl"],
         );
-        var_dump($album);
+        $albums[] = $album;
     }
 }
 
 // display
-//echo $output;
+echo json_encode($albums);
+
+
+/* TODO : requêtes
+
+GET
+- recup de la liste des albums
+
+POST
+- nouvel artiste
+- nouvel album
+
+*/
