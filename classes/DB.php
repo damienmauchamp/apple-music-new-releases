@@ -23,7 +23,7 @@ class DB
      */
     public function __construct()
     {
-        echo "ok";
+        $this->dbh = null;
     }
 
     /**
@@ -35,6 +35,8 @@ class DB
         $DB_nom = "applemusic-update";
         $DB_login = "damien";
         $DB_psw = "92iveyron";
+//        $DB_login = "dmauchamp";
+//        $DB_psw = "azerty123";
 
         try {
             $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
@@ -52,5 +54,145 @@ class DB
     private function disconnect()
     {
         $this->dbh = null;
+    }
+
+    //////////
+    /// API
+
+    // GET
+
+    public function getUserReleases()
+    {
+        $sql = "
+            SELECT *
+            FROM albums al
+              LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1;";
+
+        $this->connect();
+        $stmt = $this->dbh->query($sql);
+        $this->disconnect();
+
+        $res = $stmt->fetchAll();
+        return $res ? $this->setResults($res[0]) : null;
+    }
+
+    public function getUsersArtists()
+    {
+        $sql = "
+            SELECT ar.id, ar.name, ua.lastUpdate
+            FROM artists ar
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = 1 AND ua.active = 1;";
+
+        $this->connect();
+        $stmt = $this->dbh->query($sql);
+        $this->disconnect();
+
+        $res = $stmt->fetchAll();
+        return $res ? json_encode($res) : null;
+    }
+
+    // POST
+
+    /**
+     * @param Artist $artist
+     */
+    public function addArtist($artist)
+    {
+        $id = $artist->getId();
+        $name = $artist->getName();
+        $idUser = 1;
+        $sqlArtist = "
+            INSERT INTO artists (id, name)
+            VALUES ('$id', '$name')
+            ON DUPLICATE KEY UPDATE id = '$id'";
+
+        $sqlUserArtist = "
+            INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
+            VALUES ($idUser, '$id', NOW(), 1)
+            ON DUPLICATE KEY UPDATE idUser = $idUser, idArtist = '$id'";
+
+        $this->connect();
+        $stmt = $this->dbh->prepare($sqlArtist);
+        $resArtist = $stmt->execute();
+        $stmt = $this->dbh->prepare($sqlUserArtist);
+        $resUserArtist = $stmt->execute();
+        $this->disconnect();
+    }
+
+    /**
+     * @param Album $album
+     * @param $idArtist
+     */
+    public function addAlbum($album, $idArtist)
+    {
+        $id = $album->getId();
+        $name = addslashes($album->getName());
+        $artistName = $album->getArtistName();
+        $date = $album->getDate();
+        $artwork = $album->getArtwork();
+
+        $sqlAlbum = "
+            INSERT INTO albums (id, name, artistName, date, artwork)
+            VALUES ('$id', '$name', '$artistName', '$date', '$artwork')
+            ON DUPLICATE KEY UPDATE id = '$id'";
+
+        $sqlArtistAlbum = "
+            INSERT INTO artists_albums (idArtist, idAlbum)
+            VALUES ($idArtist, '$id')
+            ON DUPLICATE KEY UPDATE idArtist = $idArtist, idAlbum = '$id'";
+
+        $this->connect();
+        $stmt = $this->dbh->prepare($sqlAlbum);
+        $resAlbum = $stmt->execute();
+        $stmt = $this->dbh->prepare($sqlArtistAlbum);
+        $resArtistAlbum = $stmt->execute();
+        $this->disconnect();
+    }
+
+    public function updated($idArtist) {
+        $idUser = 1;
+        $sql = "
+            UPDATE users_artists
+            SET lastUpdate = NOW()
+            WHERE idArtist = $idArtist AND idUser = $idUser";
+        $this->connect();
+        $stmt = $this->dbh->prepare($sql);
+        $res = $stmt->execute();
+        $this->disconnect();
+    }
+
+    public function example()
+    {
+        $this->connect();
+        $stmt = $this->dbh->query("SELECT * FROM albums");
+        $this->disconnect();
+
+        $res = $stmt->fetchAll();
+        return $res ? $this->setResults($res[0]) : null;
+    }
+
+    public function selectPerso($sql)
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute() or die("Erreur dans la requête.");
+        $this->disconnect();
+        return $stmt->fetchAll();
+    }
+
+    // Fonctions
+
+    protected function setResults($array)
+    {
+        $res = array();
+        foreach ($array as $key => $value) {
+            if (!is_numeric($key))
+                $res[$key] = $value;
+        }
+        return json_encode($res);
     }
 }

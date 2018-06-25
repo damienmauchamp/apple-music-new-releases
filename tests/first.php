@@ -8,9 +8,7 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-//use AppleMusic\DB as db;
-
-//$db = new db();
+use AppleMusic\DB as db;
 
 ini_set("allow_url_fopen", 1);
 ini_set("max_execution_time", 0);
@@ -55,15 +53,5 @@ foreach ($results["results"] as $collection) {
 
 // display
 echo json_encode($albums);
-
-
-/* TODO : requêtes
-
-GET
-- recup de la liste des albums
-
-POST
-- nouvel artiste
-- nouvel album
-
-*/
+//$db = new db();
+//echo $db->example();
