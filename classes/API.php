@@ -9,7 +9,6 @@
 namespace AppleMusic;
 
 use AppleMusic\Album as Album;
-use AppleMusic\DB as db;
 
 class API
 {
@@ -81,14 +80,30 @@ class API
             case "artistsSearch":
                 $ids = array();
                 foreach ($results["results"] as $collection) {
-                    $id = $collection["artistId"];
+                    $id = isset($collection["artistId"]) ? $collection["artistId"] : 0;
                     $n = isset($ids[$id]) ? ($ids[$id]["n"] + 1) : 1;
                     if ($n === 1) {
                         $ids[$id]["id"] = $id;
-                        $ids[$id]["text"] = $collection["artistName"];
+//                        $ids[$id]["text"] = $collection["artistName"];
                     }
                     $ids[$id]["n"] = $n;
+                    $ids[$id]["names"][$collection["artistName"]] = isset($ids[$id]["names"][$collection["artistName"]]) ? $ids[$id]["names"][$collection["artistName"]] + 1 : 1;
                 }
+//                $ids[$id]["text"] = $collection["artistName"];
+
+                foreach ($ids as $idA => $a) {
+//                    print_r($a["names"]);
+                    $max = 0;
+                    $index = null;
+                    foreach ($a["names"] as $name => $x) {
+                        if ($x > $max) {
+                            $max = $x;
+                            $index = $name;
+                        }
+                    }
+                    $ids[$idA]["text"] = $index;
+                }
+
                 // ordre
                 $this->array_sort_by_column($ids, "n", SORT_DESC);
                 return $ids;

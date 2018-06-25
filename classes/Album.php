@@ -17,6 +17,7 @@ class Album
     private $artistName;
     private $date;
     private $artwork;
+    private $link;
 
     public function __construct()
     {
@@ -37,14 +38,17 @@ class Album
         $this->artistName = $array["artistName"];
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
+        $this->link = "https://itunes.apple.com/fr/album/" . $array["id"];
     }
 
-    public function addAlbum($idArtist) {
+    public function addAlbum($idArtist)
+    {
         $db = new db;
         $db->addAlbum($this, $idArtist);
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->date;
     }
 

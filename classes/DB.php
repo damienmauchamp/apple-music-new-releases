@@ -117,9 +117,9 @@ class DB
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlArtist);
-        $resArtist = $stmt->execute();
+//        $resArtist = $stmt->execute();
         $stmt = $this->dbh->prepare($sqlUserArtist);
-        $resUserArtist = $stmt->execute();
+//        $resUserArtist = $stmt->execute();
         $this->disconnect();
     }
 
@@ -147,9 +147,9 @@ class DB
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlAlbum);
-        $resAlbum = $stmt->execute();
+//        $resAlbum = $stmt->execute();
         $stmt = $this->dbh->prepare($sqlArtistAlbum);
-        $resArtistAlbum = $stmt->execute();
+//        $resArtistAlbum = $stmt->execute();
         $this->disconnect();
     }
 
@@ -161,7 +161,7 @@ class DB
             WHERE idArtist = $idArtist AND idUser = $idUser";
         $this->connect();
         $stmt = $this->dbh->prepare($sql);
-        $res = $stmt->execute();
+//        $res = $stmt->execute();
         $this->disconnect();
     }
 

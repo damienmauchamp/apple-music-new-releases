@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="./libs/jquery/jquery-1.11.3.min.js"></script>
+    <script src="./libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <link href="./libs/select2/select2.min.css" rel="stylesheet"/>
+    <script src="./libs/select2/select2.min.js"></script>
     <script>
         $(document).ready(function () {
 
@@ -35,14 +35,16 @@
 
 
             $(".testGo").on("click", function () {
+                var select2 = $(".test");
                 $.ajax({
                     url: "./ajax/addArtists.php",
                     dataType: 'json',
                     data: {
-                        artists: $(".test").val()
+                        artists: select2.val()
                     },
                     success: function (data) {
                         console.log(data);
+                        select2.select2("val", "");
                     }
                 })
             })
@@ -68,8 +70,6 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use AppleMusic\DB as db;
-use AppleMusic\Artist as Artist;
-use AppleMusic\Album as Album;
 use AppleMusic\API as api;
 
 $db = new db;
@@ -86,12 +86,14 @@ foreach ($artists as $artist) {
     // MAJ de l'artiste
 //    $db->updated($id);
 
-    echo "
+    if ($new) {
+        echo "
     <h3>$artist->name</h3>
     <pre>";
-    print_r($new);
-    echo "</pre>
+        print_r($new);
+        echo "</pre>
     <hr/>";
+    }
 
 //    var_dump($artist->name);
 //    var_dump($new);
