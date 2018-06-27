@@ -33,10 +33,14 @@ class DB
     {
         $DB_serveur = "localhost";
         $DB_nom = "applemusic-update";
-        $DB_login = "damien";
-        $DB_psw = "92iveyron";
-//        $DB_login = "dmauchamp";
-//        $DB_psw = "azerty123";
+
+        if ($_SERVER['HTTP_HOST'] == "local.workspace.vm") {
+            $DB_login = "dmauchamp";
+            $DB_psw = "azerty123";
+        } else {
+            $DB_login = "damien";
+            $DB_psw = "92iveyron";
+        }
 
         try {
             $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
@@ -69,14 +73,15 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1;";
+            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
+            GROUP BY aa.idAlbum";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
         $this->disconnect();
 
         $res = $stmt->fetchAll();
-        return $res ? $this->setResults($res[0]) : null;
+        return $res ? json_encode($res) : null;
     }
 
     public function getUsersArtists()
@@ -85,7 +90,8 @@ class DB
             SELECT ar.id, ar.name, ua.lastUpdate
             FROM artists ar
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.active = 1;";
+            WHERE ua.idUser = 1 AND ua.active = 1
+            ORDER BY name;";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -99,6 +105,7 @@ class DB
 
     /**
      * @param Artist $artist
+     * @return bool
      */
     public function addArtist($artist)
     {
@@ -117,15 +124,17 @@ class DB
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlArtist);
-//        $resArtist = $stmt->execute();
+        $resArtist = $stmt->execute();
         $stmt = $this->dbh->prepare($sqlUserArtist);
-//        $resUserArtist = $stmt->execute();
+        $resUserArtist = $stmt->execute();
         $this->disconnect();
+        return $resArtist && $resUserArtist;
     }
 
     /**
      * @param Album $album
      * @param $idArtist
+     * @return bool
      */
     public function addAlbum($album, $idArtist)
     {
@@ -147,13 +156,15 @@ class DB
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlAlbum);
-//        $resAlbum = $stmt->execute();
+        $resAlbum = $stmt->execute();
         $stmt = $this->dbh->prepare($sqlArtistAlbum);
-//        $resArtistAlbum = $stmt->execute();
+        $resArtistAlbum = $stmt->execute();
         $this->disconnect();
+        return $resAlbum && $resArtistAlbum;
     }
 
-    public function updated($idArtist) {
+    public function updated($idArtist)
+    {
         $idUser = 1;
         $sql = "
             UPDATE users_artists

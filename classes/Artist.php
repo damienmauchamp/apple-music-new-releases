@@ -16,6 +16,7 @@ class Artist
     private $id;
     private $name;
     private $albums;
+    private $lastUpdate;
 
     /**
      * Artist constructor.
@@ -29,6 +30,7 @@ class Artist
     public function fetchArtistInfo()
     {
         $api = new api($this->id);
+        /** @var Artist $artist */
         $artist = $api->fetchArtist();
         $this->setName($artist->getName());
     }
@@ -84,6 +86,22 @@ class Artist
     public function setAlbums($albums)
     {
         $this->albums = $albums;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdate()
+    {
+        return $this->lastUpdate;
+    }
+
+    /**
+     * @param $lastUpdate
+     */
+    public function setLastUpdate($lastUpdate)
+    {
+        $this->lastUpdate = $lastUpdate;
     }
 
 

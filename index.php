@@ -1,10 +1,11 @@
+<? require_once "start.php"; ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="./libs/jquery/jquery-1.11.3.min.js"></script>
-    <script src="./libs/jquery/jquery-migrate-1.2.1.min.js"></script>
-    <link href="./libs/select2/select2.min.css" rel="stylesheet"/>
-    <script src="./libs/select2/select2.min.js"></script>
+    <script src="libs/jquery/jquery-1.11.3.min.js"></script>
+    <script src="libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <link href="libs/select2/select2.min.css" rel="stylesheet"/>
+    <script src="libs/select2/select2.min.js"></script>
     <script>
         $(document).ready(function () {
 
@@ -69,41 +70,19 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-use AppleMusic\DB as db;
-use AppleMusic\API as api;
+getAllAlbums();
 
-$db = new db;
-
-// Récupération d'un artiste
-//echo $db->getUsersArtists();
-$artists = json_decode($db->getUsersArtists());
-
-foreach ($artists as $artist) {
-    $id = $artist->id;
-    $lastUpdate = $artist->lastUpdate;
-    $api = new api($id);
-    $new = $api->update($lastUpdate);
-    // MAJ de l'artiste
-//    $db->updated($id);
-
-    if ($new) {
-        echo "
-    <h3>$artist->name</h3>
-    <pre>";
-        print_r($new);
-        echo "</pre>
-    <hr/>";
-    }
-
-//    var_dump($artist->name);
-//    var_dump($new);
-}
-//echo $db->getUserReleases();
-
-
-//var_dump($artist);
-
-//echo $db->addArtist();
+/*
+ * Page d'accueil
+ *      - anciennes sorties;
+ *      - getAllAlbums();
+ *
+ * Récup de tous les nouveaux albums sur l'APi
+ *      - getArtistRelease($a);
+ *
+ * Récup de tous les nouveaux albums d'un artiste sur l'APi
+ *      - getAllNewReleases();
+ */
 ?>
 </body>
 </html>

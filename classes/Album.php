@@ -44,7 +44,17 @@ class Album
     public function addAlbum($idArtist)
     {
         $db = new db;
-        $db->addAlbum($this, $idArtist);
+        return $db->addAlbum($this, $idArtist);
+    }
+
+    public static function objectToArray($obj) {
+        return array(
+            "id" => $obj->idAlbum,
+            "name" => $obj->name,
+            "artistName" => $obj->artistName,
+            "date" => $obj->date,
+            "artwork" => $obj->artwork,
+        );
     }
 
     public function getDate()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="applemusic-update@192.168.0.14" uuid="f059d922-7920-4c7f-a91e-30e683e87eac">
+    <data-source source="LOCAL" name="applemusic-update@localhost" uuid="f059d922-7920-4c7f-a91e-30e683e87eac">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://192.168.0.14:3306/applemusic-update</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost/applemusic-update</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
