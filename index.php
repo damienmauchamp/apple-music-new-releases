@@ -4,7 +4,8 @@ $root = ""; ?>
 <html>
 <head>
 </head>
-<? include "inc/meta.php" ?>
+<? include "inc/meta.php";
+?>
 <body>
 
 
@@ -20,6 +21,14 @@ $root = ""; ?>
 
 <?php
 require __DIR__ . '/vendor/autoload.php';
+?>
+
+<section class="l-content-width main-header">
+    <h1 class="section__headline--hero">Test</h1>
+</section>
+
+<?
+
 
 getAllAlbums();
 

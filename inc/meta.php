@@ -1,8 +1,12 @@
 <? if (!isset($root)) $root = '../'; ?>
-<script src="libs/jquery/jquery-1.11.3.min.js"></script>
-<script src="libs/jquery/jquery-migrate-1.2.1.min.js"></script>
-<link href="libs/select2/select2.min.css" rel="stylesheet"/>
-<script src="libs/select2/select2.min.js"></script>
+<script src="<?= $root ?>libs/jquery/jquery-1.11.3.min.js"></script>
+<script src="<?= $root ?>libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+<link href="<?= $root ?>libs/select2/select2.min.css" rel="stylesheet"/>
+<script src="<?= $root ?>libs/select2/select2.min.js"></script>
+<!--<link rel="stylesheet" href="--><?//= $root ?><!--css/main.css">-->
+<!--<link rel="stylesheet" href="--><?//= $root ?><!--css/dimensions.css">-->
+<link rel="stylesheet" href="<?= $root ?>css/albums.css">
+<link rel="stylesheet" href="<?= $root ?>css/main.css">
 <script>
     $(document).ready(function () {
 
@@ -50,4 +54,3 @@
 
     });
 </script>
-<link rel="stylesheet" href="<?= $root ?>css/main.css">

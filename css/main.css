@@ -2,37 +2,41 @@
     --main-color: #333;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    color: var(--main-color);
+    /*color: var(--main-color);*/
 }
 
-section.artist {
-    padding-top: 19px;
-    padding-bottom: 32px;
-    margin: auto;
-    width: 980px;
+.artwork-img, .artwork::before {
+    width: 200px;
+    height: 200px;
 }
 
-section.artist .section-body {
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: auto;
-    min-width: 100%;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
+@media (min-width: 736px) {
+    .artwork-img, .artwork::before {
+        width: 158px;
+        height: 158px;
+    }
 }
 
-a.album {
-    color: var(--main-color);
-    text-decoration: none;
-    width: 147px;
+@media (min-width: 1069px) {
+    .artwork-img, .artwork::before {
+        width: 146px;
+        height: 146px;
+    }
 }
 
-.artwork {
-    margin: 0 0 7px 0;
-    position: relative;
-    display: block;
-    z-index: 1;
-    width: 100%;
+.icon-explicit::after, .icon-explicit::before {
+    content: "";
+    background: url(https://host.pluspremieres.us/files/explicit.svg) no-repeat center;
+    height: 13px;
+    width: 13px;
+    background-size: 9px;
+    text-indent: -99999999px;
+    opacity: .8;
+    margin-left: .3em;
 }

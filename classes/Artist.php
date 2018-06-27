@@ -142,23 +142,20 @@ class Artist
     public function toString()
     {
         ?>
-        <section class="artist" amu-artist-id="<?= $this->id ?>">
-            <div class="section-header">
+
+        <section class="artist l-content-width section" data-am-artist-id="<?= $this->id ?>">
+            <div class="section-header section__headline">
                 <h2 class="section-title"><?= $this->name ?></h2>
             </div>
-            <div class="section-body">
+
+            <div class="section-body l-row">
                 <? /** @var Album $album */
-                foreach ($this->albums as $album) : ?>
-                    <a class="album">
-                        <picture class="artwork">
-                            <img src="<?= $album->getArtwork() ?>"
-                                 style="background-color: #515e64;" class="we-artwork__image ember796" alt="">
-                        </picture>
-                        <h3 class="album-title"></h3>
-                        <h4 class="album-year"></h4>
-                    </a>
-                <? endforeach; ?>
+                foreach ($this->albums as $album) {
+                    $album->toString($this);
+                } ?>
             </div>
+            <!--            <div id="ember1200" style="display: none;"-->
+            <!--                 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>-->
         </section>
         <?
 

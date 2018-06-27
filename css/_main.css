@@ -1,0 +1,166 @@
+:root {
+    --main-color: #333;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: var(--main-color);
+}
+
+h1, h2, h3, h4, h5 {
+    font-size: 1em;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.20604;
+    font-weight: 700;
+    letter-spacing: .01em;
+    font-family: "SF Pro Display","SF Pro Icons","Apple WebExp Icons Custom","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+:lang(de-CH), :lang(fr) {
+    quotes: "« " " »";
+}
+
+.l-content-width {
+    padding-top: 19px;
+    padding-bottom: 32px;
+    margin: auto;
+    width: 980px;
+    /*max-width: 100%;*/
+    border-top: 1px solid #e5e5e5;
+}
+
+.main-header {
+    padding-top: 0;
+    padding-bottom: 20px;
+}
+
+.artist:first-child {
+    border: none;
+}
+
+section.artist .section-body {
+    /*overflow-x: auto;*/
+    /*overflow-y: hidden;*/
+    /*width: auto;*/
+    /*min-width: 100%;*/
+    /*white-space: nowrap;*/
+    /*-webkit-overflow-scrolling: touch;*/
+    /*overflow-scrolling: touch;*/
+    margin-bottom: 2.89017%;
+}
+
+.section-title {
+    margin-bottom: .85em;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: .02em;
+    font-family: "SF Pro Display","SF Pro Icons","Apple WebExp Icons Custom","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+a.album {
+    color: var(--main-color);
+    text-decoration: none;
+    /*margin: 0;*/
+    padding: 0;
+    display: inline-block;
+    vertical-align: bottom;
+    font-size: 13px;
+}
+
+.artwork {
+    margin: 0 0 7px 0;
+    position: relative;
+    display: block;
+    z-index: 1;
+    width: 100%;
+}
+
+.artwork, .artwork::before, .artwork img, .artwork img::before {
+    width: 200px;
+    height: 200px;
+}
+
+.artwork, .artwork::before {
+    width: 200px;
+    height: 200px;
+}
+
+.artwork::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    border-radius: 6px;
+    border: .5px solid rgba(0, 0, 0, .1);
+    z-index: 1;
+}
+
+.artwork img {
+    margin: 0;
+    display: block;
+    border-radius: 6px;
+}
+
+@media (min-width: 736px) {
+    .artwork, .artwork::before, .artwork img, .artwork img::before {
+        width: 158px;
+        height: 158px;
+    }
+}
+
+@media (min-width: 1069px) {
+    .artwork, .artwork::before, .artwork img, .artwork img::before {
+        width: 146px;
+        height: 146px;
+    }
+}
+
+.album-title {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: baseline;
+    -webkit-align-items: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+}
+
+.we-truncate--single-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.album-subtitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #8e8e93;
+    font-size: 12px;
+    line-height: 1.33341;
+    font-weight: 400;
+    letter-spacing: 0;
+    font-family: "SF Pro Text", "SF Pro Icons", "Apple WebExp Icons Custom", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

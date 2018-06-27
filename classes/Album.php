@@ -47,7 +47,8 @@ class Album
         return $db->addAlbum($this, $idArtist);
     }
 
-    public static function objectToArray($obj) {
+    public static function objectToArray($obj)
+    {
         return array(
             "id" => $obj->id,
             "name" => $obj->name,
@@ -93,5 +94,44 @@ class Album
     public function getArtwork($width = 100)
     {
         return str_replace("100x100bb.jpg", "{$width}x{$width}bb.jpg", $this->artwork);
+    }
+
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    public function isExplicit()
+    {
+        return true;//collectionExplicitness
+    }
+
+    /**
+     * @param Artist $artist
+     */
+    public function toString($artist)
+    {
+        ?>
+
+        <a href="<?= $this->getLink() ?>" target="_blank"
+           data-am-kind="album" data-am-album-id="<?= $this->id ?>"
+           class="album we-lockup l-column--grid targeted-link l-column small-6 medium-3 large-2 ember-view">
+            <picture
+                    class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
+                <img src="<?= $this->getArtwork(500) ?>"
+                     style="background-color: transparent;" class="we-artwork__image artwork-img" alt="">
+            </picture>
+
+            <h3 class="album-title we-lockup__title <?= $this->isExplicit() ? "icon icon-after icon-explicit" : "" ?>">
+                <div class="we-truncate targeted-link__target we-truncate--single-line ember-view">
+                    <?= $this->getName() ?>
+                </div>
+            </h3>
+
+            <h4 class="album-subtitle we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">
+                <?= $this->getArtistName() !== $artist->getName() ? $this->getArtistName() : date("Y", strtotime($this->getDate())) ?>
+            </h4>
+        </a>
+        <?
     }
 }
