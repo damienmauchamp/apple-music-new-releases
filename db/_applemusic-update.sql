@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
+-- version 4.6.6deb4
+-- https://www.phpmyadmin.net/
 --
--- Client: localhost
--- Généré le: Mer 27 Juin 2018 à 17:20
--- Version du serveur: 5.6.38
--- Version de PHP: 5.6.31-6+ubuntu14.04.1+deb.sury.org+1
+-- Client :  localhost:3306
+-- Généré le :  Lun 25 Juin 2018 à 20:03
+-- Version du serveur :  5.7.19
+-- Version de PHP :  7.0.19-1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données: `applemusic-update`
+-- Base de données :  `applemusic-update`
 --
 
 -- --------------------------------------------------------
@@ -26,55 +26,20 @@ SET time_zone = "+00:00";
 -- Structure de la table `albums`
 --
 
-CREATE TABLE IF NOT EXISTS `albums` (
+CREATE TABLE `albums` (
   `id` varchar(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `artistName` varchar(255) NOT NULL,
   `date` datetime DEFAULT NULL,
-  `artwork` varchar(255) DEFAULT NULL,
-  `explicit` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `albums_id_uindex` (`id`)
+  `artwork` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `albums`
 --
 
-INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`, `explicit`) VALUES
-('1113510576', 'Destins liés', '$-Crew', '2016-06-17 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music18/v4/ab/ab/d0/ababd0f4-cfe8-6aa1-c3b8-f8975fe82220/source/100x100bb.jpg', 1),
-('1362807556', 'Bad Company (feat. BlocBoy JB) - Single', 'A$AP Rocky', '2018-03-28 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music118/v4/9b/2f/cb/9b2fcbda-987a-022f-1ca4-9f19ff9f4c1e/source/100x100bb.jpg', 1),
-('1382707839', 'Trop N''DA', 'MMZ', '2018-06-22 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/87/3c/75/873c7598-e9c8-0622-73e8-5ba34c99c6ba/source/100x100bb.jpg', 1),
-('1388571796', 'Hive Mind', 'The Internet', '2018-07-20 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8e/31/24/8e3124e4-6e40-d3ee-5774-ec39213f2dbe/source/100x100bb.jpg', 0),
-('1391575537', 'Kintsugi', 'VSO', '2018-06-29 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/a5/71/82a5714f-4d7d-92fd-cfa0-8e036a4bdec0/source/100x100bb.jpg', 0),
-('1393954688', 'Vidalo$$A', 'Dosseh', '2018-07-06 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/18/3d/62/183d6264-d9b4-cb57-7487-03ed90bf4ae0/source/100x100bb.jpg', 1),
-('1394668184', 'Bless Up - Single', 'Ghost Loft', '2018-06-21 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/ce/de/a3/cedea32a-3ee1-202f-6197-2ffbe2a3dfbf/source/100x100bb.jpg', 0),
-('1395199109', 'Renard', 'Guizmo', '2018-07-13 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ec/d7/cc/ecd7cc2e-8ac1-3bd6-d65c-b07aecc1f0c0/source/100x100bb.jpg', 1),
-('1395621606', 'Cali Life (feat. Snoop Dogg) - Single', 'Czar', '2018-06-29 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/60/90/a5/6090a521-7292-b1be-f5cd-4528b57c0dc8/source/100x100bb.jpg', 0),
-('1397525299', 'Which One - Single', 'Jazz Cartier', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/f0/9f/c8/f09fc846-af2d-eeb9-8b6a-4486536385d0/source/100x100bb.jpg', 0),
-('1397873832', 'Forever Always (feat. Rex Orange County, Chance the Rapper, Daniel Caesar, Madison Ryann Ward & YEBBA) - Single', 'Peter CottonTale', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/9c/a9/26/9ca92649-3d1a-736e-fa86-af42aa0f50ed/source/100x100bb.jpg', 0),
-('1398061848', 'Still New York - Single', 'MAX & Joey Bada$$', '2018-06-26 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/79/7f/1b/797f1b19-c809-c8ba-02f0-4eb17ce2535e/source/100x100bb.jpg', 0),
-('1398340781', 'Elle n''en a pas l''air (feat. Nov) - Single', 'Maska', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/d1/3b/0a/d13b0acc-2eb1-f9e3-290d-512d62761e48/source/100x100bb.jpg', 1),
-('1398449449', 'Queen', 'Nicki Minaj', '2018-08-10 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/5a/80/a6/5a80a661-3803-e95c-218d-8dc75fff4d14/source/100x100bb.jpg', 1),
-('1399189434', 'Pyro (feat. Lil Uzi Vert & Goldsmith) - Single', 'Turntup Mir', '2018-06-29 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8b/14/45/8b144572-15df-b8d6-4c22-5d00621ded8e/source/100x100bb.jpg', 0),
-('1399376722', 'Dirty Mind (feat. Ty Dolla $ign) [Disco Fries Remix] - Single', 'Stanaj', '2018-06-22 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/aa/ef/de/aaefde2e-c4f5-60f5-77ad-d555557eda60/source/100x100bb.jpg', 0),
-('1399716651', 'Hopeless Romantic (feat. Swae Lee) - Single', 'Wiz Khalifa', '2018-06-21 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/e1/0b/b0/e10bb07f-f3dc-a728-0178-9ca6d03462cf/source/100x100bb.jpg', 1),
-('1399778583', 'Where Dat Booty (feat. Juicy J & Trap Beckham) - Single', 'Project Pat', '2018-06-21 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music125/v4/28/bc/d6/28bcd632-83f8-add3-cbc0-08f9b673cf1e/source/100x100bb.jpg', 0),
-('1399778912', 'Where Dat Booty (feat. Juicy J & Trap Beckham) - Single', 'Project Pat', '2018-06-21 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music115/v4/c4/71/72/c4717287-e094-970d-89e7-21a909e879a8/source/100x100bb.jpg', 1),
-('1399803507', 'Scene (feat. Travis Scott) - Single', 'KLOUD9NINE', '2018-06-22 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/77/0d/96/770d962a-bbb4-ae0c-0344-243f07851187/source/100x100bb.jpg', 0),
-('1400179408', 'G.O.K.O.U - Single', 'Kaaris', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/b2/d2/e0/b2d2e0f3-d754-d845-2e7a-9201ed783120/source/100x100bb.jpg', 0),
-('1400267869', 'When I Grow Up - Single', 'Dimitri Vegas & Like Mike & Wiz Khalifa', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/05/ad/f8/05adf8b2-5703-5898-9e7f-e75aa4bf7344/source/100x100bb.jpg', 0),
-('1400302728', 'Till the World Falls (feat. Cosha & Vic Mensa) - Single', 'Nile Rodgers, Chic & Mura Masa', '2018-06-21 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/9e/fd/c3/9efdc362-5f5a-69ef-ed6a-77a5d4e05ab9/source/100x100bb.jpg', 0),
-('1400509858', 'The O.n.E. (feat. Gucci Mane) - Single', 'Mike Rebel', '2018-06-22 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/8b/a3/97/8ba397d0-0f1e-af3c-643a-47a38c6a6eba/source/100x100bb.jpg', 0),
-('1400525431', 'Freddie', 'Freddie Gibbs', '2018-06-22 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/3d/b7/85/3db7859e-fc74-6b24-6154-f22794ec8fa4/source/100x100bb.jpg', 0),
-('1400566767', 'Drop (feat. Blac Youngsta & BlocBoy JB) - Single', 'G-Eazy', '2018-06-24 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music115/v4/21/21/d6/2121d66e-15cd-61d1-3589-caaccd3b0ef3/source/100x100bb.jpg', 0),
-('1401003754', 'I Like It (Dillon Francis Remix) - Single', 'Cardi B, Bad Bunny & J Balvin', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/a8/e1/b7/a8e1b772-73c4-8297-81fe-bea4e637f6cf/source/100x100bb.jpg', 0),
-('1401018957', 'Stay Woke (feat. Miguel) - Single', 'Meek Mill', '2018-06-25 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/80/e5/29/80e52959-04ad-092a-cd03-9ba334ee6cc7/source/100x100bb.jpg', 0),
-('1401047263', 'Green Gucci Suit (feat. Future) - Single', 'Rick Ross', '2018-06-22 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music125/v4/54/31/0f/54310f1f-2331-ab40-b6b1-faf192e4e086/source/100x100bb.jpg', 0),
-('1402664405', 'À l''ammoniaque - Single', 'PNL', '2018-06-23 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music128/v4/87/c3/16/87c316ea-c563-ce71-baf1-a4b00755ead7/source/100x100bb.jpg', 0),
-('1402965603', 'K.T.S.E.', 'Teyana Taylor', '2018-06-23 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music128/v4/b2/2c/fb/b22cfbf6-71c8-ee22-0278-8b025b9877a1/source/100x100bb.jpg', 0),
-('1403468752', 'Hors de prix - Single', 'Rohff', '2018-06-26 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/aa/35/42/aa35429d-171b-118b-5e11-337d72c33691/source/100x100bb.jpg', 0),
-('1404051384', 'World Premiere (feat. Teyana Taylor) - Single', 'Rayne Storm', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/24/18/cb/2418cbe5-31ae-a4fe-828a-450713d16314/source/100x100bb.jpg', 0);
+INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`) VALUES
+('1362807556', 'Bad Company (feat. BlocBoy JB) - Single', 'A$AP Rocky', '2018-03-28 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music118/v4/9b/2f/cb/9b2fcbda-987a-022f-1ca4-9f19ff9f4c1e/source/100x100bb.jpg');
 
 -- --------------------------------------------------------
 
@@ -82,11 +47,9 @@ INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`, `explicit`)
 -- Structure de la table `artists`
 --
 
-CREATE TABLE IF NOT EXISTS `artists` (
+CREATE TABLE `artists` (
   `id` varchar(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `artists_id_uindex` (`id`)
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -154,7 +117,7 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 ('259700865', 'B.o.B'),
 ('261566293', 'Chich'),
 ('261727947', 'The Game'),
-('26252771', 'Damian "Jr. Gong" Marley'),
+('26252771', 'Damian \"Jr. Gong\" Marley'),
 ('262781833', 'Disiz'),
 ('26485617', 'Booba'),
 ('26485670', 'Nessbeal'),
@@ -289,56 +252,29 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 -- Structure de la table `artists_albums`
 --
 
-CREATE TABLE IF NOT EXISTS `artists_albums` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `artists_albums` (
+  `id` int(11) NOT NULL,
   `idArtist` varchar(20) NOT NULL,
-  `idAlbum` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `artists_albums_id_uindex` (`id`),
-  UNIQUE KEY `artists_albums_idArtist_idAlbum_uindex` (`idArtist`,`idAlbum`),
-  KEY `artists_albums_artists_id_fk` (`idArtist`),
-  KEY `artists_albums_albums_id_fk` (`idAlbum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=224 ;
+  `idAlbum` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `artists_albums`
 --
 
 INSERT INTO `artists_albums` (`id`, `idArtist`, `idAlbum`) VALUES
-(192, '1119162071', '1382707839'),
-(166, '128050210', '1401047263'),
-(216, '1374854358', '1391575537'),
-(200, '14953176', '1403468752'),
-(208, '158039925', '1388571796'),
-(174, '200331954', '1395199109'),
-(219, '201714418', '1399716651'),
-(218, '201714418', '1400267869'),
-(205, '216698214', '1402965603'),
-(204, '216698214', '1404051384'),
-(202, '21769', '1395621606'),
-(162, '219204825', '1393954688'),
-(168, '275649746', '1400566767'),
-(194, '278464538', '1398449449'),
-(188, '283949782', '1398340781'),
-(164, '302166615', '1400525431'),
-(190, '313865761', '1401018957'),
-(184, '332659150', '1400179408'),
-(176, '364382773', '1397525299'),
-(196, '370571621', '1402664405'),
-(198, '4022281', '1401047263'),
 (1, '481488005', '1362807556'),
-(210, '549236696', '1399803507'),
-(160, '563355119', '1397873832'),
-(178, '577261450', '1398061848'),
-(214, '598667873', '1400302728'),
-(170, '601425706', '1394668184'),
-(212, '602917745', '1399376722'),
-(172, '62374520', '1400509858'),
-(181, '6392055', '1399778583'),
-(180, '6392055', '1399778912'),
-(186, '940710524', '1399189434'),
-(158, '956078923', '1401003754'),
-(148, '995119630', '1113510576');
+(4, '481488005', '1362807556'),
+(7, '481488005', '1362807556'),
+(10, '481488005', '1362807556'),
+(13, '481488005', '1362807556'),
+(16, '481488005', '1362807556'),
+(19, '481488005', '1362807556'),
+(22, '481488005', '1362807556'),
+(25, '481488005', '1362807556'),
+(28, '481488005', '1362807556'),
+(31, '481488005', '1362807556'),
+(34, '481488005', '1362807556');
 
 -- --------------------------------------------------------
 
@@ -346,22 +282,18 @@ INSERT INTO `artists_albums` (`id`, `idArtist`, `idAlbum`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users__id_uindex` (`id`),
-  UNIQUE KEY `users_username_uindex` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(1, 'damien', '92iveyron'),
-(2, 'toto', 'toto');
+(1, 'damien', '92iveyron');
 
 -- --------------------------------------------------------
 
@@ -369,22 +301,20 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 -- Structure de la table `users_artists`
 --
 
-CREATE TABLE IF NOT EXISTS `users_artists` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_artists` (
+  `id` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `idArtist` varchar(20) NOT NULL,
   `lastUpdate` datetime DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_artists_id_uindex` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=197 ;
+  `active` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `users_artists`
 --
 
 INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`) VALUES
-(1, 2, '481488005', '2018-06-21 00:00:00', 1),
+(1, 1, '481488005', '2018-06-21 00:00:00', 1),
 (2, 1, '271256', '2018-06-21 00:00:00', 1),
 (3, 1, '813780216', '2018-06-21 00:00:00', 1),
 (4, 1, '560677601', '2018-06-21 00:00:00', 1),
@@ -525,7 +455,7 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (139, 1, '1083833709', '2018-06-21 00:00:00', 1),
 (140, 1, '77878647', '2018-06-21 00:00:00', 1),
 (141, 1, '663153634', '2018-06-21 00:00:00', 1),
-(142, 1, '995119630', '2016-06-16 00:00:00', 0),
+(142, 1, '995119630', '2018-06-21 00:00:00', 1),
 (143, 1, '458552200', '2018-06-21 00:00:00', 1),
 (144, 1, '252981331', '2018-06-21 00:00:00', 1),
 (145, 1, '376517823', '2018-06-21 00:00:00', 1),
@@ -577,9 +507,69 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (191, 1, '1348763569', '2018-06-21 00:00:00', 1),
 (192, 1, '302166615', '2018-06-21 00:00:00', 1),
 (193, 1, '1273783982', '2018-06-21 00:00:00', 1),
-(194, 1, '829356035', '2018-06-21 00:00:00', 1),
-(196, 2, '995119630', '2016-06-16 00:00:00', 0);
+(194, 1, '829356035', '2018-06-21 00:00:00', 1);
 
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `albums`
+--
+ALTER TABLE `albums`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `albums_id_uindex` (`id`);
+
+--
+-- Index pour la table `artists`
+--
+ALTER TABLE `artists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `artists_id_uindex` (`id`);
+
+--
+-- Index pour la table `artists_albums`
+--
+ALTER TABLE `artists_albums`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `artists_albums_id_uindex` (`id`),
+  ADD KEY `artists_albums_artists_id_fk` (`idArtist`),
+  ADD KEY `artists_albums_albums_id_fk` (`idAlbum`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users__id_uindex` (`id`),
+  ADD UNIQUE KEY `users_username_uindex` (`username`);
+
+--
+-- Index pour la table `users_artists`
+--
+ALTER TABLE `users_artists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_artists_id_uindex` (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `artists_albums`
+--
+ALTER TABLE `artists_albums`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `users_artists`
+--
+ALTER TABLE `users_artists`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 --
 -- Contraintes pour les tables exportées
 --
