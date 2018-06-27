@@ -70,7 +70,7 @@ class API
                                 "artistName" => $collection["artistName"],
                                 "date" => $collection["releaseDate"],
                                 "artwork" => $collection["artworkUrl100"],
-                                "artwork" => $collection["collectionExplicitness"],
+                                "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
 //                        "link" => $collection["collectionViewUrl"],
                             )
                         );

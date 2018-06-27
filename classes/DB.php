@@ -75,8 +75,7 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
-            GROUP BY aa.idAlbum";
+            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -166,13 +165,16 @@ class DB
         return $resAlbum && $resArtistAlbum;
     }
 
-    public function updated($idArtist)
+    public function artistUpdated($idArtist, $minDate)
     {
         $idUser = 1;
+//        $date = "NOW()";
+        $date = "$minDate 00:00:00";
         $sql = "
             UPDATE users_artists
-            SET lastUpdate = NOW()
+            SET lastUpdate = '$date'
             WHERE idArtist = $idArtist AND idUser = $idUser";
+//        echo $sql;exit;
         $this->connect();
         $stmt = $this->dbh->prepare($sql);
         $res = $stmt->execute();
@@ -187,7 +189,7 @@ UPDATE albums al
   LEFT JOIN artists ar ON ar.id = aa.idArtist
   LEFT JOIN users_artists ua ON ua.idArtist = ar.id
 SET ua.lastUpdate = NOW()
-WHERE ua.idUser = 1 AND ua.idArtist = 995119630;
+WHERE ua.idUser = $idUser AND ua.idArtist = $idArtist;
 
 
 
@@ -227,21 +229,37 @@ WHERE x.id = X
 
      */
 
-    /**
-     * @param Artist $artist
-     */
-    public function removeOldAlbums($artist)
+//    /**
+//     * @param Artist $artist
+//     */
+//    public function removeOldAlbums($artist)
+//    {
+//        $idUser = 1;
+//        $idArtist = $artist->getId();
+//        $sql = "
+//            UPDATE users_artists
+//            SET lastUpdate = NOW()
+//            WHERE idArtist = $idArtist AND idUser = $idUser AND lastUpdate < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+//        $this->connect();
+//        $stmt = $this->dbh->prepare($sql);
+//        $res = $stmt->execute();
+//        $this->disconnect();
+//        return $res;
+//    }
+
+    public function getArtist($idArtist)
     {
-        $idUser = 1;
-        $idArtist = $artist->getId();
-        $sql = "
-            UPDATE users_artists
-            SET lastUpdate = NOW()
-            WHERE idArtist = $idArtist AND idUser = $idUser AND lastUpdate < DATE_SUB(NOW(), INTERVAL 7 DAY)";
         $this->connect();
-        $stmt = $this->dbh->prepare($sql);
-        $res = $stmt->execute();
+        $stmt = $this->dbh->prepare("
+            SELECT ar.id AS id, ar.name AS name, ua.lastUpdate AS lastUpdate, ua.active AS active
+            FROM artists ar
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ar.id = :idArtist"
+        );
+        $stmt->execute(array("idArtist" => $idArtist));
         $this->disconnect();
+
+        $res = $stmt->fetch();
         return $res;
     }
 

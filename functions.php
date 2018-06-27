@@ -63,3 +63,43 @@ function getAllAlbums($display = "artists")
             break;
     }
 }
+
+
+
+// Récupère tous les artistes
+function getAllNewReleases()
+{
+    $db = new db;
+    /** @var Artist $artist */
+    foreach (json_decode($db->getUsersArtists()) as $artist) {
+        getArtistRelease($artist);
+//        break;
+    }
+}
+
+/**
+ * @param $objArtist
+ */
+function getArtistRelease($objArtist)
+{
+    $db = new db;
+    // Artiste
+    $artist = new Artist($objArtist->id);
+    $artist->setName($objArtist->name);
+    $artist->setLastUpdate($objArtist->lastUpdate);
+
+    // Recupération des albums sur l'API
+    $api = new api($artist->getId());
+    $newAlbums = $api->update($artist->getLastUpdate());
+    $artist->setAlbums($newAlbums);
+//    print_r($artist->getAlbums());exit;
+
+    // Mise en BD des nouveaux albums
+    /** @var Album $album */
+    foreach ($artist->getAlbums() as $album) {
+        // Ajout de l'album à la BD
+        $album->addAlbum($artist->getId());
+        $artist->update();
+        echo $album->toString();
+    }
+}

@@ -114,30 +114,26 @@ class Album
 
     public function toString()
     {
-        ?>
-
-        <a href="<?= $this->getLink() ?>" target="_blank"
-           data-am-kind="album" data-am-album-id="<?= $this->id ?>"
+        return '
+        <a href="' . $this->getLink() . '" target="_blank"
+           data-am-kind="album" data-am-album-id="' . $this->id . '"
            class="album we-lockup l-column--grid targeted-link l-column small-6 medium-3 large-2 ember-view"
-           title="<?= $this->getName() . "by" . $this->getArtistName() ?>">
+           title="' . $this->name . ' by ' . $this->artistName . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
-                <img src="<?= $this->getArtwork(500) ?>"
+                <img src="' . $this->getArtwork(500) . '"
                      style="background-color: transparent;" class="we-artwork__image artwork-img" alt="">
             </picture>
 
-            <h3 class="album-title we-lockup__title <?= $this->isExplicit() ? "icon icon-after icon-explicit" : "" ?>">
+            <h3 class="album-title we-lockup__title ' . ($this->isExplicit() ? "icon icon-after icon-explicit" : null) . '">
                 <div class="we-truncate targeted-link__target we-truncate--single-line ember-view">
-                    <?= $this->getName() ?>
+                    ' . $this->name . '
                 </div>
             </h3>
 
             <h4 class="album-subtitle we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">
-                <?// $this->getArtistName() !== $artist->getName() ? $this->getArtistName() : date("Y", strtotime($this->getDate()))
-                ?>
-                <?= $this->getArtistName() ?>
+                ' . $this->artistName . '
             </h4>
-        </a>
-        <?
+        </a>';
     }
 }

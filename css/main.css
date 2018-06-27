@@ -41,6 +41,10 @@ body {
     margin-left: .3em;
 }
 
-.maj-link {
+.maj-link, .suppr-link {
     cursor: pointer;
+}
+
+.we-artwork::before {
+    display: block;
 }

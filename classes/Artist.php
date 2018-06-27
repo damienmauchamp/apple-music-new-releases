@@ -50,6 +50,17 @@ class Artist
         $this->lastUpdate = $array["lastUpdate"];
     }
 
+    public function getArtistDB()
+    {
+        $db = new DB();
+        $array = $db->getArtist($this->id);
+        if ($array) {
+            $this->name = $array["name"];
+            $this->albums = $array["albums"];
+            $this->lastUpdate = $array["lastUpdate"];
+        }
+    }
+
     public function fetchArtistInfo()
     {
         $api = new api($this->id);
@@ -65,10 +76,29 @@ class Artist
         $db->addArtist($this);
     }
 
-    public function update()  {
+    public function update($date = false)
+    {
         $db = new DB();
-        $update = $db->updated($this->id);
-        $removal = $db->removeOldAlbums($this);
+
+        $minDate = !$date ? $date : $this->getAlbumsMinDate();
+        $update = $db->artistUpdated($this->id, $minDate);
+        return $update;
+//        $removal = $db->removeOldAlbums($this);
+//        var_dump($removal);
+    }
+
+    public function getAlbumsMinDate()
+    {
+        $min = "2020-12-31";
+
+        /** @var Album $album */
+        foreach ($this->albums as $album) {
+            $albumDate = $album->getDate();
+            if (strtotime($min) > strtotime($albumDate) && strtotime($this->getLastUpdate()) > strtotime($albumDate))
+                $min = $albumDate;
+        }
+        $tmp = str_replace('-', '/', $min);
+        return date('Y-m-d', strtotime($tmp . "-1 days"));
     }
 
     /**
@@ -153,12 +183,14 @@ class Artist
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
                 <a class="maj-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">MAJ</a>
+                <a class="suppr-link link section__nav__see-all-link ember-view"
+                   data-am-artist-id="<?= $this->id ?>">Suppr</a>
             </div>
 
             <div class="section-body l-row">
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
-                    $album->toString();
+                    echo $album->toString();
                 } ?>
             </div>
         </section>
@@ -166,6 +198,31 @@ class Artist
 //        echo "<pre>";
 //        print_r($this);
 //        echo "</pre>";
+    }
+
+    public function toJSON()
+    {
+        return json_encode(
+            array(
+                "id" => $this->id,
+                "name" => $this->name,
+                "lastUpdate" => $this->lastUpdate,
+                "albumCount" => count($this->albums),
+                "albums" => $this->albumsToJSONString()
+            )
+        );
+    }
+
+    public function albumsToJSONString($jsonReturn = false)
+    {
+        $array = array();
+
+        /** @var Album $album */
+        foreach ($this->albums as $album) {
+            $array[] = $album->toString();
+        }
+
+        return $jsonReturn ? json_encode($array) : $array;
     }
 
 
