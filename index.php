@@ -16,6 +16,7 @@ $news = isset($_GET["refresh"]) && $_GET["refresh"];
 
 <select class="test" name="artists[]" multiple="multiple" style="width:100%"></select>
 <button class="testGo">Ajouter</button>
+<a href="index.php?refresh=refresh">REFRESH</a>
 
 <section class="l-content-width main-header">
     <h1 class="section__headline--hero">Test</h1>
