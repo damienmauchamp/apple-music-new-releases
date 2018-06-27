@@ -70,7 +70,7 @@ class DB
         $sql = "
             SELECT
               al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
-              ar.id AS idArtist, ua.lastUpdate AS lastUpdate
+              ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
             FROM albums al
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
@@ -145,10 +145,11 @@ class DB
         $artistName = $album->getArtistName();
         $date = $album->getDate();
         $artwork = $album->getArtwork();
+        $explicit = $album->isExplicit();
 
         $sqlAlbum = "
-            INSERT INTO albums (id, name, artistName, date, artwork)
-            VALUES ('$id', '$name', '$artistName', '$date', '$artwork')
+            INSERT INTO albums (id, name, artistName, date, artwork, explicit)
+            VALUES ('$id', '$name', '$artistName', '$date', '$artwork', $explicit)
             ON DUPLICATE KEY UPDATE id = '$id'";
 
         $sqlArtistAlbum = "
@@ -174,8 +175,74 @@ class DB
             WHERE idArtist = $idArtist AND idUser = $idUser";
         $this->connect();
         $stmt = $this->dbh->prepare($sql);
-//        $res = $stmt->execute();
+        $res = $stmt->execute();
         $this->disconnect();
+        return $res;
+    }
+    /*
+     *
+     * UPDATE LASTUPDATED
+UPDATE albums al
+  LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+  LEFT JOIN artists ar ON ar.id = aa.idArtist
+  LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+SET ua.lastUpdate = NOW()
+WHERE ua.idUser = 1 AND ua.idArtist = 995119630;
+
+
+
+
+
+UPDATE albums al
+  LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+  LEFT JOIN artists ar ON ar.id = aa.idArtist
+  LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+SET ua.active = 0
+WHERE ua.idUser = 1 AND lastUpdate < DATE_SUB(NOW(), INTERVAL 7 DAY);
+     *
+     *
+     *
+     *
+- REMOVE (général) : récup des IDs
+
+SELECT ar.id
+FROM albums al
+  LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+  LEFT JOIN artists ar ON ar.id = aa.idArtist
+#   LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+WHERE ar.id NOT IN (
+  SELECT ua.idArtist
+  FROM users_artists ua
+  WHERE ua.active = 1
+  GROUP BY ua.id
+);
+
+    // albums
+DELETE FROM albums x
+WHERE x.id = X
+
+
+
+
+
+     */
+
+    /**
+     * @param Artist $artist
+     */
+    public function removeOldAlbums($artist)
+    {
+        $idUser = 1;
+        $idArtist = $artist->getId();
+        $sql = "
+            UPDATE users_artists
+            SET lastUpdate = NOW()
+            WHERE idArtist = $idArtist AND idUser = $idUser AND lastUpdate < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+        $this->connect();
+        $stmt = $this->dbh->prepare($sql);
+        $res = $stmt->execute();
+        $this->disconnect();
+        return $res;
     }
 
     public function example()

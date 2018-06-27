@@ -52,5 +52,10 @@
         })
 
 
+        $(".maj-link").on("click", function() {
+            console.log($(this).attr("data-am-artist-id"));
+        })
+
+
     });
 </script>

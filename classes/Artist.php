@@ -65,6 +65,12 @@ class Artist
         $db->addArtist($this);
     }
 
+    public function update()  {
+        $db = new DB();
+        $update = $db->updated($this->id);
+        $removal = $db->removeOldAlbums($this);
+    }
+
     /**
      * @return mixed
      */
@@ -142,26 +148,24 @@ class Artist
     public function toString()
     {
         ?>
-
         <section class="artist l-content-width section" data-am-artist-id="<?= $this->id ?>">
-            <div class="section-header section__headline">
-                <h2 class="section-title"><?= $this->name ?></h2>
+            <div class="section-header section__nav">
+                <h2 class="section-title section__headline"><?= $this->name ?></h2>
+                <a class="maj-link link section__nav__see-all-link ember-view"
+                   data-am-artist-id="<?= $this->id ?>">MAJ</a>
             </div>
 
             <div class="section-body l-row">
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
-                    $album->toString($this);
+                    $album->toString();
                 } ?>
             </div>
-            <!--            <div id="ember1200" style="display: none;"-->
-            <!--                 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>-->
         </section>
         <?
-
-        echo "<pre>";
-        print_r($this);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($this);
+//        echo "</pre>";
     }
 
 

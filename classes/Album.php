@@ -18,6 +18,7 @@ class Album
     private $date;
     private $artwork;
     private $link;
+    private $explicit;
 
     public function __construct()
     {
@@ -39,6 +40,7 @@ class Album
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
         $this->link = "https://itunes.apple.com/fr/album/" . $array["id"];
+        $this->explicit = $array["explicit"];
     }
 
     public function addAlbum($idArtist)
@@ -55,6 +57,7 @@ class Album
             "artistName" => $obj->artistName,
             "date" => $obj->date,
             "artwork" => $obj->artwork,
+            "explicit" => $obj->explicit
         );
     }
 
@@ -101,21 +104,22 @@ class Album
         return $this->link;
     }
 
+    /**
+     * @return bool
+     */
     public function isExplicit()
     {
-        return true;//collectionExplicitness
+        return $this->explicit;
     }
 
-    /**
-     * @param Artist $artist
-     */
-    public function toString($artist)
+    public function toString()
     {
         ?>
 
         <a href="<?= $this->getLink() ?>" target="_blank"
            data-am-kind="album" data-am-album-id="<?= $this->id ?>"
-           class="album we-lockup l-column--grid targeted-link l-column small-6 medium-3 large-2 ember-view">
+           class="album we-lockup l-column--grid targeted-link l-column small-6 medium-3 large-2 ember-view"
+           title="<?= $this->getName() . "by" . $this->getArtistName() ?>">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
                 <img src="<?= $this->getArtwork(500) ?>"
@@ -129,7 +133,9 @@ class Album
             </h3>
 
             <h4 class="album-subtitle we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">
-                <?= $this->getArtistName() !== $artist->getName() ? $this->getArtistName() : date("Y", strtotime($this->getDate())) ?>
+                <?// $this->getArtistName() !== $artist->getName() ? $this->getArtistName() : date("Y", strtotime($this->getDate()))
+                ?>
+                <?= $this->getArtistName() ?>
             </h4>
         </a>
         <?

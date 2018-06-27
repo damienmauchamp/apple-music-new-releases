@@ -1,12 +1,14 @@
 <? require_once "start.php";
-$root = ""; ?>
+$root = "";
+$display = isset($_GET["page"]) ? $_GET["page"] : null;
+$theme = "is-music-theme";
+?>
 <!DOCTYPE html>
 <html>
 <head>
 </head>
-<? include "inc/meta.php";
-?>
-<body>
+<? include "inc/meta.php"; ?>
+<body class="<?= $theme ?>">
 
 
 <select class="test" name="artists[]" multiple="multiple" style="width:100%"></select>
@@ -29,8 +31,8 @@ require __DIR__ . '/vendor/autoload.php';
 
 <?
 
-
-getAllAlbums();
+/** Page d'accueil : */
+getAllAlbums($display);
 
 /*
  * Page d'accueil

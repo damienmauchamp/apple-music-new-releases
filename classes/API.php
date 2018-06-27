@@ -70,6 +70,7 @@ class API
                                 "artistName" => $collection["artistName"],
                                 "date" => $collection["releaseDate"],
                                 "artwork" => $collection["artworkUrl100"],
+                                "artwork" => $collection["collectionExplicitness"],
 //                        "link" => $collection["collectionViewUrl"],
                             )
                         );
