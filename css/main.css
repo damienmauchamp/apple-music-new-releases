@@ -1,0 +1,38 @@
+:root {
+    --main-color: #333;
+}
+
+body {
+    color: var(--main-color);
+}
+
+section.artist {
+    padding-top: 19px;
+    padding-bottom: 32px;
+    margin: auto;
+    width: 980px;
+}
+
+section.artist .section-body {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: auto;
+    min-width: 100%;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+
+a.album {
+    color: var(--main-color);
+    text-decoration: none;
+    width: 147px;
+}
+
+.artwork {
+    margin: 0 0 7px 0;
+    position: relative;
+    display: block;
+    z-index: 1;
+    width: 100%;
+}

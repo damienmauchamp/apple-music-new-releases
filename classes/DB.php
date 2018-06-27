@@ -68,7 +68,9 @@ class DB
     public function getUserReleases()
     {
         $sql = "
-            SELECT *
+            SELECT
+              al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
+              ar.id AS idArtist, ua.lastUpdate AS lastUpdate
             FROM albums al
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist

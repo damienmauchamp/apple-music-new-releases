@@ -49,7 +49,7 @@ class Album
 
     public static function objectToArray($obj) {
         return array(
-            "id" => $obj->idAlbum,
+            "id" => $obj->id,
             "name" => $obj->name,
             "artistName" => $obj->artistName,
             "date" => $obj->date,
@@ -87,10 +87,11 @@ class Album
     }
 
     /**
+     * @param int $width
      * @return mixed
      */
-    public function getArtwork()
+    public function getArtwork($width = 100)
     {
-        return $this->artwork;
+        return str_replace("100x100bb.jpg", "{$width}x{$width}bb.jpg", $this->artwork);
     }
 }

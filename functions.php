@@ -50,16 +50,24 @@ function getAllAlbums()
 {
     $db = new db;
     $releases = $db->getUserReleases();
+    $artists = array();
 
     foreach (json_decode($releases) as $r) {
         // Artiste
-        $artist = new Artist($r->idArtist);
-        $artist->setName($r->artistName);
-        $artist->setLastUpdate($r->lastUpdate);
-
-        var_dump($r);
+        $artistId = $r->idArtist;
         $album = Album::withArray(Album::objectToArray($r));
-        var_dump($artist);
-        var_dump($album);
+        if (!isset($artists[$artistId])) {
+            $artists[$artistId] = array(
+                "id" => $artistId,
+                "name" => $r->artistName,
+                "albums" => array(),
+                "lastUpdate" => $r->lastUpdate
+            );
+        }
+        $artists[$artistId]["albums"][] = $album;
+    }
+
+    foreach ($artists as $artist) {
+        Artist::withNewRelease($artist)->toString();
     }
 }

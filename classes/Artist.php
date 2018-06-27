@@ -15,7 +15,7 @@ class Artist
 {
     private $id;
     private $name;
-    private $albums;
+    public $albums;
     private $lastUpdate;
 
     /**
@@ -25,6 +25,29 @@ class Artist
     public function __construct($id)
     {
         $this->id = $id;
+        $this->albums = array();
+    }
+
+    public static function withArray($array)
+    {
+        $instance = new self($array["id"]);
+        $instance->fill($array);
+        return $instance;
+    }
+
+    public static function withNewRelease($array)
+    {
+        $instance = self::withArray($array);
+        $instance->fetchArtistInfo();
+        return $instance;
+    }
+
+    protected function fill($array)
+    {
+        $this->id = $array["id"];
+        $this->name = $array["name"];
+        $this->albums = $array["albums"];
+        $this->lastUpdate = $array["lastUpdate"];
     }
 
     public function fetchArtistInfo()
@@ -33,9 +56,11 @@ class Artist
         /** @var Artist $artist */
         $artist = $api->fetchArtist();
         $this->setName($artist->getName());
+        $this->setLastUpdate($artist->getLastUpdate());
     }
 
-    public function addArtist() {
+    public function addArtist()
+    {
         $db = new db;
         $db->addArtist($this);
     }
@@ -89,6 +114,16 @@ class Artist
     }
 
     /**
+     * @param Album $album
+     */
+    public function setAnAlbum($album)
+    {
+//        var_dump(count($this->albums));
+        $this->albums[$album->getId()] = $album;
+//        var_dump($this->albums);
+    }
+
+    /**
      * @return mixed
      */
     public function getLastUpdate()
@@ -102,6 +137,34 @@ class Artist
     public function setLastUpdate($lastUpdate)
     {
         $this->lastUpdate = $lastUpdate;
+    }
+
+    public function toString()
+    {
+        ?>
+        <section class="artist" amu-artist-id="<?= $this->id ?>">
+            <div class="section-header">
+                <h2 class="section-title"><?= $this->name ?></h2>
+            </div>
+            <div class="section-body">
+                <? /** @var Album $album */
+                foreach ($this->albums as $album) : ?>
+                    <a class="album">
+                        <picture class="artwork">
+                            <img src="<?= $album->getArtwork() ?>"
+                                 style="background-color: #515e64;" class="we-artwork__image ember796" alt="">
+                        </picture>
+                        <h3 class="album-title"></h3>
+                        <h4 class="album-year"></h4>
+                    </a>
+                <? endforeach; ?>
+            </div>
+        </section>
+        <?
+
+        echo "<pre>";
+        print_r($this);
+        echo "</pre>";
     }
 
 
