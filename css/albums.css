@@ -1341,13 +1341,13 @@
     opacity: .7
 }
 
-@font-face {
-    font-family: "Apple WebExp Icons Custom";
-    font-style: normal;
-    font-weight: 400;
-    src: url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-bfcacabba53a29c7039476b9e5455da7.eot);
-    src: url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-bfcacabba53a29c7039476b9e5455da7.eot?#iefix) format("embedded-opentype"), url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-07d1cc573d2d405c723a4cc80c60cb27.woff) format("woff"), url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-51961a2b5703d72d7b7e58f8118192b2.ttf) format("truetype")
-}
+/*@font-face {*/
+    /*font-family: "Apple WebExp Icons Custom";*/
+    /*font-style: normal;*/
+    /*font-weight: 400;*/
+    /*src: url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-bfcacabba53a29c7039476b9e5455da7.eot);*/
+    /*src: url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-bfcacabba53a29c7039476b9e5455da7.eot?#iefix) format("embedded-opentype"), url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-07d1cc573d2d405c723a4cc80c60cb27.woff) format("woff"), url(https://web-experience.itunes.apple.com/assets/webexp-iconfont/fonts/webexpicons_text-51961a2b5703d72d7b7e58f8118192b2.ttf) format("truetype")*/
+/*}*/
 
 .ember-basic-dropdown {
     position: relative;
