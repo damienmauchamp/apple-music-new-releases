@@ -7,6 +7,9 @@
 <script src="<?= $root ?>libs/select2/select2.min.js"></script>
 <link rel="stylesheet" href="<?= $root ?>css/albums.css">
 <link rel="stylesheet" href="<?= $root ?>css/main.css">
+<? // if ($mobile) : ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<? // endif; ?>
 <script>
     $(document).ready(function () {
 
@@ -79,16 +82,20 @@
             });
         }
 
-        $(".maj-link").on("click", function() {
+        $(".maj-link").on("click", function () {
             var id = $(this).attr("data-am-artist-id");
             update(id, 1);
         });
-        $(".suppr-link").on("click", function() {
+        $(".suppr-link").on("click", function () {
             var id = $(this).attr("data-am-artist-id");
             update(id, 2);
             $(".artist[data-am-artist-id=\"" + id + "\"").hide();
         });
 
+
+        $(".l-row").on("scroll", function() {
+            console.log(this.scrollLeft);
+        });
 
     });
 </script>

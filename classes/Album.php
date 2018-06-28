@@ -114,10 +114,12 @@ class Album
 
     public function toString()
     {
+        global $mobile;
+
         return '
         <a href="' . $this->getLink() . '" target="_blank"
            data-am-kind="album" data-am-album-id="' . $this->id . '"
-           class="album we-lockup l-column--grid targeted-link l-column small-6 medium-3 large-2 ember-view"
+           class="album we-lockup ' . ($mobile ? null : "l-column--grid") . ' targeted-link l-column small-' . ($mobile ? "2" : "6") . ' medium-3 large-2 ember-view"
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">

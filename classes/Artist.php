@@ -80,7 +80,7 @@ class Artist
     {
         $db = new DB();
 
-        $minDate = !$date ? $date : $this->getAlbumsMinDate();
+        $minDate = $date ? $date : $this->getAlbumsMinDate();
         $update = $db->artistUpdated($this->id, $minDate);
         return $update;
 //        $removal = $db->removeOldAlbums($this);
@@ -89,7 +89,7 @@ class Artist
 
     public function getAlbumsMinDate()
     {
-        $min = "2020-12-31";
+        $min = date("Y-m-d");
 
         /** @var Album $album */
         foreach ($this->albums as $album) {
@@ -177,8 +177,9 @@ class Artist
 
     public function toString()
     {
+        global $mobile;
         ?>
-        <section class="artist l-content-width section" data-am-artist-id="<?= $this->id ?>">
+        <section class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
             <div class="section-header section__nav">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
                 <a class="maj-link link section__nav__see-all-link ember-view"
@@ -186,12 +187,14 @@ class Artist
                 <a class="suppr-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
             </div>
-
-            <div class="section-body l-row">
-                <? /** @var Album $album */
-                foreach ($this->albums as $album) {
-                    echo $album->toString();
-                } ?>
+            <div class="l-row <?= $mobile ? "l-row--peek" : null ?>">
+<!--                <div class="scrolling">-->
+                    <? /** @var Album $album */
+                    foreach ($this->albums as $album) {
+                        for ($i = 0; $i < 6; $i++)
+                            echo $album->toString();
+                    } ?>
+<!--                </div>-->
             </div>
         </section>
         <?

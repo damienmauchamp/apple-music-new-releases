@@ -48,3 +48,7 @@ body {
 .we-artwork::before {
     display: block;
 }
+
+.l-row--peek .album:last-child {
+    margin-right: 6.25vw;
+}
