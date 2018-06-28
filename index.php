@@ -13,9 +13,179 @@ $news = isset($_GET["refresh"]) && $_GET["refresh"];
 </head>
 <body class="<?= $theme ?>">
 
-<? if ($mobile && false) {
-    ?>
-    <section class="l-content-width section section--bordered">
+<? if ($mobile && false) { ?>
+
+    <section class="artist l-content-width section section--bordered">
+        <div class="section__nav">
+            <h2 class="section__headline">Playlists de l'artiste</h2>
+        </div>
+        <div class="l-row l-row--peek">
+
+            <a id="ember880"
+               class="we-lockup targeted-link l-column small-2 medium-3 large-2 ember-view">
+                <picture id="ember881"
+                         class="we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
+                    <source srcset="https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/146x146sr.jpg 1x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/292x292sr.jpg 2x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/438x438sr.jpg 3x"
+                            media="(min-width: 1069px)">
+                    <!---->
+                    <source srcset="https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/158x158sr.jpg 1x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/316x316sr.jpg 2x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/474x474sr.jpg 3x"
+                            media="(min-width: 736px)">
+                    <!---->
+                    <source srcset="https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/200x200sr.jpg 1x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/400x400sr.jpg 2x,https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/600x600sr.jpg 3x">
+                    <img src="https://is5-ssl.mzstatic.com/image/thumb/Features128/v4/65/2e/1c/652e1cc9-a929-606b-8e60-0b3ba8a190f6/source/200x200sr.jpg"
+                         style="background-color: #121212;" class="we-artwork__image ember881"
+                         alt="">
+                    <style>
+                        .ember881, #ember881::before {
+                            width: 200px;
+                            height: 200px;
+                        }
+
+                        @media (min-width: 736px) {
+                            .ember881, #ember881::before {
+                                width: 158px;
+                                height: 158px;
+                            }
+                        }
+
+                        @media (min-width: 1069px) {
+                            .ember881, #ember881::before {
+                                width: 146px;
+                                height: 146px;
+                            }
+                        }
+                    </style>
+                </picture>
+                <!---->
+                <h3 class="we-lockup__title">
+                    <div class="we-truncate targeted-link__target we-truncate--single-line ember-view">
+                        A$AP Rocky : les indispensables
+                    </div>
+                </h3>
+                <h4 class="we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">2018</h4>
+
+
+                <!----><!----></a>
+
+                <!---->
+<!--                <h3 class="we-lockup__title  icon icon-after icon-explicit">-->
+<!--                    <div id="ember796" class="we-truncate targeted-link__target we-truncate--single-line ember-view">-->
+<!--                        TESTING-->
+<!--                    </div>-->
+<!--                </h3>-->
+
+<!--                <h4 class="we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">2018</h4>-->
+                <!---->
+
+
+            <a id="ember887"
+               data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;card&quot;,&quot;targetId&quot;:&quot;pl.c3e13a7606b1430ab4d39e89d68bff03&quot;,&quot;locationType&quot;:&quot;shelfPlaylists&quot;,&quot;locationPosition&quot;:1}"
+               href="https://itunes.apple.com/fr/playlist/a%24ap-rocky-aller-plus-loin/pl.c3e13a7606b1430ab4d39e89d68bff03"
+               data-test-we-lockup-id="pl.c3e13a7606b1430ab4d39e89d68bff03"
+               data-test-we-lockup-kind="playlist"
+               class="we-lockup targeted-link l-column small-2 medium-3 large-2 ember-view">
+                <picture id="ember888"
+                         class="we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
+                    <source srcset="https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/146x146sr.jpg 1x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/292x292sr.jpg 2x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/438x438sr.jpg 3x"
+                            media="(min-width: 1069px)">
+                    <!---->
+                    <source srcset="https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/158x158sr.jpg 1x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/316x316sr.jpg 2x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/474x474sr.jpg 3x"
+                            media="(min-width: 736px)">
+                    <!---->
+                    <source srcset="https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/200x200sr.jpg 1x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/400x400sr.jpg 2x,https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/600x600sr.jpg 3x">
+                    <img src="https://is4-ssl.mzstatic.com/image/thumb/TMM3YslkRfbTY58MHMJyBA/200x200sr.jpg"
+                         style="background-color: #0d0e10;" class="we-artwork__image ember888"
+                         alt="">
+                    <style>
+                        .ember888, #ember888::before {
+                            width: 200px;
+                            height: 200px;
+                        }
+
+                        @media (min-width: 736px) {
+                            .ember888, #ember888::before {
+                                width: 158px;
+                                height: 158px;
+                            }
+                        }
+
+                        @media (min-width: 1069px) {
+                            .ember888, #ember888::before {
+                                width: 146px;
+                                height: 146px;
+                            }
+                        }
+                    </style>
+                </picture>
+
+                <!---->
+                <h3 class="we-lockup__title ">
+                    <div id="ember892"
+                         class="we-truncate targeted-link__target we-truncate--single-line ember-view">
+                        A$AP Rocky&nbsp;: aller plus loin
+                    </div>
+                </h3>
+
+                <!----><!----></a>
+
+
+            <a id="ember894"
+               data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;card&quot;,&quot;targetId&quot;:&quot;pl.813196adc0fb4520b63194ad326ebdb6&quot;,&quot;locationType&quot;:&quot;shelfPlaylists&quot;,&quot;locationPosition&quot;:2}"
+               href="https://itunes.apple.com/fr/playlist/featuring-a%24ap-rocky/pl.813196adc0fb4520b63194ad326ebdb6"
+               data-test-we-lockup-id="pl.813196adc0fb4520b63194ad326ebdb6"
+               data-test-we-lockup-kind="playlist"
+               class="we-lockup targeted-link l-column small-2 medium-3 large-2 ember-view">
+                <picture id="ember895"
+                         class="we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
+                    <source srcset="https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/146x146sr.jpg 1x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/292x292sr.jpg 2x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/438x438sr.jpg 3x"
+                            media="(min-width: 1069px)">
+                    <!---->
+                    <source srcset="https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/158x158sr.jpg 1x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/316x316sr.jpg 2x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/474x474sr.jpg 3x"
+                            media="(min-width: 736px)">
+                    <!---->
+                    <source srcset="https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/200x200sr.jpg 1x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/400x400sr.jpg 2x,https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/600x600sr.jpg 3x">
+                    <img src="https://is3-ssl.mzstatic.com/image/thumb/Features128/v4/2f/86/9e/2f869e18-5687-d9e2-5e1f-f77650713777/source/200x200sr.jpg"
+                         style="background-color: #c1a361;" class="we-artwork__image ember895"
+                         alt="">
+                    <style>
+                        .ember895, #ember895::before {
+                            width: 200px;
+                            height: 200px;
+                        }
+
+                        @media (min-width: 736px) {
+                            .ember895, #ember895::before {
+                                width: 158px;
+                                height: 158px;
+                            }
+                        }
+
+                        @media (min-width: 1069px) {
+                            .ember895, #ember895::before {
+                                width: 146px;
+                                height: 146px;
+                            }
+                        }
+                    </style>
+                </picture>
+
+                <!---->
+                <h3 class="we-lockup__title ">
+                    <div id="ember899"
+                         class="we-truncate targeted-link__target we-truncate--single-line ember-view">
+                        Featuring A$AP Rocky
+                    </div>
+                </h3>
+
+                <!----><!----></a>
+
+
+        </div>
+    </section>
+    <? exit;
+} ?>
+<? if ($mobile && false) { ?>
+    <section class="artist l-content-width section section--bordered">
         <div class="section__nav">
             <h2 class="section__headline">Albums</h2>
             <a id="ember779"

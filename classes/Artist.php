@@ -188,13 +188,13 @@ class Artist
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
             </div>
             <div class="l-row <?= $mobile ? "l-row--peek" : null ?>">
-<!--                <div class="scrolling">-->
-                    <? /** @var Album $album */
-                    foreach ($this->albums as $album) {
-                        for ($i = 0; $i < 6; $i++)
-                            echo $album->toString();
-                    } ?>
-<!--                </div>-->
+                <!--                <div class="scrolling">-->
+                <? /** @var Album $album */
+                foreach ($this->albums as $album) {
+//                    for ($i = 0; $i < 6; $i++)
+                        echo $album->toString();
+                } ?>
+                <!--                </div>-->
             </div>
         </section>
         <?

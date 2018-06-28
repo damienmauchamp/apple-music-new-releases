@@ -31,12 +31,12 @@ body {
 }
 
 .icon-explicit::after, .icon-explicit::before {
-    content: "";
+    /*content: "";*/
+    content: "";
     background: url(https://host.pluspremieres.us/files/explicit.svg) no-repeat center;
     height: 13px;
     width: 13px;
     background-size: 9px;
-    text-indent: -99999999px;
     opacity: .8;
     margin-left: .3em;
 }
@@ -47,8 +47,4 @@ body {
 
 .we-artwork::before {
     display: block;
-}
-
-.l-row--peek .album:last-child {
-    margin-right: 6.25vw;
 }
