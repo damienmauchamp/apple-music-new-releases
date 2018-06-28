@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<?= $root ?>css/albums.css">
 <link rel="stylesheet" href="<?= $root ?>css/main.css">
 <? // if ($mobile) : ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <? // endif; ?>
 <script>
     $(document).ready(function () {
@@ -67,6 +67,8 @@
                     id: id
                 },
                 success: function (data) {
+                    console.log(data);
+                    console.log(c);
                     var html = "";
 
                     if (parseInt(f) === 1 && data["albumCount"] > 0) {
@@ -77,6 +79,7 @@
                     } else {
                         html = "Vous êtes à jour.";
                     }
+//                    console.log(html);
                     c.empty().append(html);
                 }
             });
@@ -90,11 +93,6 @@
             var id = $(this).attr("data-am-artist-id");
             update(id, 2);
             $(".artist[data-am-artist-id=\"" + id + "\"").hide();
-        });
-
-
-        $(".l-row").on("scroll", function() {
-            console.log(this.scrollLeft);
         });
 
     });

@@ -55,9 +55,9 @@ class Artist
         $db = new DB();
         $array = $db->getArtist($this->id);
         if ($array) {
-            $this->name = $array["name"];
-            $this->albums = $array["albums"];
-            $this->lastUpdate = $array["lastUpdate"];
+            $this->name =  isset($array["name"]) ? $array["name"] : null;
+            $this->albums = isset($array["albums"]) ? $array["albums"] : null;
+            $this->lastUpdate =  isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
         }
     }
 
@@ -177,7 +177,7 @@ class Artist
 
     public function toString()
     {
-        global $mobile;
+        global $display;
         ?>
         <section class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
             <div class="section-header section__nav">
@@ -187,11 +187,11 @@ class Artist
                 <a class="suppr-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
             </div>
-            <div class="l-row <?= $mobile ? "l-row--peek" : null ?>">
+            <div class="section-body l-row <?= $display == "row" ? "l-row--peek" : null ?>">
                 <!--                <div class="scrolling">-->
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
-//                    for ($i = 0; $i < 6; $i++)
+                    for ($i = 0; $i < 15; $i++)
                         echo $album->toString();
                 } ?>
                 <!--                </div>-->

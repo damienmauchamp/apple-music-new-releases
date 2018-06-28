@@ -9,6 +9,7 @@
 namespace AppleMusic;
 
 use AppleMusic\DB as db;
+use Mobile_Detect;
 
 class Album
 {
@@ -61,8 +62,12 @@ class Album
         );
     }
 
-    public function getDate()
+    public function getDate($option = "")
     {
+        if ($option === "string") {
+            $timestamp = strtotime($this->date);
+            return date("d", $timestamp) . " " . getMonth(date("m", $timestamp), true) ." ". date("Y", $timestamp);
+        }
         return $this->date;
     }
 
@@ -112,14 +117,24 @@ class Album
         return $this->explicit;
     }
 
+    public function isOnPreorder() {
+        return strtotime("now") < strtotime($this->date);
+    }
+
     public function toString()
     {
-        global $mobile;
+        global $display;
+//        var_dump(date("Y-m-d", strtotime("now")));
+//        var_dump($this->date);
+        $preorder = $this->isOnPreorder();
+
+        $style = '<style>#album-' . $this->id . ' .artwork:after { content: "' . $this->getDate("string") . '" }</style>';
 
         return '
         <a href="' . $this->getLink() . '" target="_blank"
+           id="album-' . $this->id . '"
            data-am-kind="album" data-am-album-id="' . $this->id . '"
-           class="album we-lockup ' . ($mobile ? null : "l-column--grid") . ' targeted-link l-column small-' . ($mobile ? "2" : "6") . ' medium-3 large-2 ember-view"
+           class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . ($display == "row" ? "2" : "6") . ' medium-3 large-2 ember-view"
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
@@ -136,6 +151,8 @@ class Album
             <h4 class="album-subtitle we-truncate we-truncate--single-line we-lockup__subtitle targeted-link__target">
                 ' . $this->artistName . '
             </h4>
+            
+            ' . ($preorder ? $style : null) . '
         </a>';
     }
 }

@@ -65,7 +65,6 @@ function getAllAlbums($display = "artists")
 }
 
 
-
 // Récupère tous les artistes
 function getAllNewReleases()
 {
@@ -102,4 +101,62 @@ function getArtistRelease($objArtist)
         $artist->update();
         echo $album->toString();
     }
+}
+
+/**
+ * Renvoie une date selon le format voulu (string : Y:m:d H:i:s|timestamp)
+ * @param string|int $date
+ * @param string|int $format ("string"|"integer,int,timestamp")
+ * @return false|int|string
+ */
+function fixDate($date, $format = "string")
+{
+    $format = strtolower($format);
+    switch ($format) {
+        case "string":
+            if (is_numeric($date))
+                return date(DEFAULT_DATE_FORMAT, $date);
+            return $date;
+        case "string_time_no_sec":
+            if (is_numeric($date))
+                return date(DEFAULT_DATE_FORMAT_NO_SECS, $date);
+            return $date;
+        case "string_time":
+            if (is_numeric($date))
+                return date(DEFAULT_DATE_FORMAT_TIME, $date);
+            return $date;
+        case "integer":
+        case "int":
+        case "timestamp":
+            if (!is_numeric($date))
+                return strtotime($date);
+            return $date;
+        default:
+            return $date;
+    }
+}
+
+/**
+ * @param $d
+ * @return mixed
+ */
+function getWeekDay($d)
+{
+    $weekdays = unserialize(WEEKDAYS_NAMES);
+    return isset($weekdays[$d]) ? $weekdays[$d] : "error";
+}
+
+/**
+ * @param int $m
+ * @param bool $short
+ * @return mixed
+ */
+function getMonth($m, $short = false)
+{
+    $monthNames = unserialize($short ? MONTHS_NAMES_SHORT : MONTHS_NAMES);
+
+    $m = intval($m);
+    return isset($monthNames[$m]) ?
+        $monthNames[$m] :
+        (1 <= $m && $m <= 12 ? strtolower(date("F", strtotime("01-$m-2000"))) : "error");
 }
