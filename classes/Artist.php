@@ -188,19 +188,14 @@ class Artist
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
             </div>
             <div class="section-body l-row <?= $display == "row" ? "l-row--peek" : null ?>">
-                <!--                <div class="scrolling">-->
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
-                    for ($i = 0; $i < 15; $i++)
+//                    for ($i = 0; $i < 15; $i++)
                         echo $album->toString();
                 } ?>
-                <!--                </div>-->
             </div>
         </section>
         <?
-//        echo "<pre>";
-//        print_r($this);
-//        echo "</pre>";
     }
 
     public function toJSON()

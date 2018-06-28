@@ -10,12 +10,13 @@ $root = "";
     <? include "inc/meta.php"; ?>
 </head>
 <body class="<?= $theme ?>">
+<? include "inc/nav.php"; ?>
 
-<select class="test" name="artists[]" multiple="multiple" style="width:100%"></select>
-<button class="testGo">Ajouter</button>
-
-<a href="index.php">Accueil</a>
-<a href="index.php?refresh=refresh">Refresh</a>
+<section class="section-add-artists">
+    <select class="add-artists" id="artists[]" name="artists[]" multiple="multiple" style="width: 100%;"></select>
+    <label for="artists[]" class="add-artists-label --invisible"></label>
+    <div class="add-artists-label-after">Ajouter</div>
+</section>
 
 <section class="main-header l-content-width">
     <h1 class="section__headline--hero"><?= $news ? "Refresh" : "Releases" ?></h1>

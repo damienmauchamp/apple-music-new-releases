@@ -102,7 +102,7 @@ class API
                             $index = $name;
                         }
                     }
-                    $ids[$idA]["text"] = $index;
+                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
                 }
 
                 // ordre

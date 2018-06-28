@@ -2,6 +2,14 @@
     --main-color: #333;
 }
 
+.--invisible {
+    display: none;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -71,4 +79,66 @@ body {
     pointer-events: none;
     /*border-radius: 6px 6px 0 6px;*/
     border-radius: 6px 0 0;
+}
+
+.section-add-artists {
+    position: relative;
+}
+
+.add-artists {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    margin: 0;
+    opacity: 0;
+}
+
+.add-artists-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    /*height: calc(2.25rem + 2px);*/
+    height: 100%;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.add-artists-label-after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    /*height: calc(calc(2.25rem + 2px) - 1px * 2);*/
+    height: 100%;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #e9ecef;
+    border-radius: 0 .25rem .25rem 0;
+    cursor: pointer;
+
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-left: 1px solid #ced4da;
+}
+
+.add-artists-label-after:hover,
+.add-artists-label-after:focus {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.add-artists-label-after:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }

@@ -8,6 +8,7 @@ use AppleMusic\Album as Album;
 // Dernières sorties depuis actualisation, dans la BD
 function getAllAlbums($display = "artists")
 {
+    // TODO : onglets, colonnes (avec tous les nvx) ou lignes (artistes)
     $db = new db;
     $releases = $db->getUserReleases();
     $artists = array();
