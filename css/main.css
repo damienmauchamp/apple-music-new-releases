@@ -1,5 +1,6 @@
 :root {
     --main-color: #333;
+    --main-bg-color: #FFF;
 }
 
 .--invisible {
@@ -17,6 +18,10 @@ html, body {
 
 body {
     /*color: var(--main-color);*/
+}
+
+.main {
+    background: var(--main-bg-color);
 }
 
 .artwork-img, .artwork::before {
