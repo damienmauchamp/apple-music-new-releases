@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
--- https://www.phpmyadmin.net/
+-- version 4.0.10deb1
+-- http://www.phpmyadmin.net
 --
--- Client :  localhost:3306
--- Généré le :  Mer 27 Juin 2018 à 23:37
--- Version du serveur :  5.7.19
--- Version de PHP :  7.0.19-1
+-- Client: localhost
+-- Généré le: Jeu 28 Juin 2018 à 12:00
+-- Version du serveur: 5.6.38
+-- Version de PHP: 5.6.31-6+ubuntu14.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `applemusic-update`
+-- Base de données: `applemusic-update`
 --
 
 -- --------------------------------------------------------
@@ -26,13 +26,15 @@ SET time_zone = "+00:00";
 -- Structure de la table `albums`
 --
 
-CREATE TABLE `albums` (
+CREATE TABLE IF NOT EXISTS `albums` (
   `id` varchar(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `artistName` varchar(255) NOT NULL,
   `date` datetime DEFAULT NULL,
   `artwork` varchar(255) DEFAULT NULL,
-  `explicit` tinyint(1) NOT NULL DEFAULT '0'
+  `explicit` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `albums_id_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -41,18 +43,37 @@ CREATE TABLE `albums` (
 
 INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`, `explicit`) VALUES
 ('1113510576', 'Destins liés', '$-Crew', '2016-06-17 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music18/v4/ab/ab/d0/ababd0f4-cfe8-6aa1-c3b8-f8975fe82220/source/100x100bb.jpg', 1),
+('1230698529', 'Solitaire (DZ Version) - Single', 'Lacrim', '2017-05-12 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music111/v4/3a/f4/8e/3af48ee5-b96c-f9f1-9e25-81f363a0c473/source/100x100bb.jpg', 1),
+('1299632315', 'R.I.P.R.O 3', 'Lacrim', '2017-11-17 08:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/9a/63/42/9a634227-80bd-8ef2-b814-64fe6bfd7121/source/100x100bb.jpg', 1),
+('1306121425', 'Escort Girl - Single', 'Guizmo', '2017-11-06 08:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/87/ef/be/87efbe14-afca-8070-3019-7f293e369f61/source/100x100bb.jpg', 1),
+('1308394291', 'Amicalement Vôtre', 'Guizmo', '2017-12-01 08:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/a0/01/bd/a001bdd5-931f-70f7-ad6c-d31afa0d8f3c/source/100x100bb.jpg', 1),
+('1329018148', 'Krippy Kush (Travis Scott Remix) [feat. Travis Scott & Rvssian] - Single', 'Farruko, Nicki Minaj & Bad Bunny', '2017-12-25 08:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/07/ab/14/07ab1409-5719-90cd-63bc-1ddc6034d756/source/100x100bb.jpg', 1),
+('1345205063', 'Ballin (feat. Bil$, Franco, Omi, Lacrim & Yaka) [Remix] - Single', 'Carlos', '2018-02-09 08:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music118/v4/d9/ea/f9/d9eaf94d-3a2f-2198-7510-0e92cc3fd54b/source/100x100bb.jpg', 1),
+('1346229408', 'KFC - Single', 'Dosseh', '2018-02-16 08:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/fd/51/47/fd514739-8856-d0bc-4ccb-9efe9f1a725e/source/100x100bb.jpg', 1),
+('1357601962', 'Papillon (feat. 13 Block) - Single', 'Dosseh', '2018-03-16 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/a9/0b/4d/a90b4d0f-b726-6d99-6876-4805eb36cfbd/source/100x100bb.jpg', 1),
 ('1362807556', 'Bad Company (feat. BlocBoy JB) - Single', 'A$AP Rocky', '2018-03-28 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music118/v4/9b/2f/cb/9b2fcbda-987a-022f-1ca4-9f19ff9f4c1e/source/100x100bb.jpg', 1),
-('1382707839', 'Trop N\'DA', 'MMZ', '2018-06-22 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/87/3c/75/873c7598-e9c8-0622-73e8-5ba34c99c6ba/source/100x100bb.jpg', 1),
+('1368069588', 'GPG 4.2 - Single', 'Guizmo', '2018-04-27 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music128/v4/f8/c1/d2/f8c1d263-ecab-ee1c-c96f-d454428fa84c/source/100x100bb.jpg', 1),
+('1370207185', 'Barbie Tingz - Single', 'Nicki Minaj', '2018-04-12 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/ef/e0/0b/efe00b3d-4348-75e7-d714-9c4395711a7d/source/100x100bb.jpg', 1),
+('1373921140', 'We Most Hated (feat. Dosseh, Lux Bux & Ben Frank) - Single', 'Carter Hayze', '2018-03-31 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music125/v4/2d/3f/8d/2d3f8df0-9e80-340f-3ee7-1aa5f2583eeb/source/100x100bb.jpg', 1),
+('1378632290', 'Watch (feat. Lil Uzi Vert & Kanye West) - Single', 'Travis Scott', '2018-05-04 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/29/c6/a4/29c6a47d-b708-b102-5218-a33bbd9da0ea/source/100x100bb.jpg', 1),
+('1382707839', 'Trop N''DA', 'MMZ', '2018-06-22 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/87/3c/75/873c7598-e9c8-0622-73e8-5ba34c99c6ba/source/100x100bb.jpg', 1),
+('1385653566', 'That''s on You (feat. Lil Uzi Vert & Rory Fresco) - Single', 'Rambo Savage', '2018-05-14 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/ba/12/ba/ba12bad0-7c37-fb44-2425-416b7d2020af/source/100x100bb.jpg', 1),
+('1387544012', 'Cripn 4 Life - Single', 'Snoop Dogg & Dave East', '2018-05-24 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/48/66/68/486668ff-8884-20ad-0e7c-3708d5cb91c2/source/100x100bb.jpg', 1),
+('1388470593', 'California Party (feat. Snoop Dogg & Lysee J) - Single', 'C-tru', '2018-05-25 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music125/v4/b9/10/a4/b910a4f0-475c-f524-126c-12a928f3e6f6/source/100x100bb.jpg', 1),
 ('1388571796', 'Hive Mind', 'The Internet', '2018-07-20 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8e/31/24/8e3124e4-6e40-d3ee-5774-ec39213f2dbe/source/100x100bb.jpg', 0),
+('1388851632', 'Big Bank (feat. 2 Chainz, Big Sean & Nicki Minaj) - Single', 'YG', '2018-05-25 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/47/96/c7/4796c7da-a285-1d8b-a137-50ce84429e81/source/100x100bb.jpg', 1),
 ('1391575537', 'Kintsugi', 'VSO', '2018-06-29 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/82/a5/71/82a5714f-4d7d-92fd-cfa0-8e036a4bdec0/source/100x100bb.jpg', 0),
+('1392562076', 'Keep Me Up (feat. Lil Uzi Vert) - Single', 'Jeremiah', '2018-06-03 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/84/ed/0e/84ed0e03-b1e3-e806-0d87-7b18f7e3ec43/source/100x100bb.jpg', 1),
+('1393381702', 'Bandz (Bye Bye Birdie) [feat. Lil Uzi Vert] - Single', 'DP Beats', '2018-06-04 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/da/d6/1c/dad61ce8-813b-097d-7354-550fa99fcb4a/source/100x100bb.jpg', 1),
 ('1393954688', 'Vidalo$$A', 'Dosseh', '2018-07-06 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/18/3d/62/183d6264-d9b4-cb57-7487-03ed90bf4ae0/source/100x100bb.jpg', 1),
 ('1394668184', 'Bless Up - Single', 'Ghost Loft', '2018-06-21 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/ce/de/a3/cedea32a-3ee1-202f-6197-2ffbe2a3dfbf/source/100x100bb.jpg', 0),
 ('1395199109', 'Renard', 'Guizmo', '2018-07-13 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ec/d7/cc/ecd7cc2e-8ac1-3bd6-d65c-b07aecc1f0c0/source/100x100bb.jpg', 1),
+('1395264293', 'Stay F****n'' wit Chy''all - Single', 'Spokewheel & Snoop Dogg', '2018-06-09 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/0f/9a/2d/0f9a2dc4-4ee9-0728-b955-8e92714e84c3/source/100x100bb.jpg', 1),
 ('1395621606', 'Cali Life (feat. Snoop Dogg) - Single', 'Czar', '2018-06-29 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/60/90/a5/6090a521-7292-b1be-f5cd-4528b57c0dc8/source/100x100bb.jpg', 0),
 ('1397525299', 'Which One - Single', 'Jazz Cartier', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/f0/9f/c8/f09fc846-af2d-eeb9-8b6a-4486536385d0/source/100x100bb.jpg', 0),
 ('1397873832', 'Forever Always (feat. Rex Orange County, Chance the Rapper, Daniel Caesar, Madison Ryann Ward & YEBBA) - Single', 'Peter CottonTale', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/9c/a9/26/9ca92649-3d1a-736e-fa86-af42aa0f50ed/source/100x100bb.jpg', 0),
 ('1398061848', 'Still New York - Single', 'MAX & Joey Bada$$', '2018-06-26 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/79/7f/1b/797f1b19-c809-c8ba-02f0-4eb17ce2535e/source/100x100bb.jpg', 0),
-('1398340781', 'Elle n\'en a pas l\'air (feat. Nov) - Single', 'Maska', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/d1/3b/0a/d13b0acc-2eb1-f9e3-290d-512d62761e48/source/100x100bb.jpg', 1),
+('1398340781', 'Elle n''en a pas l''air (feat. Nov) - Single', 'Maska', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/d1/3b/0a/d13b0acc-2eb1-f9e3-290d-512d62761e48/source/100x100bb.jpg', 1),
 ('1398449449', 'Queen', 'Nicki Minaj', '2018-08-10 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/5a/80/a6/5a80a661-3803-e95c-218d-8dc75fff4d14/source/100x100bb.jpg', 1),
 ('1399189434', 'Pyro (feat. Lil Uzi Vert & Goldsmith) - Single', 'Turntup Mir', '2018-06-29 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8b/14/45/8b144572-15df-b8d6-4c22-5d00621ded8e/source/100x100bb.jpg', 0),
 ('1399376722', 'Dirty Mind (feat. Ty Dolla $ign) [Disco Fries Remix] - Single', 'Stanaj', '2018-06-22 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/aa/ef/de/aaefde2e-c4f5-60f5-77ad-d555557eda60/source/100x100bb.jpg', 0),
@@ -69,7 +90,7 @@ INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`, `explicit`)
 ('1401003754', 'I Like It (Dillon Francis Remix) - Single', 'Cardi B, Bad Bunny & J Balvin', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/a8/e1/b7/a8e1b772-73c4-8297-81fe-bea4e637f6cf/source/100x100bb.jpg', 0),
 ('1401018957', 'Stay Woke (feat. Miguel) - Single', 'Meek Mill', '2018-06-25 07:00:00', 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/80/e5/29/80e52959-04ad-092a-cd03-9ba334ee6cc7/source/100x100bb.jpg', 0),
 ('1401047263', 'Green Gucci Suit (feat. Future) - Single', 'Rick Ross', '2018-06-22 07:00:00', 'https://is3-ssl.mzstatic.com/image/thumb/Music125/v4/54/31/0f/54310f1f-2331-ab40-b6b1-faf192e4e086/source/100x100bb.jpg', 0),
-('1402664405', 'À l\'ammoniaque - Single', 'PNL', '2018-06-23 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music128/v4/87/c3/16/87c316ea-c563-ce71-baf1-a4b00755ead7/source/100x100bb.jpg', 0),
+('1402664405', 'À l''ammoniaque - Single', 'PNL', '2018-06-23 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music128/v4/87/c3/16/87c316ea-c563-ce71-baf1-a4b00755ead7/source/100x100bb.jpg', 0),
 ('1402965603', 'K.T.S.E.', 'Teyana Taylor', '2018-06-23 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music128/v4/b2/2c/fb/b22cfbf6-71c8-ee22-0278-8b025b9877a1/source/100x100bb.jpg', 0),
 ('1403468752', 'Hors de prix - Single', 'Rohff', '2018-06-26 07:00:00', 'https://is5-ssl.mzstatic.com/image/thumb/Music128/v4/aa/35/42/aa35429d-171b-118b-5e11-337d72c33691/source/100x100bb.jpg', 0),
 ('1404051384', 'World Premiere (feat. Teyana Taylor) - Single', 'Rayne Storm', '2018-06-22 07:00:00', 'https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/24/18/cb/2418cbe5-31ae-a4fe-828a-450713d16314/source/100x100bb.jpg', 0);
@@ -80,9 +101,11 @@ INSERT INTO `albums` (`id`, `name`, `artistName`, `date`, `artwork`, `explicit`)
 -- Structure de la table `artists`
 --
 
-CREATE TABLE `artists` (
+CREATE TABLE IF NOT EXISTS `artists` (
   `id` varchar(20) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `artists_id_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -150,7 +173,7 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 ('259700865', 'B.o.B'),
 ('261566293', 'Chich'),
 ('261727947', 'The Game'),
-('26252771', 'Damian \"Jr. Gong\" Marley'),
+('26252771', 'Damian "Jr. Gong" Marley'),
 ('262781833', 'Disiz'),
 ('26485617', 'Booba'),
 ('26485670', 'Nessbeal'),
@@ -285,11 +308,16 @@ INSERT INTO `artists` (`id`, `name`) VALUES
 -- Structure de la table `artists_albums`
 --
 
-CREATE TABLE `artists_albums` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `artists_albums` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `idArtist` varchar(20) NOT NULL,
-  `idAlbum` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `idAlbum` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `artists_albums_id_uindex` (`id`),
+  UNIQUE KEY `artists_albums_idArtist_idAlbum_uindex` (`idArtist`,`idAlbum`),
+  KEY `artists_albums_artists_id_fk` (`idArtist`),
+  KEY `artists_albums_albums_id_fk` (`idAlbum`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=679 ;
 
 --
 -- Contenu de la table `artists_albums`
@@ -301,19 +329,34 @@ INSERT INTO `artists_albums` (`id`, `idArtist`, `idAlbum`) VALUES
 (216, '1374854358', '1391575537'),
 (200, '14953176', '1403468752'),
 (208, '158039925', '1388571796'),
+(264, '200331954', '1306121425'),
+(263, '200331954', '1308394291'),
+(261, '200331954', '1368069588'),
 (174, '200331954', '1395199109'),
 (219, '201714418', '1399716651'),
 (218, '201714418', '1400267869'),
 (205, '216698214', '1402965603'),
 (204, '216698214', '1404051384'),
+(476, '21769', '1387544012'),
+(475, '21769', '1388470593'),
+(474, '21769', '1395264293'),
 (202, '21769', '1395621606'),
+(254, '219204825', '1346229408'),
+(253, '219204825', '1357601962'),
+(252, '219204825', '1373921140'),
 (162, '219204825', '1393954688'),
 (168, '275649746', '1400566767'),
+(276, '278464538', '1329018148'),
+(274, '278464538', '1370207185'),
+(273, '278464538', '1388851632'),
 (194, '278464538', '1398449449'),
 (188, '283949782', '1398340781'),
 (164, '302166615', '1400525431'),
 (190, '313865761', '1401018957'),
 (184, '332659150', '1400179408'),
+(330, '361434320', '1230698529'),
+(329, '361434320', '1299632315'),
+(328, '361434320', '1345205063'),
 (176, '364382773', '1397525299'),
 (196, '370571621', '1402664405'),
 (198, '4022281', '1401047263'),
@@ -327,6 +370,10 @@ INSERT INTO `artists_albums` (`id`, `idArtist`, `idAlbum`) VALUES
 (172, '62374520', '1400509858'),
 (181, '6392055', '1399778583'),
 (180, '6392055', '1399778912'),
+(366, '940710524', '1378632290'),
+(365, '940710524', '1385653566'),
+(364, '940710524', '1392562076'),
+(363, '940710524', '1393381702'),
 (186, '940710524', '1399189434'),
 (158, '956078923', '1401003754'),
 (148, '995119630', '1113510576');
@@ -337,11 +384,14 @@ INSERT INTO `artists_albums` (`id`, `idArtist`, `idAlbum`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users__id_uindex` (`id`),
+  UNIQUE KEY `users_username_uindex` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `users`
@@ -357,13 +407,15 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 -- Structure de la table `users_artists`
 --
 
-CREATE TABLE `users_artists` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users_artists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `idUser` int(11) NOT NULL,
   `idArtist` varchar(20) NOT NULL,
   `lastUpdate` datetime DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_artists_id_uindex` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=197 ;
 
 --
 -- Contenu de la table `users_artists`
@@ -393,7 +445,7 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (21, 1, '956078923', '2018-06-27 20:46:25', 1),
 (22, 1, '567455167', '2018-06-21 00:00:00', 1),
 (23, 1, '667405945', '2018-06-21 00:00:00', 1),
-(24, 1, '563355119', '2020-12-30 00:00:00', 1),
+(24, 1, '563355119', '2018-06-27 20:46:25', 1),
 (25, 1, '432942256', '2018-06-21 00:00:00', 1),
 (26, 1, '261566293', '2018-06-21 00:00:00', 1),
 (27, 1, '466842536', '2018-06-21 00:00:00', 1),
@@ -409,7 +461,7 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (37, 1, '262781833', '2018-06-21 00:00:00', 1),
 (38, 1, '157749142', '2018-06-21 00:00:00', 1),
 (39, 1, '433387781', '2018-06-21 00:00:00', 1),
-(40, 1, '219204825', '2018-06-21 00:00:00', 1),
+(40, 1, '219204825', '2018-06-27 00:00:00', 1),
 (41, 1, '1164752822', '2018-06-21 00:00:00', 1),
 (42, 1, '35315', '2018-06-21 00:00:00', 1),
 (43, 1, '1095387555', '2018-06-21 00:00:00', 1),
@@ -422,44 +474,44 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (50, 1, '18280982', '2018-06-21 00:00:00', 1),
 (51, 1, '442122051', '2018-06-21 00:00:00', 1),
 (52, 1, '475816358', '2018-06-21 00:00:00', 1),
-(53, 1, '128050210', '2020-12-30 00:00:00', 1),
+(53, 1, '128050210', '2018-06-27 20:46:25', 1),
 (54, 1, '3643376', '2018-06-21 00:00:00', 1),
 (55, 1, '283928791', '2018-06-21 00:00:00', 1),
-(56, 1, '601425706', '2020-12-30 00:00:00', 1),
+(56, 1, '601425706', '2018-06-27 20:46:25', 1),
 (57, 1, '868717338', '2018-06-21 00:00:00', 1),
-(58, 1, '62374520', '2020-12-30 00:00:00', 1),
-(59, 1, '200331954', '2018-06-21 00:00:00', 1),
+(58, 1, '62374520', '2018-06-27 20:46:25', 1),
+(59, 1, '200331954', '2018-06-27 00:00:00', 1),
 (60, 1, '609908895', '2018-06-21 00:00:00', 1),
 (61, 1, '1128462780', '2018-06-21 00:00:00', 1),
 (62, 1, '574431300', '2018-06-21 00:00:00', 1),
 (63, 1, '578667160', '2018-06-21 00:00:00', 1),
 (64, 1, '14549540', '2018-06-21 00:00:00', 1),
 (65, 1, '485530148', '2018-06-21 00:00:00', 1),
-(66, 1, '158039925', '2018-06-21 00:00:00', 1),
+(66, 1, '158039925', '2018-06-27 00:00:00', 1),
 (67, 1, '605391263', '2018-06-21 00:00:00', 1),
 (68, 1, '212897127', '2018-06-21 00:00:00', 1),
 (69, 1, '73705833', '2018-06-21 00:00:00', 1),
 (70, 1, '334089123', '2018-06-21 00:00:00', 1),
-(71, 1, '364382773', '2020-12-30 00:00:00', 1),
+(71, 1, '364382773', '2018-06-27 20:46:25', 1),
 (72, 1, '527754630', '2018-06-21 00:00:00', 1),
 (73, 1, '198431322', '2018-06-21 00:00:00', 1),
-(74, 1, '577261450', '2020-12-30 00:00:00', 1),
+(74, 1, '577261450', '2018-06-27 20:46:25', 1),
 (75, 1, '16586443', '2018-06-21 00:00:00', 1),
 (76, 1, '527379198', '2018-06-21 00:00:00', 1),
 (77, 1, '251063799', '2018-06-21 00:00:00', 1),
 (78, 1, '1088331223', '2018-06-21 00:00:00', 1),
-(79, 1, '332659150', '2020-12-30 00:00:00', 1),
+(79, 1, '332659150', '2018-06-27 20:46:25', 1),
 (80, 1, '217529867', '2018-06-21 00:00:00', 1),
 (81, 1, '2715720', '2018-06-21 00:00:00', 1),
 (82, 1, '1396520066', '2018-06-21 00:00:00', 1),
 (83, 1, '18214606', '2018-06-21 00:00:00', 1),
 (84, 1, '82842423', '2018-06-21 00:00:00', 1),
 (85, 1, '273058501', '2018-06-21 00:00:00', 1),
-(86, 1, '361434320', '2018-06-21 00:00:00', 1),
+(86, 1, '361434320', '2018-06-27 00:00:00', 1),
 (87, 1, '464296584', '2018-06-21 00:00:00', 1),
 (88, 1, '1252679128', '2018-06-21 00:00:00', 1),
 (89, 1, '337164366', '2018-06-21 00:00:00', 1),
-(90, 1, '940710524', '2020-12-30 00:00:00', 1),
+(90, 1, '940710524', '2018-06-27 00:00:00', 1),
 (91, 1, '5869117', '2018-06-21 00:00:00', 1),
 (92, 1, '1080733657', '2018-06-21 00:00:00', 1),
 (93, 1, '27039838', '2018-06-21 00:00:00', 1),
@@ -473,15 +525,15 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (101, 1, '121829093', '2018-06-21 00:00:00', 1),
 (102, 1, '283347662', '2018-06-21 00:00:00', 1),
 (103, 1, '458659054', '2018-06-21 00:00:00', 1),
-(104, 1, '283949782', '2020-12-30 00:00:00', 1),
+(104, 1, '283949782', '2018-06-27 20:46:25', 1),
 (105, 1, '219204820', '2018-06-21 00:00:00', 1),
-(106, 1, '313865761', '2020-12-30 00:00:00', 1),
+(106, 1, '313865761', '2018-06-27 20:46:25', 1),
 (107, 1, '670534462', '2018-06-21 00:00:00', 1),
 (108, 1, '569925101', '2018-06-21 00:00:00', 1),
 (109, 1, '673556643', '2018-06-21 00:00:00', 1),
 (110, 1, '1348899249', '2018-06-21 00:00:00', 1),
 (111, 1, '395410204', '2018-06-21 00:00:00', 1),
-(112, 1, '1119162071', '2020-12-30 00:00:00', 1),
+(112, 1, '1119162071', '2018-06-27 20:46:25', 1),
 (113, 1, '1328533325', '2018-06-21 00:00:00', 1),
 (114, 1, '548243536', '2018-06-21 00:00:00', 1),
 (115, 1, '626510', '2018-06-21 00:00:00', 1),
@@ -496,7 +548,7 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (124, 1, '666648192', '2018-06-21 00:00:00', 1),
 (125, 1, '14934728', '2018-06-21 00:00:00', 1),
 (126, 1, '1056091570', '2018-06-21 00:00:00', 1),
-(127, 1, '370571621', '2020-12-30 00:00:00', 1),
+(127, 1, '370571621', '2018-06-27 20:46:25', 1),
 (128, 1, '966309175', '2018-06-21 00:00:00', 1),
 (129, 1, '1278418738', '2018-06-21 00:00:00', 1),
 (130, 1, '353345047', '2018-06-21 00:00:00', 1),
@@ -507,11 +559,11 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (135, 1, '282589976', '2018-06-21 00:00:00', 1),
 (136, 1, '4022281', '2018-06-27 00:00:00', 1),
 (137, 1, '63346553', '2018-06-21 00:00:00', 1),
-(138, 1, '14953176', '2020-12-30 00:00:00', 1),
+(138, 1, '14953176', '2018-06-27 20:46:25', 1),
 (139, 1, '1083833709', '2018-06-21 00:00:00', 1),
 (140, 1, '77878647', '2018-06-21 00:00:00', 1),
 (141, 1, '663153634', '2018-06-21 00:00:00', 1),
-(142, 1, '995119630', '2020-12-30 00:00:00', 1),
+(142, 1, '995119630', '2018-06-27 00:00:00', 1),
 (143, 1, '458552200', '2018-06-21 00:00:00', 1),
 (144, 1, '252981331', '2018-06-21 00:00:00', 1),
 (145, 1, '376517823', '2018-06-21 00:00:00', 1),
@@ -523,14 +575,14 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (151, 1, '884211644', '2018-06-21 00:00:00', 1),
 (152, 1, '1177518801', '2018-06-21 00:00:00', 1),
 (153, 1, '259169448', '2018-06-21 00:00:00', 1),
-(154, 1, '216698214', '2020-12-30 00:00:00', 1),
-(155, 1, '549236696', '2020-12-30 00:00:00', 1),
+(154, 1, '216698214', '2018-06-27 20:46:25', 1),
+(155, 1, '549236696', '2018-06-27 20:46:25', 1),
 (156, 1, '1096394610', '2018-06-21 00:00:00', 1),
 (157, 1, '880680277', '2018-06-21 00:00:00', 1),
 (158, 1, '420368335', '2018-06-21 00:00:00', 1),
 (159, 1, '556508733', '2018-06-21 00:00:00', 1),
-(160, 1, '598667873', '2020-12-30 00:00:00', 1),
-(161, 1, '1374854358', '2018-06-21 00:00:00', 1),
+(160, 1, '598667873', '2018-06-27 20:46:25', 1),
+(161, 1, '1374854358', '2018-06-27 00:00:00', 1),
 (162, 1, '424044507', '2018-06-21 00:00:00', 1),
 (163, 1, '89876765', '2018-06-21 00:00:00', 1),
 (164, 1, '466612068', '2018-06-21 00:00:00', 1),
@@ -541,93 +593,31 @@ INSERT INTO `users_artists` (`id`, `idUser`, `idArtist`, `lastUpdate`, `active`)
 (169, 1, '1065981054', '2018-06-21 00:00:00', 1),
 (170, 1, '64490', '2018-06-21 00:00:00', 1),
 (171, 1, '331066376', '2018-06-21 00:00:00', 1),
-(172, 1, '275649746', '2020-12-30 00:00:00', 1),
+(172, 1, '275649746', '2018-06-27 20:46:25', 1),
 (173, 1, '261727947', '2018-06-21 00:00:00', 1),
 (174, 1, '204678674', '2018-06-21 00:00:00', 1),
 (175, 1, '1352449404', '2018-06-21 00:00:00', 1),
-(176, 1, '6392055', '2020-12-30 00:00:00', 1),
+(176, 1, '6392055', '2018-06-27 20:46:25', 1),
 (177, 1, '368183298', '2018-06-21 00:00:00', 1),
 (178, 1, '465954501', '2018-06-21 00:00:00', 1),
 (179, 1, '511333957', '2018-06-21 00:00:00', 1),
-(180, 1, '278464538', '2018-06-21 00:00:00', 1),
+(180, 1, '278464538', '2018-06-27 00:00:00', 1),
 (181, 1, '682277', '2018-06-21 00:00:00', 1),
-(182, 1, '21769', '2020-12-30 00:00:00', 1),
+(182, 1, '21769', '2018-06-27 00:00:00', 1),
 (183, 1, '605800394', '2018-06-21 00:00:00', 1),
 (184, 1, '14967', '2018-06-21 00:00:00', 1),
-(185, 1, '602917745', '2020-12-30 00:00:00', 1),
-(186, 1, '201714418', '2020-12-30 00:00:00', 1),
+(185, 1, '602917745', '2018-06-27 20:46:25', 1),
+(186, 1, '201714418', '2018-06-27 20:46:25', 1),
 (187, 1, '81886939', '2018-06-21 00:00:00', 1),
 (188, 1, '435300447', '2018-06-21 00:00:00', 1),
 (189, 1, '1097177293', '2018-06-21 00:00:00', 1),
 (190, 1, '321672107', '2018-06-21 00:00:00', 1),
 (191, 1, '1348763569', '2018-06-21 00:00:00', 1),
-(192, 1, '302166615', '2020-12-30 00:00:00', 1),
+(192, 1, '302166615', '2018-06-27 20:46:25', 1),
 (193, 1, '1273783982', '2018-06-21 00:00:00', 1),
 (194, 1, '829356035', '2018-06-21 00:00:00', 1),
 (196, 2, '995119630', '2016-06-16 00:00:00', 1);
 
---
--- Index pour les tables exportées
---
-
---
--- Index pour la table `albums`
---
-ALTER TABLE `albums`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `albums_id_uindex` (`id`);
-
---
--- Index pour la table `artists`
---
-ALTER TABLE `artists`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `artists_id_uindex` (`id`);
-
---
--- Index pour la table `artists_albums`
---
-ALTER TABLE `artists_albums`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `artists_albums_id_uindex` (`id`),
-  ADD UNIQUE KEY `artists_albums_idArtist_idAlbum_uindex` (`idArtist`,`idAlbum`),
-  ADD KEY `artists_albums_artists_id_fk` (`idArtist`),
-  ADD KEY `artists_albums_albums_id_fk` (`idAlbum`);
-
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users__id_uindex` (`id`),
-  ADD UNIQUE KEY `users_username_uindex` (`username`);
-
---
--- Index pour la table `users_artists`
---
-ALTER TABLE `users_artists`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_artists_id_uindex` (`id`);
-
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `artists_albums`
---
-ALTER TABLE `artists_albums`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
---
--- AUTO_INCREMENT pour la table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT pour la table `users_artists`
---
-ALTER TABLE `users_artists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
 --
 -- Contraintes pour les tables exportées
 --
