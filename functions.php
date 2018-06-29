@@ -69,8 +69,7 @@ function getAllAlbums($display = "artists")
 // Récupère tous les artistes
 function getAllNewReleases()
 {
-    $db = new db;
-    /** @var Artist $artist */
+    $db = new db;/** @var Artist $artist */;
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         getArtistRelease($artist);
 //        break;
@@ -97,9 +96,10 @@ function getArtistRelease($objArtist)
     // Mise en BD des nouveaux albums
     /** @var Album $album */
     foreach ($artist->getAlbums() as $album) {
+//        echo json_encode($album);
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
-        $artist->update();
+//        $artist->update();
         echo $album->toString();
     }
 }
@@ -135,6 +135,10 @@ function fixDate($date, $format = "string")
         default:
             return $date;
     }
+}
+
+function fixTZDate($date) {
+    return str_replace("Z", " ", str_replace("T", " ", str_replace("07:00:00", "00:00:00", $date)));
 }
 
 /**

@@ -54,7 +54,7 @@ $(function () {
         var c = $(".artist[" + artistDataId + "=\"" + id + "\"").find(".section-body");
         $.ajax({
             url: "./ajax/update.php",
-            dataType: 'json',
+            // dataType: 'json',
             method: "GET",
             data: {
                 f: f,

@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Europe/Paris");
 require_once("functions.php");
 define("DEFAULT_DATE_FORMAT", "Y-m-d");
 define("DEFAULT_DATE_FORMAT_NO_SECS", "Y-m-d H:i");

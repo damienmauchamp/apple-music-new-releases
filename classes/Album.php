@@ -66,7 +66,7 @@ class Album
     {
         if ($option === "string") {
             $timestamp = strtotime($this->date);
-            return date("d", $timestamp) . " " . getMonth(date("m", $timestamp), true) ." ". date("Y", $timestamp);
+            return date("d", $timestamp) . " " . getMonth(date("m", $timestamp), true) . " " . date("Y", $timestamp);
         }
         return $this->date;
     }
@@ -117,20 +117,23 @@ class Album
         return $this->explicit;
     }
 
-    public function isOnPreorder() {
-        return strtotime("now") < strtotime($this->date);
+    public function isOnPreorder()
+    {
+        return strtotime(date(DEFAULT_DATE_FORMAT . " 00:00:00")) < strtotime(fixTZDate($this->date));
     }
 
     public function toString()
     {
         global $display;
-//        var_dump(date("Y-m-d", strtotime("now")));
-//        var_dump($this->date);
+
         $preorder = $this->isOnPreorder();
 
         $style = '<style>#album-' . $this->id . ' .artwork:after { content: "' . $this->getDate("string") . '" }</style>';
 
         return '
+        <span>' . date(DEFAULT_DATE_FORMAT_TIME, strtotime(date(DEFAULT_DATE_FORMAT . " 00:00:00"))) . '</span>
+        <span>' . date(DEFAULT_DATE_FORMAT_TIME, strtotime(fixTZDate($this->date))) . '</span>
+        <span>' . ($this->isOnPreorder() ? "YES" : "NO") . '</span>
         <a href="' . $this->getLink() . '" target="_blank"
            id="album-' . $this->id . '"
            data-am-kind="album" data-am-album-id="' . $this->id . '"

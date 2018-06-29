@@ -128,6 +128,9 @@ class API
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        $header = array("Cache-Control: no-cache");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         return curl_exec($ch);
     }
 
@@ -136,6 +139,9 @@ class API
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->setArtistsSearchUrl($search));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        $header = array("Cache-Control: no-cache");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         return curl_exec($ch);
     }
 
@@ -146,7 +152,12 @@ class API
 
         /** @var Album $album */
         foreach ($albums as $album) {
-            if (strtotime($album->getDate()) > strtotime($lastUpdate)) {
+            $albumDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($album->getDate()));
+            $lastUpdateDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($lastUpdate));
+//            var_dump($albumDate);
+//            var_dump($lastUpdateDate);
+//            var_dump($album);
+            if (strtotime($albumDate) >= strtotime($lastUpdateDate)) {
                 $new[] = $album;
                 $album->addAlbum($this->id);
             }

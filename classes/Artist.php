@@ -94,7 +94,7 @@ class Artist
         /** @var Album $album */
         foreach ($this->albums as $album) {
             $albumDate = $album->getDate();
-            if (strtotime($min) > strtotime($albumDate) && strtotime($this->getLastUpdate()) > strtotime($albumDate))
+            if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($albumDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($albumDate)))
                 $min = $albumDate;
         }
         $tmp = str_replace('-', '/', $min);

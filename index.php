@@ -11,7 +11,8 @@ $root = "";
 </head>
 <body class="<?= $theme ?>">
 <div class="main">
-    <? include "inc/nav.php"; ?>
+    <? include "inc/nav.php";
+    echo date(DEFAULT_DATE_FORMAT_TIME);?>
 
     <section class="main-header l-content-width section" style="padding-bottom:0;border-top:none">
         <h1 class="section__headline--hero"><?= $news ? "Refresh" : "Releases" ?></h1>

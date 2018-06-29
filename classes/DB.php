@@ -37,6 +37,10 @@ class DB
         if ($_SERVER['HTTP_HOST'] == "local.workspace.vm") {
             $DB_login = "dmauchamp";
             $DB_psw = "azerty123";
+        } else if ($_SERVER['HTTP_HOST'] == "localhost:8080") {
+            $DB_serveur = "192.168.1.52";
+            $DB_login = "damien";
+            $DB_psw = "92iveyron";
         } else {
             $DB_login = "damien";
             $DB_psw = "92iveyron";
@@ -75,7 +79,8 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1";
+            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
+            ORDER BY al.date DESC";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -142,7 +147,7 @@ class DB
         $id = $album->getId();
         $name = addslashes($album->getName());
         $artistName = $album->getArtistName();
-        $date = $album->getDate();
+        $date = fixTZDate($album->getDate());
         $artwork = $album->getArtwork();
         $explicit = $album->isExplicit();
 
