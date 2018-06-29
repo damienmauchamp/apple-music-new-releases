@@ -61,6 +61,7 @@ $(function () {
                 id: id
             },
             success: function (data) {
+                console.log(data);
                 var html = "";
                 if (parseInt(f) === 1 && data["albumCount"] > 0) {
                     $(data["albums"]).each(function (key, val) {

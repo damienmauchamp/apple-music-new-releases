@@ -19,7 +19,7 @@ if ($function === 1) {
 } else if ($function === 2) {
     $artist = new Artist($idArtist);
     $tmp = str_replace('-', '/', date("Y-m-d"));
-    getArtistReleases($idArtist, date('Y-m-d'));
+    getArtistReleases($idArtist, date(DEFAULT_DATE_FORMAT_TIME));
 }
 
 
