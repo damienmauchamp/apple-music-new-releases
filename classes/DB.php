@@ -80,7 +80,7 @@ class DB
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
-            ORDER BY al.date DESC";
+            ORDER BY ar.name ASC, al.date DESC";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -149,7 +149,7 @@ class DB
         $artistName = $album->getArtistName();
         $date = fixTZDate($album->getDate());
         $artwork = $album->getArtwork();
-        $explicit = $album->isExplicit();
+        $explicit = $album->isExplicit() ? 1 : 0;
 
         $sqlAlbum = "
             INSERT INTO albums (id, name, artistName, date, artwork, explicit)
@@ -179,7 +179,6 @@ class DB
             UPDATE users_artists
             SET lastUpdate = '$date'
             WHERE idArtist = $idArtist AND idUser = $idUser";
-//        echo $sql;exit;
         $this->connect();
         $stmt = $this->dbh->prepare($sql);
         $res = $stmt->execute();

@@ -1,0 +1,1 @@
+INSERT INTO `applemusic-update`.users (id, username, password) VALUES (1, 'damien', '92iveyron');

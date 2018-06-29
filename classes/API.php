@@ -93,7 +93,6 @@ class API
 //                $ids[$id]["text"] = $collection["artistName"];
 
                 foreach ($ids as $idA => $a) {
-//                    print_r($a["names"]);
                     $max = 0;
                     $index = null;
                     foreach ($a["names"] as $name => $x) {
@@ -154,9 +153,6 @@ class API
         foreach ($albums as $album) {
             $albumDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($album->getDate()));
             $lastUpdateDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($lastUpdate));
-//            var_dump($albumDate);
-//            var_dump($lastUpdateDate);
-//            var_dump($album);
             if (strtotime($albumDate) >= strtotime($lastUpdateDate)) {
                 $new[] = $album;
                 $album->addAlbum($this->id);

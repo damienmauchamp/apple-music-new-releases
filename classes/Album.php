@@ -9,7 +9,6 @@
 namespace AppleMusic;
 
 use AppleMusic\DB as db;
-use Mobile_Detect;
 
 class Album
 {
@@ -122,18 +121,15 @@ class Album
         return strtotime(date(DEFAULT_DATE_FORMAT . " 00:00:00")) < strtotime(fixTZDate($this->date));
     }
 
-    public function toString()
+    public function toString($newDisplay = null)
     {
         global $display;
 
+        $display = $newDisplay ? $newDisplay : $display;
         $preorder = $this->isOnPreorder();
-
         $style = '<style>#album-' . $this->id . ' .artwork:after { content: "' . $this->getDate("string") . '" }</style>';
 
         return '
-        <span>' . date(DEFAULT_DATE_FORMAT_TIME, strtotime(date(DEFAULT_DATE_FORMAT . " 00:00:00"))) . '</span>
-        <span>' . date(DEFAULT_DATE_FORMAT_TIME, strtotime(fixTZDate($this->date))) . '</span>
-        <span>' . ($this->isOnPreorder() ? "YES" : "NO") . '</span>
         <a href="' . $this->getLink() . '" target="_blank"
            id="album-' . $this->id . '"
            data-am-kind="album" data-am-album-id="' . $this->id . '"

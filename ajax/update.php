@@ -2,36 +2,25 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . "/start.php";
+$debug = false;
+$_VARS = $debug ? $_GET : $_POST;
 
 use AppleMusic\Album;
 use AppleMusic\API as api;
 use AppleMusic\Artist;
-use AppleMusic\DB as db;
 
-//$function = isset($_POST["f"]) ? intval($_POST["f"]) : null;
-$function = isset($_GET["f"]) ? intval($_GET["f"]) : null;
+$function = isset($_VARS["f"]) ? intval($_VARS["f"]) : null;
+$idArtist = isset($_VARS["id"]) ? $_VARS["id"] : null;
 
 // 1 : artistNewReleases(idArtist)
 if ($function === 1) {
-//    $idArtist = isset($_POST["id"]) ? $_POST["id"] : null;
-    $idArtist = isset($_GET["id"]) ? $_GET["id"] : null;
     $artist = new Artist($idArtist);
-//    $artist->fetchArtistInfo();
     getArtistReleases($idArtist);
 } else if ($function === 2) {
-    $idArtist = isset($_GET["id"]) ? $_GET["id"] : null;
     $artist = new Artist($idArtist);
     $tmp = str_replace('-', '/', date("Y-m-d"));
     getArtistReleases($idArtist, date('Y-m-d'));
-} else {
-    echo "L";
 }
-
-
-//
-//$api = new api;
-//$artists = $api->searchArtist(str_replace(" ", "+", $term));
-//echo json_encode($artists);
 
 
 /**
@@ -40,7 +29,6 @@ if ($function === 1) {
  */
 function getArtistReleases($idArtist, $date = false)
 {
-    $db = new db;
     $artist = new Artist($idArtist);
     $artist->getArtistDB();
 
@@ -62,7 +50,5 @@ function getArtistReleases($idArtist, $date = false)
     /** @var Album $album */
     foreach ($artist->getAlbums() as $album) {
         $album->addAlbum($artist->getId());
-//        print_r($album->addAlbum($artist->getId()));
-//        var_dump($album);
     }
 }

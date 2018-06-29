@@ -5,10 +5,17 @@ use AppleMusic\API as api;
 use AppleMusic\Artist as Artist;
 use AppleMusic\Album as Album;
 
+function displayAlbums($albums)
+{
+    /** @var Album $album */
+    foreach ($albums as $album) {
+        echo Album::withArray(Album::objectToArray($album))->toString("albums");
+    }
+}
+
 // Dernières sorties depuis actualisation, dans la BD
 function getAllAlbums($display = "artists")
 {
-    // TODO : onglets, colonnes (avec tous les nvx) ou lignes (artistes)
     $db = new db;
     $releases = $db->getUserReleases();
     $artists = array();
@@ -63,6 +70,7 @@ function getAllAlbums($display = "artists")
             }
             break;
     }
+    return json_decode($releases);
 }
 
 
@@ -70,18 +78,21 @@ function getAllAlbums($display = "artists")
 function getAllNewReleases()
 {
     $db = new db;/** @var Artist $artist */;
+    $releases = array();
     foreach (json_decode($db->getUsersArtists()) as $artist) {
-        getArtistRelease($artist);
+        $releases[] = getArtistRelease($artist);
 //        break;
     }
+    return $releases;
 }
 
 /**
  * @param $objArtist
+ * @return mixed $albums
  */
 function getArtistRelease($objArtist)
 {
-    $db = new db;
+//    $db = new db;
     // Artiste
     $artist = new Artist($objArtist->id);
     $artist->setName($objArtist->name);
@@ -91,17 +102,17 @@ function getArtistRelease($objArtist)
     $api = new api($artist->getId());
     $newAlbums = $api->update($artist->getLastUpdate());
     $artist->setAlbums($newAlbums);
-//    print_r($artist->getAlbums());exit;
 
+    $albums = $artist->getAlbums();
     // Mise en BD des nouveaux albums
     /** @var Album $album */
-    foreach ($artist->getAlbums() as $album) {
-//        echo json_encode($album);
+    foreach ($albums as $album) {
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
 //        $artist->update();
         echo $album->toString();
     }
+    return $albums;
 }
 
 /**
@@ -137,7 +148,8 @@ function fixDate($date, $format = "string")
     }
 }
 
-function fixTZDate($date) {
+function fixTZDate($date)
+{
     return str_replace("Z", " ", str_replace("T", " ", str_replace("07:00:00", "00:00:00", $date)));
 }
 

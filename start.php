@@ -1,6 +1,7 @@
 <?php
-date_default_timezone_set("Europe/Paris");
+//date_default_timezone_set("Europe/Paris");
 require_once("functions.php");
+
 define("DEFAULT_DATE_FORMAT", "Y-m-d");
 define("DEFAULT_DATE_FORMAT_NO_SECS", "Y-m-d H:i");
 define("DEFAULT_DATE_FORMAT_TIME", "Y-m-d H:i:s");
@@ -48,14 +49,4 @@ $page = isset($_GET["page"]) ? $_GET["page"] : null;
 $theme = "is-music-theme";
 $news = isset($_GET["refresh"]) && $_GET["refresh"];
 $display = $news ? "column" : "row";
-
-//if ($detect->isMobile())
-//    var_dump("mobile");
-//if ($detect->isTablet())
-//    var_dump("tablette");
-//if ($detect->isMobile() && !$detect->isTablet())
-//    var_dump("mobile mais pas tablette");
-//if ($detect->isiOS())
-//    var_dump("iOS");
-//if ($detect->isAndroidOS())
-//    var_dump("Android");
+//echo date(DEFAULT_DATE_FORMAT_TIME);

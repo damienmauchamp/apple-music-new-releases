@@ -26,7 +26,7 @@ $(function () {
             },
             cache: true
         },
-        minimumInputLength: 2,
+        minimumInputLength: 1,
         placeholder: 'Ajouter un artiste',
         allowClear: true
     });
@@ -55,7 +55,7 @@ $(function () {
         $.ajax({
             url: "./ajax/update.php",
             // dataType: 'json',
-            method: "GET",
+            method: "POST",
             data: {
                 f: f,
                 id: id

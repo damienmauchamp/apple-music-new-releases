@@ -1,0 +1,1 @@
+INSERT INTO `applemusic-update`.artists_albums (id, idArtist, idAlbum) VALUES (1, '481488005', '1362807556');

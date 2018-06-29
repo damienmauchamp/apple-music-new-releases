@@ -1,0 +1,1 @@
+INSERT INTO `applemusic-update`.users_artists (id, idUser, idArtist, lastUpdate, active) VALUES (1, 1, '481488005', '2018-03-26 07:00:00', 1);

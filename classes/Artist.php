@@ -154,9 +154,7 @@ class Artist
      */
     public function setAnAlbum($album)
     {
-//        var_dump(count($this->albums));
         $this->albums[$album->getId()] = $album;
-//        var_dump($this->albums);
     }
 
     /**
