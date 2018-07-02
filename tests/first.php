@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Asus
- * Date: 23/06/2018
- * Time: 20:30
- */
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 

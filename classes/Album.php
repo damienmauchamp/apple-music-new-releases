@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmauchamp
- * Date: 25/06/2018
- * Time: 10:32
- */
 
 namespace AppleMusic;
 
