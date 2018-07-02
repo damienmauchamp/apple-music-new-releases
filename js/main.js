@@ -37,7 +37,7 @@ $(function () {
         allowClear: true,
         // data: data,
         templateResult: template,
-        templateSelection: template,
+        templateSelection: template
     });
 
 
