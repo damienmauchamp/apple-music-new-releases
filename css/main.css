@@ -153,6 +153,12 @@ body {
     border: 1px solid #ccc;
 }
 
+.select2-container--default .select2-selection--multiple,
 .select2-container--default.select2-container--focus .select2-selection--multiple {
     border: 1px solid #ccc;
 }
+
+span.artist-search-count {
+    float: right;
+}
+

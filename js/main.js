@@ -6,6 +6,12 @@ $(function () {
     const addArtistSubmit = $(".add-artists-label-after");
     const artistDataId = "data-am-artist-id";
 
+    function template(data) {
+        if ($(data.html).length === 0)
+            return data.text;
+        return $(data.html);
+    }
+
     addArtist.select2({
         ajax: {
             url: "./ajax/search.php",
@@ -28,7 +34,10 @@ $(function () {
         },
         minimumInputLength: 1,
         placeholder: 'Ajouter un artiste',
-        allowClear: true
+        allowClear: true,
+        // data: data,
+        templateResult: template,
+        templateSelection: template,
     });
 
 

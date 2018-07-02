@@ -101,7 +101,9 @@ class API
                             $index = $name;
                         }
                     }
-                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
+//                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
+                    $ids[$idA]["text"] = "$index";
+                    $ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> ". "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
                 }
 
                 // ordre
