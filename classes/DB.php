@@ -33,18 +33,9 @@ class DB
     {
         $DB_serveur = "localhost";
         $DB_nom = "applemusic-update";
-
-        if ($_SERVER['HTTP_HOST'] == "local.workspace.vm") {
-            $DB_login = "dmauchamp";
-            $DB_psw = "azerty123";
-        } else if ($_SERVER['HTTP_HOST'] == "localhost:8080") {
-            $DB_serveur = "192.168.1.52";
-            $DB_login = "damien";
-            $DB_psw = "92iveyron";
-        } else {
-            $DB_login = "damien";
-            $DB_psw = "92iveyron";
-        }
+        $env = explode(":", $this->getEnv());
+        $DB_login = $env[0] ? $env[0] : null;
+        $DB_psw = $env[1] ? $env[1] : null;
 
         try {
             $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
@@ -62,6 +53,11 @@ class DB
     private function disconnect()
     {
         $this->dbh = null;
+    }
+
+    private function getEnv()
+    {
+        return file_get_contents(dirname(__DIR__) . '/.env');
     }
 
     //////////
