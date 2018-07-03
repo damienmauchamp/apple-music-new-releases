@@ -162,3 +162,6 @@ span.artist-search-count {
     float: right;
 }
 
+.select2-selection__choice .artist-search-count {
+    display: none;
+}
