@@ -49,9 +49,9 @@ class Artist
         $db = new DB();
         $array = $db->getArtist($this->id);
         if ($array) {
-            $this->name =  isset($array["name"]) ? $array["name"] : null;
+            $this->name = isset($array["name"]) ? $array["name"] : null;
             $this->albums = isset($array["albums"]) ? $array["albums"] : null;
-            $this->lastUpdate =  isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
+            $this->lastUpdate = isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
         }
     }
 
@@ -76,6 +76,8 @@ class Artist
 
         $minDate = $date ? $date : $this->getAlbumsMinDate();
         $update = $db->artistUpdated($this->id, $minDate);
+        /*$removal =*/
+        $db->removeOldAlbums();
         return $update;
 //        $removal = $db->removeOldAlbums($this);
 //        var_dump($removal);
@@ -183,7 +185,7 @@ class Artist
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
 //                    for ($i = 0; $i < 15; $i++)
-                        echo $album->toString();
+                    echo $album->toString();
                 } ?>
             </div>
         </section>

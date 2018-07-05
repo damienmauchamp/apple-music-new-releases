@@ -79,7 +79,8 @@ function getAllNewReleases()
 {
     $db = new db;
     $releases = array();
-    var_dump($db->removeOldAlbums());
+    /*$removal =*/
+    $db->removeOldAlbums();
     /** @var Artist $artist */
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         $releases[] = getArtistRelease($artist);

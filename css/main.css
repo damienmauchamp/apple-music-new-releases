@@ -162,3 +162,8 @@ span.artist-search-count {
     float: right;
 }
 
+@media only screen and (min-width: 736px) {
+    .l-column--grid {
+        margin-bottom: 2.89017%;
+    }
+}
