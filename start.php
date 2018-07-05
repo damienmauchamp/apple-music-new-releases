@@ -49,4 +49,5 @@ $page = isset($_GET["page"]) ? $_GET["page"] : null;
 $theme = "is-music-theme";
 $news = isset($_GET["refresh"]) && $_GET["refresh"];
 $display = $news ? "column" : "row";
+$idUser = 1;
 //echo date(DEFAULT_DATE_FORMAT_TIME);

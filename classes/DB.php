@@ -102,9 +102,9 @@ class DB
      */
     public function addArtist($artist)
     {
+        global $idUser;
         $id = $artist->getId();
         $name = $artist->getName();
-        $idUser = 1;
         $sqlArtist = "
             INSERT INTO artists (id, name)
             VALUES ('$id', '$name')
@@ -159,7 +159,7 @@ class DB
 
     public function artistUpdated($idArtist, $minDate)
     {
-        $idUser = 1;
+        global $idUser;
 //        $date = "NOW()";
         $date = "$minDate 00:00:00";
         $sql = "
@@ -186,6 +186,23 @@ class DB
         $this->disconnect();
 
         $res = $stmt->fetch();
+        return $res;
+    }
+
+    public function removeOldAlbums($days = 14)
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            DELETE al, aa
+            FROM albums al
+              LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+        );
+        $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
+        $this->disconnect();
         return $res;
     }
 

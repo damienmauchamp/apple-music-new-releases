@@ -77,13 +77,21 @@ function getAllAlbums($display = "artists")
 // Récupère tous les artistes
 function getAllNewReleases()
 {
-    $db = new db;/** @var Artist $artist */;
+    $db = new db;
     $releases = array();
+    var_dump($db->removeOldAlbums());
+    /** @var Artist $artist */
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         $releases[] = getArtistRelease($artist);
 //        break;
     }
     return $releases;
+}
+
+function removeOldAlbums($days = 14)
+{
+    $db = new db;
+    return $db->removeOldAlbums($days);
 }
 
 /**
