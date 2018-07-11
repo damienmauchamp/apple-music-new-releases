@@ -174,12 +174,12 @@ class Artist
         global $display;
         ?>
         <section class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
-            <div class="section-header section__nav">
+            <div class="section-header section__nav clearfix">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
-                <a class="maj-link link section__nav__see-all-link ember-view"
-                   data-am-artist-id="<?= $this->id ?>">MAJ</a>
                 <a class="suppr-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
+                <a class="maj-link link section__nav__see-all-link ember-view"
+                   data-am-artist-id="<?= $this->id ?>">MAJ</a>
             </div>
             <div class="section-body l-row <?= $display == "row" ? "l-row--peek" : null ?>">
                 <? /** @var Album $album */

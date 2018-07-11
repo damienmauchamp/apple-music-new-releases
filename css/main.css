@@ -56,6 +56,7 @@ body {
 
 .maj-link, .suppr-link {
     cursor: pointer;
+    float: right;
 }
 
 .we-artwork::before {
@@ -166,4 +167,22 @@ span.artist-search-count {
     .l-column--grid {
         margin-bottom: 2.89017%;
     }
+}
+
+.clearfix {
+    overflow: auto;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.artist .section-header {
+    display: block;
+}
+
+.artist .section-title {
+    float: left;
 }
