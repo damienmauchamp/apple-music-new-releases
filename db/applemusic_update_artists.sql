@@ -1,1 +1,0 @@
-INSERT INTO `applemusic-update`.artists (id, name) VALUES ('481488005', 'A$AP Rocky');

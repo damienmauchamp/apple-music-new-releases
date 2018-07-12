@@ -1,1 +1,0 @@
-INSERT INTO `applemusic-update`.albums (id, name, artistName, date, artwork) VALUES ('1362807556', 'Bad Company (feat. BlocBoy JB) - Single', 'A$AP Rocky', '2018-03-28 07:00:00', 'https://is4-ssl.mzstatic.com/image/thumb/Music118/v4/9b/2f/cb/9b2fcbda-987a-022f-1ca4-9f19ff9f4c1e/source/100x100bb.jpg');
