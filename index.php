@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
 $root = "";
-global $page, $news;
+global$news;
 
 ?>
 <!DOCTYPE html>
@@ -37,18 +37,17 @@ global $page, $news;
 
             <div class="l-row" id="new-albums">
 
-                <? if (intval($news) === 1) {
-                    $albums = getAllNewReleases();
-                } else if (intval($news) === 2) { ?>
+                <? if (!$full) : ?>
                     <script>getNewReleases();</script>
-                <? } ?>
+                <? else : $albums = getAllNewReleases(); ?>
+                    <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+                <? endif ?>
 
             </div>
 
-            <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
         </section>
 
-    <? else : $albums = getAllAlbums($page); ?>
+    <? else : $albums = getAllAlbums(); ?>
 
         <section class="artist l-content-width section section--bordered">
             <h2 class="section__headline">

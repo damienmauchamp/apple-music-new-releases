@@ -43,11 +43,26 @@ define("MONTHS_NAMES_SHORT", serialize(array(
     12 => "déc."
 )));
 
+if (isset($argv)) {
+    foreach ($argv as $arg) {
+        $e = explode("=", $arg);
+        if (count($e) == 2)
+            $_GET[$e[0]] = $e[1];
+        else
+            $_GET[$e[0]] = 0;
+    }
+}
+
 $detect = new Mobile_Detect;
 $mobile = $detect->isMobile();
-$page = isset($_GET["page"]) ? $_GET["page"] : null;
+//$page = isset($_GET["page"]) ? $_GET["page"] : null;
 $theme = "is-music-theme";
-$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;
+$news = isset($_GET["refresh"]);
+$full = isset($_GET["full"]);
+//$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;
 $display = $news ? "column" : "row";
 $idUser = 1;
 //echo date(DEFAULT_DATE_FORMAT_TIME);
+
+// run from command line :
+//  php -f index.php refresh=1 full=1
