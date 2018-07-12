@@ -105,7 +105,7 @@ class DB
 //        global $idUser;
         $idUser = 1;
         $id = $artist->getId();
-        $name = $artist->getName();
+        $name = addslashes($artist->getName());
         $sqlArtist = "
             INSERT INTO artists (id, name)
             VALUES ('$id', '$name')
@@ -198,7 +198,7 @@ class DB
         $idUser = 1;
         $this->connect();
         $stmt = $this->dbh->prepare("
-            DELETE al, aa
+            DELETE aa, al
             FROM albums al
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
