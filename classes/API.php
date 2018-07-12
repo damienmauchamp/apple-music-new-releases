@@ -76,13 +76,16 @@ class API
                 $ids = array();
                 foreach ($results["results"] as $collection) {
                     $id = isset($collection["artistId"]) ? $collection["artistId"] : 0;
-                    $n = isset($ids[$id]) ? ($ids[$id]["n"] + 1) : 1;
-                    if ($n === 1) {
-                        $ids[$id]["id"] = $id;
+
+                    if (Artist::isAdded($id)) {
+                        $n = isset($ids[$id]) ? ($ids[$id]["n"] + 1) : 1;
+                        if ($n === 1) {
+                            $ids[$id]["id"] = $id;
 //                        $ids[$id]["text"] = $collection["artistName"];
+                        }
+                        $ids[$id]["n"] = $n;
+                        $ids[$id]["names"][$collection["artistName"]] = isset($ids[$id]["names"][$collection["artistName"]]) ? $ids[$id]["names"][$collection["artistName"]] + 1 : 1;
                     }
-                    $ids[$id]["n"] = $n;
-                    $ids[$id]["names"][$collection["artistName"]] = isset($ids[$id]["names"][$collection["artistName"]]) ? $ids[$id]["names"][$collection["artistName"]] + 1 : 1;
                 }
 //                $ids[$id]["text"] = $collection["artistName"];
 
@@ -97,7 +100,7 @@ class API
                     }
 //                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
                     $ids[$idA]["text"] = "$index";
-                    $ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> ". "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
+                    $ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> " . "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
                 }
 
                 // ordre
@@ -147,8 +150,8 @@ class API
 
         /** @var Album $album */
         foreach ($albums as $album) {
-            $albumDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($album->getDate()));
-            $lastUpdateDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($lastUpdate));
+            $albumDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($album->getDate()));
+            $lastUpdateDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate));
             if (strtotime($albumDate) >= strtotime($lastUpdateDate)) {
                 $new[] = $album;
                 $album->addAlbum($this->id);

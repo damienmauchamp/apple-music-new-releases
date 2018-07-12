@@ -97,6 +97,11 @@ class Artist
         return date('Y-m-d', strtotime($tmp . "-1 days"));
     }
 
+    public static function isAdded($id) {
+        $db = new db;
+        return $db->artistIsAdded($id);
+    }
+
     /**
      * @return mixed
      */

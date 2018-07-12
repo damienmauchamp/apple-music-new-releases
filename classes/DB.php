@@ -210,6 +210,22 @@ class DB
         return $res;
     }
 
+    public function artistIsAdded($id)
+    {
+//        global $idUser;
+        $idUser = 1;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT *
+            FROM users_artists ua
+            WHERE  ua.idUser = :idUser AND ua.idArtist = :idArtist;"
+        );
+        $stmt->execute(array("idUser" => $idUser, "idArtist" => $id));
+        $res = $stmt->fetchAll();
+        $this->disconnect();
+        return $res ? false : true;
+    }
+
     public function selectPerso($sql)
     {
         $this->connect();
