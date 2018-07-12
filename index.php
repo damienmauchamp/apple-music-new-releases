@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
 $root = "";
-global$news;
+global $news;
 
 ?>
 <!DOCTYPE html>
@@ -39,7 +39,8 @@ global$news;
 
                 <? if (!$full) : ?>
                     <script>getNewReleases();</script>
-                <? else : $albums = getAllNewReleases(); ?>
+                <? else :
+                $albums = getAllNewReleases(); ?>
                     <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
                 <? endif ?>
 
