@@ -81,7 +81,6 @@ function getAllNewReleases()
     $releases = array();
     /*$removal =*/
     $db->removeOldAlbums();
-    /** @var Artist $artist */
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         $releases[] = getArtistRelease($artist);
 //        break;
@@ -97,9 +96,10 @@ function removeOldAlbums($days = 14)
 
 /**
  * @param $objArtist
- * @return mixed $albums
+ * @param bool $display
+ * @return mixed
  */
-function getArtistRelease($objArtist)
+function getArtistRelease($objArtist, $display = false)
 {
 //    $db = new db;
     // Artiste
@@ -119,7 +119,7 @@ function getArtistRelease($objArtist)
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
 //        $artist->update();
-        echo $album->toString();
+        echo $album->toString($display);
     }
     return $albums;
 }

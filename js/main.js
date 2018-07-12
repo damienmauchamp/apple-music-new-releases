@@ -107,3 +107,38 @@ $(function () {
     });
 
 });
+
+var getNewReleases = function () {
+
+    function getArtists() {
+        return $.ajax({
+            url: "./ajax/update.php",
+            method: "POST",
+            dataType: 'json',
+            data: {f: 3}
+        });
+    }
+
+    $.when(getArtists()).done(function (str) {
+        var artists = JSON.parse(str);
+        var count = artists.length;
+        $(artists).each(function (i, artist) {
+            $.ajax({
+                url: "./ajax/update.php",
+                method: "POST",
+                data: {
+                    f: 4,
+                    artist: artist,
+                }, success: function (data) {
+                    $("#new-albums").append(data);
+                }, complete: function () {
+                    console.log(count);
+                    if (!--count) {
+                        $("#loading-spinner").hide();
+                    }
+                }
+            });
+        });
+    });
+
+};

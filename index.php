@@ -12,7 +12,7 @@ global $page;
 </head>
 <body class="<?= $theme ?>">
 <div class="main">
-    <? include "inc/nav.php";?>
+    <? include "inc/nav.php"; ?>
 
     <section class="main-header l-content-width section" style="border-top:none">
         <h1 class="section__headline--hero"><?= $news ? "Refresh" : "Releases" ?></h1>
@@ -35,12 +35,17 @@ global $page;
                 New albums
             </h2>
 
-            <div class="l-row">
-                <? $albums = getAllNewReleases(); ?>
+            <div class="l-row" id="new-albums">
+
+                <? if (intval($news) === 1) {
+                    $albums = getAllNewReleases();
+                } else if (intval($news) === 2) { ?>
+                    <script>getNewReleases();</script>
+                <? } ?>
+
             </div>
 
-            <div id="ember1200" style="display: none;"
-                 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+            <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
         </section>
 
     <? else : $albums = getAllAlbums($page); ?>
