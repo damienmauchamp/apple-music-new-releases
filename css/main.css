@@ -195,3 +195,7 @@ span.artist-search-count {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.select2-selection__choice .artist-search-count {
+    display: none;
+}

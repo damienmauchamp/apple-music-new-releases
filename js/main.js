@@ -44,12 +44,13 @@ $(function () {
     addArtistSubmit.on("click", function () {
         $.ajax({
             url: "./ajax/addArtists.php",
+            method: "GET",
             dataType: 'json',
             data: {
                 artists: addArtist.val()
             },
-            success: function () {
-                addArtist.select2("val", "");
+            complete: function () {
+                addArtist.val('').trigger('change');
             }
         });
     });
@@ -122,6 +123,7 @@ var getNewReleases = function () {
     $.when(getArtists()).done(function (str) {
         var artists = JSON.parse(str);
         var count = artists.length;
+        const spinner = $("#loading-spinner");
         $(artists).each(function (i, artist) {
             $.ajax({
                 url: "./ajax/update.php",
@@ -130,7 +132,9 @@ var getNewReleases = function () {
                     f: 4,
                     artist: artist
                 }, success: function (data) {
-                    $("#new-albums").append(data);
+                    // $("#new-albums").append(data);
+                    // $(data).insertBefore(spinner);
+                    $(data).insertBefore(spinner, $("#new-albums"));
                 }, complete: function () {
                     if (!--count) {
                         $("#loading-spinner").hide();

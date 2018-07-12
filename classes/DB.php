@@ -102,7 +102,8 @@ class DB
      */
     public function addArtist($artist)
     {
-        global $idUser;
+//        global $idUser;
+        $idUser = 1;
         $id = $artist->getId();
         $name = $artist->getName();
         $sqlArtist = "
@@ -121,6 +122,7 @@ class DB
         $stmt = $this->dbh->prepare($sqlUserArtist);
         $resUserArtist = $stmt->execute();
         $this->disconnect();
+        echo json_encode($sqlUserArtist);
         return $resArtist && $resUserArtist;
     }
 
@@ -159,7 +161,8 @@ class DB
 
     public function artistUpdated($idArtist, $minDate)
     {
-        global $idUser;
+//        global $idUser;
+        $idUser = 1;
 //        $date = "NOW()";
         $date = "$minDate 00:00:00";
         $sql = "
@@ -191,7 +194,8 @@ class DB
 
     public function removeOldAlbums($days = 14)
     {
-        global $idUser;
+//        global $idUser;
+        $idUser = 1;
         $this->connect();
         $stmt = $this->dbh->prepare("
             DELETE al, aa

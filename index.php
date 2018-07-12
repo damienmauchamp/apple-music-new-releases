@@ -39,10 +39,10 @@ global $news;
 
                 <? if (!$full) : ?>
                     <script>getNewReleases();</script>
-                <? else :
-                $albums = getAllNewReleases(); ?>
                     <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
-                <? endif ?>
+                <? else :
+                    $albums = getAllNewReleases();
+                endif ?>
 
             </div>
 
