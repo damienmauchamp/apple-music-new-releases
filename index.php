@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
 $root = "";
-global $page;
+global $page, $news;
 
 ?>
 <!DOCTYPE html>

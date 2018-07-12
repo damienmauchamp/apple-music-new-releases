@@ -128,11 +128,10 @@ var getNewReleases = function () {
                 method: "POST",
                 data: {
                     f: 4,
-                    artist: artist,
+                    artist: artist
                 }, success: function (data) {
                     $("#new-albums").append(data);
                 }, complete: function () {
-                    console.log(count);
                     if (!--count) {
                         $("#loading-spinner").hide();
                     }
