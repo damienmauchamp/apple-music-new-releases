@@ -102,6 +102,7 @@ function removeOldAlbums($days = 14)
 function getArtistRelease($objArtist, $display = false)
 {
 //    $db = new db;
+    global $nodisplay;
     // Artiste
     $artist = new Artist($objArtist->id);
     $artist->setName($objArtist->name);
@@ -119,9 +120,14 @@ function getArtistRelease($objArtist, $display = false)
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
 //        $artist->update();
-        echo $album->toString($display);
+        echo $nodisplay ? null : $album->toString($display);
     }
     return $albums;
+}
+
+function logRefresh($type = "") {
+    $db = new db;
+    return $db->logRefresh($type);
 }
 
 /**

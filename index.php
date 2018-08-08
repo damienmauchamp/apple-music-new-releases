@@ -4,6 +4,13 @@ require_once "start.php";
 $root = "";
 global $news;
 
+if ($news && $nodisplay) {
+    logRefresh("no display");
+    $albums = getAllNewReleases();
+    echo json_encode(true);
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,10 +44,13 @@ global $news;
 
             <div class="l-row" id="new-albums">
 
-                <? if (!$full) : ?>
+                <? if (!$full) :
+                    logRefresh(); ?>
                     <script>getNewReleases();</script>
-                    <div id="loading-spinner" class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+                    <div id="loading-spinner"
+                         class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
                 <? else :
+                    logRefresh("full");
                     $albums = getAllNewReleases();
                 endif ?>
 

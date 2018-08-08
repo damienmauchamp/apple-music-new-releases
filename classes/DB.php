@@ -247,6 +247,20 @@ class DB
         return json_encode($res);
     }
 
+    public function logRefresh($type = "")
+    {
+        $idUser = 1;
+        $refresh = $type ? "refresh $type" : "refresh";
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            INSERT INTO logs (type, date, id_user)
+            VALUES (:type, :date, :user);"
+        );
+        $res = $stmt->execute(array("type" => $refresh, "date" => date("Y-m-d H:i:s"), "user" => $idUser));
+        $this->disconnect();
+        return $res;
+    }
+
 //    public function example()
 //    {
 //        $this->connect();

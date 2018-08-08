@@ -14,206 +14,280 @@
     <schema id="8" parent="1" name="ged"/>
     <schema id="9" parent="1" name="smam-intranet"/>
     <schema id="10" parent="1" name="user"/>
-    <table id="11" parent="2" name="albums"/>
-    <table id="12" parent="2" name="artists"/>
-    <table id="13" parent="2" name="artists_albums"/>
-    <table id="14" parent="2" name="users"/>
-    <table id="15" parent="2" name="users_artists"/>
-    <column id="16" parent="11" name="id">
+    <schema id="11" parent="1" name="shows-checker"/>
+    <table id="12" parent="2" name="albums"/>
+    <table id="13" parent="2" name="artists"/>
+    <table id="14" parent="2" name="artists_albums"/>
+    <table id="15" parent="2" name="logs"/>
+    <table id="16" parent="2" name="users"/>
+    <table id="17" parent="2" name="users_artists"/>
+    <column id="18" parent="12" name="id">
       <Position>1</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="17" parent="11" name="name">
+    <column id="19" parent="12" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="18" parent="11" name="artistName">
+    <column id="20" parent="12" name="artistName">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="19" parent="11" name="date">
+    <column id="21" parent="12" name="date">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="20" parent="11" name="artwork">
+    <column id="22" parent="12" name="artwork">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="21" parent="11" name="explicit">
+    <column id="23" parent="12" name="explicit">
       <Position>6</Position>
       <DataType>tinyint(1)|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
     </column>
-    <index id="22" parent="11" name="albums_id_uindex">
+    <index id="24" parent="12" name="UNIQUE_albums_id">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="23" parent="11" name="PRIMARY">
+    <key id="25" parent="12" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="24" parent="11" name="albums_id_uindex">
+    <key id="26" parent="12" name="UNIQUE_albums_id">
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>albums_id_uindex</UnderlyingIndexName>
+      <UnderlyingIndexName>UNIQUE_albums_id</UnderlyingIndexName>
     </key>
-    <column id="25" parent="12" name="id">
+    <column id="27" parent="13" name="id">
       <Position>1</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="26" parent="12" name="name">
+    <column id="28" parent="13" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="27" parent="12" name="artists_id_uindex">
+    <index id="29" parent="13" name="UNIQUE_artists_id">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="28" parent="12" name="PRIMARY">
+    <key id="30" parent="13" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="29" parent="12" name="artists_id_uindex">
+    <key id="31" parent="13" name="UNIQUE_artists_id">
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>artists_id_uindex</UnderlyingIndexName>
+      <UnderlyingIndexName>UNIQUE_artists_id</UnderlyingIndexName>
     </key>
-    <column id="30" parent="13" name="id">
+    <column id="32" parent="14" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="31" parent="13" name="idArtist">
+    <column id="33" parent="14" name="idArtist">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="32" parent="13" name="idAlbum">
+    <column id="34" parent="14" name="idAlbum">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="33" parent="13" name="artists_albums_albums_id_fk">
+    <index id="35" parent="14" name="artists_albums_albums_id_fk">
       <ColNames>idAlbum</ColNames>
     </index>
-    <index id="34" parent="13" name="artists_albums_artists_id_fk">
+    <index id="36" parent="14" name="artists_albums_artists_id_fk">
       <ColNames>idArtist</ColNames>
     </index>
-    <index id="35" parent="13" name="artists_albums_id_uindex">
+    <index id="37" parent="14" name="artists_albums_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="36" parent="13" name="artists_albums_idArtist_idAlbum_uindex">
+    <index id="38" parent="14" name="artists_albums_idArtist_idAlbum_uindex">
       <ColNames>idArtist
 idAlbum</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="37" parent="13" name="PRIMARY">
+    <key id="39" parent="14" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="38" parent="13" name="artists_albums_id_uindex">
+    <key id="40" parent="14" name="artists_albums_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>artists_albums_id_uindex</UnderlyingIndexName>
     </key>
-    <key id="39" parent="13" name="artists_albums_idArtist_idAlbum_uindex">
+    <key id="41" parent="14" name="artists_albums_idArtist_idAlbum_uindex">
       <ColNames>idArtist
 idAlbum</ColNames>
       <UnderlyingIndexName>artists_albums_idArtist_idAlbum_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="40" parent="13" name="artists_albums_artists_id_fk">
+    <foreign-key id="42" parent="14" name="artists_albums_artists_id_fk">
       <ColNames>idArtist</ColNames>
       <RefSchemaName>applemusic-update</RefSchemaName>
       <RefTableName>artists</RefTableName>
       <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="41" parent="13" name="artists_albums_albums_id_fk">
+    <foreign-key id="43" parent="14" name="artists_albums_albums_id_fk">
       <ColNames>idAlbum</ColNames>
       <RefSchemaName>applemusic-update</RefSchemaName>
       <RefTableName>albums</RefTableName>
       <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="42" parent="14" name="id">
+    <column id="44" parent="15" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="43" parent="14" name="username">
+    <column id="45" parent="15" name="type">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="14" name="password">
+    <column id="46" parent="15" name="date">
       <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="45" parent="14" name="users_username_uindex">
-      <ColNames>username</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="46" parent="14" name="users__id_uindex">
+    <column id="47" parent="15" name="id_user">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="48" parent="15" name="logs_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="47" parent="14" name="PRIMARY">
+    <index id="49" parent="15" name="logs_users_id_fk">
+      <ColNames>id_user</ColNames>
+    </index>
+    <key id="50" parent="15" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="48" parent="14" name="users__id_uindex">
+    <key id="51" parent="15" name="logs_id_uindex">
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>users__id_uindex</UnderlyingIndexName>
+      <UnderlyingIndexName>logs_id_uindex</UnderlyingIndexName>
     </key>
-    <key id="49" parent="14" name="users_username_uindex">
-      <ColNames>username</ColNames>
-      <UnderlyingIndexName>users_username_uindex</UnderlyingIndexName>
-    </key>
-    <column id="50" parent="15" name="id">
+    <foreign-key id="52" parent="15" name="logs_users_id_fk">
+      <ColNames>id_user</ColNames>
+      <RefSchemaName>applemusic-update</RefSchemaName>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="53" parent="16" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="51" parent="15" name="idUser">
+    <column id="54" parent="16" name="username">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="55" parent="16" name="password">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="56" parent="16" name="role">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="57" parent="16" name="UNIQUE_user_id">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="58" parent="16" name="UNIQUE_user_username">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="59" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="60" parent="16" name="UNIQUE_user_id">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>UNIQUE_user_id</UnderlyingIndexName>
+    </key>
+    <key id="61" parent="16" name="UNIQUE_user_username">
+      <ColNames>username</ColNames>
+      <UnderlyingIndexName>UNIQUE_user_username</UnderlyingIndexName>
+    </key>
+    <column id="62" parent="17" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="63" parent="17" name="idUser">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="52" parent="15" name="idArtist">
+    <column id="64" parent="17" name="idArtist">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="53" parent="15" name="lastUpdate">
+    <column id="65" parent="17" name="lastUpdate">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="54" parent="15" name="active">
+    <column id="66" parent="17" name="active">
       <Position>5</Position>
       <DataType>tinyint(1)|0</DataType>
     </column>
-    <index id="55" parent="15" name="users_artists_id_uindex">
+    <index id="67" parent="17" name="UNIQUE_usersartists_id">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="56" parent="15" name="PRIMARY">
+    <index id="68" parent="17" name="users_artists_artists_id_fk">
+      <ColNames>idArtist</ColNames>
+    </index>
+    <index id="69" parent="17" name="users_artists_users_id_fk">
+      <ColNames>idUser</ColNames>
+    </index>
+    <key id="70" parent="17" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="57" parent="15" name="users_artists_id_uindex">
+    <key id="71" parent="17" name="UNIQUE_usersartists_id">
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>users_artists_id_uindex</UnderlyingIndexName>
+      <UnderlyingIndexName>UNIQUE_usersartists_id</UnderlyingIndexName>
     </key>
+    <foreign-key id="72" parent="17" name="users_artists_users_id_fk">
+      <ColNames>idUser</ColNames>
+      <RefSchemaName>applemusic-update</RefSchemaName>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="73" parent="17" name="users_artists_artists_id_fk">
+      <ColNames>idArtist</ColNames>
+      <RefSchemaName>applemusic-update</RefSchemaName>
+      <RefTableName>artists</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
   </database-model>
 </dataSource>

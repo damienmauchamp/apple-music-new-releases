@@ -62,6 +62,7 @@ $full = isset($_GET["full"]);
 //$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;
 $display = $news ? "column" : "row";
 $idUser = 1;
+$nodisplay = isset($_GET["nodisplay"]);
 //echo date(DEFAULT_DATE_FORMAT_TIME);
 
 // run from command line :
