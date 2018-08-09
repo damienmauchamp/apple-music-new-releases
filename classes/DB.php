@@ -266,15 +266,14 @@ class DB
         $idUser = 1;
         $this->connect();
         $stmt = $this->dbh->prepare("
-            SELECT MAX(id), type, date
+            SELECT MAX(date)
             FROM logs
-            WHERE id_user= :user
-            GROUP BY id;"
+            WHERE id_user= :user;"
         );
         $stmt->execute(array("user" => $idUser));
         $res = $stmt->fetch();
         $this->disconnect();
-        return $res["date"];
+        return $res[0];
     }
 
 //    public function example()
