@@ -261,6 +261,22 @@ class DB
         return $res;
     }
 
+    public function getLastRefresh()
+    {
+        $idUser = 1;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT MAX(id), type, date
+            FROM logs
+            WHERE id_user= :user
+            GROUP BY id;"
+        );
+        $stmt->execute(array("user" => $idUser));
+        $res = $stmt->fetch();
+        $this->disconnect();
+        return $res["date"];
+    }
+
 //    public function example()
 //    {
 //        $this->connect();

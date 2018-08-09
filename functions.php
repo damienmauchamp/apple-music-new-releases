@@ -130,6 +130,11 @@ function logRefresh($type = "") {
     return $db->logRefresh($type);
 }
 
+function getLastRefresh() {
+    $db = new db;
+    return $db->getLastRefresh();
+}
+
 /**
  * Renvoie une date selon le format voulu (string : Y:m:d H:i:s|timestamp)
  * @param string|int $date

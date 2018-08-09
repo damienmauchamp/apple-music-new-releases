@@ -4,6 +4,12 @@ require_once "start.php";
 $root = "";
 global $news;
 
+/**
+ * TODO : page de logs
+ * TODO : liste d'artistes
+ * TODO : multi users (plus tard)
+ */
+
 if ($news && $nodisplay) {
     logRefresh("no display");
     $albums = getAllNewReleases();
@@ -33,6 +39,8 @@ if ($news && $nodisplay) {
             <label for="artists[]" class="add-artists-label --invisible"></label>
             <div class="add-artists-label-after">Ajouter</div>
         </div>
+
+        <div>MAJ : <?= getLastRefresh(); ?></div>
     </section>
 
     <? if ($news) : ?>
