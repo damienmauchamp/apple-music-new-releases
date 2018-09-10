@@ -1,4 +1,3 @@
-
 $(function () {
 
     const addArtist = $(".add-artists");
@@ -85,7 +84,8 @@ $(function () {
         });
     }
 
-    $(".maj-link").on("touchstart click", function () {
+    $(document).on('touchstart click', '.maj-link', function () {
+        //$(".maj-link").on("touchstart click", function (e) {
         if (!flag) {
             flag = true;
             setTimeout(function () {
@@ -96,19 +96,24 @@ $(function () {
             update(id, 1);
         }
     });
-    $(".suppr-link").on("touchstart click", function () {
+
+    $(document).on('touchstart click', '.suppr-link', function (e) {
+        //$(".suppr-link").on("touchstart click", function () {
         if (!flag) {
+        alert(e.type);
             flag = true;
             setTimeout(function () {
                 flag = false;
             }, 100);
             var id = $(this).attr(artistDataId);
+            // $(".artist[" + artistDataId + "=\"" + id + "\"").addClass("--invisible");
+            $("#artist-" + id).addClass("--invisible");
             update(id, 2);
-            $(".artist[" + artistDataId + "=\"" + id + "\"").hide();
         }
     });
 
-    $(".rm-artist").on("click", function () {
+    $(document).on('touchstart click', '.rm-artist', function () {
+    //$(".rm-artist").on("click", function () {
         var id = $(this).attr("data-artist-id");
         $.ajax({
             url: "./ajax/removeArtist.php",

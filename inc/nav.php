@@ -1,10 +1,10 @@
 <?
-$menu = array(
+$menu = isConnected() ? array(
     array("Accueil", "index.php", "normal"),
     array("Mes artistes", "artists.php", "normal"),
     array("MAJ", "index.php?refresh", "compact"),
     array("Déconnexion", "logout.php", "normal")
-);
+) : array(array("Accueil", "index.php", "normal"));
 
 $option = array(
     "normal" => array(
@@ -78,6 +78,9 @@ $option = array(
                     </a>
                 </li>
             <? } ?>
+            <li>
+                <a href="#" id="test">test</a>
+            </li>
         </ul>
     </div>
 </nav>

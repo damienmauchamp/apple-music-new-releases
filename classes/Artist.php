@@ -219,7 +219,7 @@ class Artist
     {
         global $display;
         ?>
-        <section class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
+        <section id="artist-<?= $this->id ?>" class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
             <div class="section-header section__nav clearfix">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
                 <a class="suppr-link link section__nav__see-all-link ember-view"
