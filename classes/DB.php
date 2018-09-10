@@ -56,7 +56,7 @@ class DB
 
     // GET
 
-    public function getUserReleases()
+    public function getUserAlbums()
     {
         $sql = "
             SELECT
@@ -68,6 +68,28 @@ class DB
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
             ORDER BY ar.name ASC, al.date DESC";
+
+        $this->connect();
+        $stmt = $this->dbh->query($sql);
+        $this->disconnect();
+
+        $res = $stmt->fetchAll();
+        return $res ? json_encode($res) : null;
+    }
+
+    public function getUserSongs()
+    {
+        $sql = "
+            SELECT
+              al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
+              ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.isStreamable AS isStreamable
+            FROM songs al
+              LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = 1 AND al.date >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ua.active = 1
+            GROUP BY collectionId
+            ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -108,7 +130,7 @@ class DB
         $name = addslashes($artist->getName());
         $sqlArtist = "
             INSERT INTO artists (id, name)
-            VALUES ('$id', '$name')
+            VALUES ('$id', $name)
             ON DUPLICATE KEY UPDATE id = '$id'";
 
         $sqlUserArtist = "
@@ -156,6 +178,43 @@ class DB
         $stmt = $this->dbh->prepare($sqlArtistAlbum);
         $resArtistAlbum = $stmt->execute();
         $this->disconnect();
+        return $resAlbum && $resArtistAlbum;
+    }
+
+    /**
+     * @param Song $song
+     * @param $idArtist
+     * @return bool
+     */
+    public function addSong($song, $idArtist)
+    {
+        $id = $song->getId();
+        $collectionId = $song->getCollectionId();
+        $collectionName = addslashes($song->getCollectionName());
+        $trackName = $song->getTrackName();
+        $artistName = $song->getArtistName();
+        $date = fixTZDate($song->getDate());
+        $artwork = $song->getArtwork();
+        $explicit = $song->isExplicit() ? 1 : 0;
+        $isStreamable = $song->isStreamable() ? 1 : 0;
+
+        $sqlAlbum = "
+            INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable)
+            VALUES ('$id', '$collectionId', '$collectionName', '$trackName', '$artistName', '$date', '$artwork', $explicit, $isStreamable)
+            ON DUPLICATE KEY UPDATE id = '$id', collectionName = '$collectionName', trackName = '$trackName', artistName = '$artistName', date = '$date', artwork = '$artwork', explicit = '$explicit', isStreamable = $isStreamable";
+
+        $sqlArtistAlbum = "
+            INSERT INTO artists_songs (idArtist, idAlbum)
+            VALUES ($idArtist, '$id')
+            ON DUPLICATE KEY UPDATE idArtist = $idArtist, idAlbum = '$id'";
+
+        $this->connect();
+        $stmt = $this->dbh->prepare($sqlAlbum);
+        $resAlbum = $stmt->execute();
+        $stmt = $this->dbh->prepare($sqlArtistAlbum);
+        $resArtistAlbum = $stmt->execute();
+        $this->disconnect();
+
         return $resAlbum && $resArtistAlbum;
     }
 

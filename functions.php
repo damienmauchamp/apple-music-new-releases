@@ -4,6 +4,7 @@ use AppleMusic\DB as db;
 use AppleMusic\API as api;
 use AppleMusic\Artist as Artist;
 use AppleMusic\Album as Album;
+use AppleMusic\Song as Song;
 
 function displayAlbums($albums)
 {
@@ -13,11 +14,19 @@ function displayAlbums($albums)
     }
 }
 
+function displaySongs($songs)
+{
+    /** @var Song $songs */
+    foreach ($songs as $song) {
+        echo Song::withArray(Song::objectToArray($song))->toString();
+    }
+}
+
 // Dernières sorties depuis actualisation, dans la BD
 function getAllAlbums($display = "artists")
 {
     $db = new db;
-    $releases = $db->getUserReleases();
+    $releases = $db->getUserAlbums();
     $artists = array();
 
     switch ($display) {
@@ -73,6 +82,36 @@ function getAllAlbums($display = "artists")
     return json_decode($releases);
 }
 
+function getAllSongs()
+{
+    $db = new db;
+    $releases = $db->getUserSongs();
+    $artists = array();
+
+    if ($releases) {
+        foreach (json_decode($releases) as $r) {
+            $artistId = $r->idArtist;
+            $song = Song::withArray(Song::objectToArray($r));
+            if (!isset($artists[$artistId])) {
+                $artists[$artistId] = array(
+                    "id" => $artistId,
+                    "name" => $r->artistName,
+                    "albums" => array(),
+                    "songs" => array(),
+                    "lastUpdate" => $r->lastUpdate
+                );
+            }
+            $artists[$artistId]["songs"][] = $song;
+        }
+
+//        foreach ($artists as $artist) {
+//            Artist::withNewRelease($artist)->toString();
+//        }
+    }
+
+    return json_decode($releases);
+}
+
 
 // Récupère tous les artistes
 function getAllNewReleases()
@@ -110,11 +149,15 @@ function getArtistRelease($objArtist, $display = false)
 
     // Recupération des albums sur l'API
     $api = new api($artist->getId());
-    $newAlbums = $api->update($artist->getLastUpdate());
-    $artist->setAlbums($newAlbums);
+    $newEntities = $api->update($artist->getLastUpdate());
+
+    $artist->setAlbums($newEntities["albums"]);
+    $artist->setSongs($newEntities["songs"]);
 
     $albums = $artist->getAlbums();
-    // Mise en BD des nouveaux albums
+    $songs = $artist->getSongs();
+    // Mise en BD des nouveaux albums & chansons
+
     /** @var Album $album */
     foreach ($albums as $album) {
         // Ajout de l'album à la BD
@@ -122,15 +165,27 @@ function getArtistRelease($objArtist, $display = false)
 //        $artist->update();
         echo $nodisplay ? null : $album->toString($display);
     }
-    return $albums;
+
+    if ($songs) {
+        /** @var Song $song */
+        foreach ($songs as $song) {
+            // Ajout de l'album à la BD
+            $song->addSong($artist->getId());
+//        $artist->update();
+            //echo $nodisplay ? null : $song->toString($display);
+        }
+    }
+    return array("albums" => $albums, "songs" => $songs);
 }
 
-function logRefresh($type = "") {
+function logRefresh($type = "")
+{
     $db = new db;
     return $db->logRefresh($type);
 }
 
-function getLastRefresh() {
+function getLastRefresh()
+{
     $db = new db;
     return $db->getLastRefresh();
 }

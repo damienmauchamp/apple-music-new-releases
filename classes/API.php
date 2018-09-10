@@ -39,9 +39,44 @@ class API
         return $this->fetch($results, "albums");
     }
 
+    public function fetchSongs()
+    {
+        $this->entity = "song";
+        $results = json_decode($this->curlRequest(), true);
+        return $this->fetch($results, "songs");
+    }
+
     protected function fetch($results, $type)
     {
         switch ($type) {
+            case "songs":
+                $songs = array();
+                if (isset($results["results"])) {
+                    foreach ($results["results"] as $collection) {
+                        if ($collection["wrapperType"] === "track") {
+                            $song = Song::withArray(
+                                array(
+                                    "id" => $collection["trackId"],
+                                    "collectionId" => $collection["collectionId"],
+                                    "collectionName" => $collection["collectionName"],
+                                    "trackName" => $collection["trackName"],
+                                    "name" => $collection["collectionName"],
+                                    "artistName" => $collection["artistName"],
+                                    "date" => $collection["releaseDate"],
+                                    "artwork" => $collection["artworkUrl100"],
+                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+                                    "isStreamable" => $collection["isStreamable"]
+                                )
+                            );
+                            $songs[] = $song;
+                            //$songs = new Artist($collection["artistId"]);
+                            //$songs->setName($collection["artistName"]);
+                            break;
+                        }
+                    }
+                }
+                return $songs;
+                break;
             case "artist":
                 $artist = array();
                 foreach ($results["results"] as $collection) {
@@ -54,21 +89,23 @@ class API
                 return $artist;
             case "albums":
                 $albums = array();
-                foreach ($results["results"] as $collection) {
-                    if ($collection["wrapperType"] === "collection") {
-                        $album = Album::withArray(
-                            array(
+                if (isset($results["results"])) {
+                    foreach ($results["results"] as $collection) {
+                        if ($collection["wrapperType"] === "collection") {
+                            $album = Album::withArray(
+                                array(
 //                        "_id" => null,
-                                "id" => $collection["collectionId"],
-                                "name" => $collection["collectionName"],
-                                "artistName" => $collection["artistName"],
-                                "date" => $collection["releaseDate"],
-                                "artwork" => $collection["artworkUrl100"],
-                                "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+                                    "id" => $collection["collectionId"],
+                                    "name" => $collection["collectionName"],
+                                    "artistName" => $collection["artistName"],
+                                    "date" => $collection["releaseDate"],
+                                    "artwork" => $collection["artworkUrl100"],
+                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
 //                        "link" => $collection["collectionViewUrl"],
-                            )
-                        );
-                        $albums[] = $album;
+                                )
+                            );
+                            $albums[] = $album;
+                        }
                     }
                 }
                 return $albums;
@@ -146,15 +183,29 @@ class API
     public function update($lastUpdate)
     {
         $albums = $this->fetchAlbums();
-        $new = array();
+        $songs = $this->fetchSongs();
+        $new = array(
+            "albums" => array(),
+            "songs" => array()
+        );
 
         /** @var Album $album */
         foreach ($albums as $album) {
             $albumDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($album->getDate()));
             $lastUpdateDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate));
             if (strtotime($albumDate) >= strtotime($lastUpdateDate)) {
-                $new[] = $album;
+                $new["albums"][] = $album;
                 $album->addAlbum($this->id);
+            }
+        }
+
+        /** @var Song $song */
+        foreach ($songs as $song) {
+            $songDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($song->getDate()));
+            $lastUpdateDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate));
+            if (strtotime($songDate) >= strtotime($lastUpdateDate)) {
+                $new["songs"][] = $song;
+                $song->addSong($this->id);
             }
         }
         return $new;

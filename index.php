@@ -12,7 +12,9 @@ global $news;
 
 if ($news && $nodisplay) {
     logRefresh("no display");
-    $albums = getAllNewReleases();
+    $res = getAllNewReleases();
+    $albums = $res["albums"];
+    $songs = $res["songs"];
     echo json_encode(true);
     exit;
 }
@@ -59,14 +61,20 @@ if ($news && $nodisplay) {
                          class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
                 <? else :
                     logRefresh("full");
-                    $albums = getAllNewReleases();
+                    $res = getAllNewReleases();
+                    $albums = $res["albums"];
+                    $songs = $res["songs"];
                 endif ?>
 
             </div>
 
         </section>
 
-    <? else : $albums = getAllAlbums(); ?>
+    <? else :
+        $albums = getAllAlbums();
+        $songs = getAllSongs();
+        //var_dump($songs);
+        ?>
 
         <section class="artist l-content-width section section--bordered">
             <h2 class="section__headline">
@@ -74,6 +82,36 @@ if ($news && $nodisplay) {
             </h2>
             <div class="l-row">
                 <? displayAlbums($albums) ?>
+            </div>
+        </section>
+
+
+
+        <section class="l-content-width section">
+            <div class="l-row">
+                <div class="l-column small-12">
+                    <h2 class="section__headline">
+                        All songs
+                    </h2>
+                    <table class="table table--see-all">
+                        <thead class="table__head">
+                        <tr>
+                            <th class="table__head__heading--artwork"></th>
+                            <th class="table__head__heading table__head__heading--song">TITRE</th>
+                            <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+                                ARTISTE
+                            </th>
+                            <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+                                ALBUM
+                            </th>
+                            <th class="table__head__heading table__head__heading--duration"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <? displaySongs($songs) ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 

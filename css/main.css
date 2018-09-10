@@ -199,3 +199,7 @@ span.artist-search-count {
 .select2-selection__choice .artist-search-count {
     display: none;
 }
+
+.table--see-all .table__row.on-preorder .ember-view {
+    color: #8e8e93 !important;
+}
