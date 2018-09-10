@@ -94,7 +94,11 @@ class Album
      */
     public function getArtwork($width = 100)
     {
-        return str_replace("100x100bb.jpg", "{$width}x{$width}bb.jpg", $this->artwork);
+        return str_replace("100x100bb.jpg", "{$width}x{$width}bb.jpg", $this->removeHttps($this->artwork));
+    }
+
+    private function removeHttps($link) {
+        return str_replace("http:", "", str_replace("https:", "", $link));
     }
 
     public function getLink()

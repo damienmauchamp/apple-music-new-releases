@@ -1,10 +1,10 @@
-
 $(function () {
 
     const addArtist = $(".add-artists");
     // const addArtistSubmit = $(".add-artists-submit");
     const addArtistSubmit = $(".add-artists-label-after");
     const artistDataId = "data-am-artist-id";
+    var flag = false;
 
     function template(data) {
         if ($(data.html).length === 0)
@@ -44,12 +44,13 @@ $(function () {
     addArtistSubmit.on("click", function () {
         $.ajax({
             url: "./ajax/addArtists.php",
+            method: "GET",
             dataType: 'json',
             data: {
                 artists: addArtist.val()
             },
-            success: function () {
-                addArtist.select2("val", "");
+            complete: function () {
+                addArtist.val('').trigger('change');
             }
         });
     });
@@ -70,7 +71,6 @@ $(function () {
                 id: id
             },
             success: function (data) {
-                console.log(data);
                 var html = "";
                 if (parseInt(f) === 1 && data["albumCount"] > 0) {
                     $(data["albums"]).each(function (key, val) {
@@ -84,14 +84,81 @@ $(function () {
         });
     }
 
-    $(".maj-link").on("click", function () {
-        var id = $(this).attr(artistDataId);
-        update(id, 1);
+    $(".maj-link").on("touchstart click", function () {
+        if (!flag) {
+            flag = true;
+            setTimeout(function () {
+                flag = false;
+            }, 100);
+
+            var id = $(this).attr(artistDataId);
+            update(id, 1);
+        }
     });
-    $(".suppr-link").on("click", function () {
-        var id = $(this).attr(artistDataId);
-        update(id, 2);
-        $(".artist[" + artistDataId + "=\"" + id + "\"").hide();
+    $(".suppr-link").on("touchstart click", function () {
+        if (!flag) {
+            flag = true;
+            setTimeout(function () {
+                flag = false;
+            }, 100);
+            var id = $(this).attr(artistDataId);
+            update(id, 2);
+            $(".artist[" + artistDataId + "=\"" + id + "\"").hide();
+        }
+    });
+
+    $(".rm-artist").on("click", function () {
+        var id = $(this).attr("data-artist-id");
+        $.ajax({
+            url: "./ajax/removeArtist.php",
+            method: "GET",
+            dataType: 'json',
+            data: {
+                artist: id
+            },
+            success: function () {
+                $("#artist-" + id).hide();
+            }, error: function(e) {
+                console.log(e);
+            }
+        });
     });
 
 });
+
+var getNewReleases = function () {
+
+    function getArtists() {
+        return $.ajax({
+            url: "./ajax/update.php",
+            method: "POST",
+            dataType: 'json',
+            data: {f: 3}
+        });
+    }
+
+    $.when(getArtists()).done(function (str) {
+        var artists = JSON.parse(str);
+        var count = artists.length;
+        const spinner = $("#loading-spinner");
+        $(artists).each(function (i, artist) {
+            $.ajax({
+                url: "./ajax/update.php",
+                method: "POST",
+                data: {
+                    f: 4,
+                    artist: artist
+                }, success: function (data) {
+                    // $("#new-albums").append(data);
+                    // $(data).insertBefore(spinner);
+                    $(data).insertBefore(spinner, $("#new-albums"));
+                }, complete: function () {
+                    if (!--count) {
+                        $("#loading-spinner").hide();
+                    }
+                }
+            });
+        });
+    });
+
+};

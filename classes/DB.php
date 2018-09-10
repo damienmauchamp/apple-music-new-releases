@@ -56,8 +56,9 @@ class DB
 
     // GET
 
-    public function getUserReleases()
+    public function getUserAlbums()
     {
+        global $idUser;
         $sql = "
             SELECT
               al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
@@ -66,8 +67,31 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
+            WHERE ua.idUser = $idUser AND ua.lastUpdate < al.date AND ua.active = 1
             ORDER BY ar.name ASC, al.date DESC";
+
+        $this->connect();
+        $stmt = $this->dbh->query($sql);
+        $this->disconnect();
+
+        $res = $stmt->fetchAll();
+        return $res ? json_encode($res) : null;
+    }
+
+    public function getUserSongs()
+    {
+        global $idUser;
+        $sql = "
+            SELECT
+              al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
+              ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.isStreamable AS isStreamable
+            FROM songs al
+              LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = $idUser AND al.date >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ua.active = 1
+            GROUP BY id
+            ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
         $this->connect();
         $stmt = $this->dbh->query($sql);
@@ -79,11 +103,12 @@ class DB
 
     public function getUsersArtists()
     {
+        global $idUser;
         $sql = "
             SELECT ar.id, ar.name, ua.lastUpdate
             FROM artists ar
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.active = 1
+            WHERE ua.idUser = $idUser AND ua.active = 1
             ORDER BY name;";
 
         $this->connect();
@@ -102,9 +127,9 @@ class DB
      */
     public function addArtist($artist)
     {
+        global $idUser;
         $id = $artist->getId();
-        $name = $artist->getName();
-        $idUser = 1;
+        $name = addslashes($artist->getName());
         $sqlArtist = "
             INSERT INTO artists (id, name)
             VALUES ('$id', '$name')
@@ -115,12 +140,15 @@ class DB
             VALUES ($idUser, '$id', NOW(), 1)
             ON DUPLICATE KEY UPDATE idUser = $idUser, idArtist = '$id'";
 
+
         $this->connect();
         $stmt = $this->dbh->prepare($sqlArtist);
         $resArtist = $stmt->execute();
         $stmt = $this->dbh->prepare($sqlUserArtist);
         $resUserArtist = $stmt->execute();
         $this->disconnect();
+//        var_dump($sqlArtist, $sqlUserArtist);exit;
+//        echo json_encode($sqlUserArtist);
         return $resArtist && $resUserArtist;
     }
 
@@ -157,9 +185,46 @@ class DB
         return $resAlbum && $resArtistAlbum;
     }
 
+    /**
+     * @param Song $song
+     * @param $idArtist
+     * @return bool
+     */
+    public function addSong($song, $idArtist)
+    {
+        $id = $song->getId();
+        $collectionId = $song->getCollectionId();
+        $collectionName = addslashes($song->getCollectionName());
+        $trackName = $song->getTrackName();
+        $artistName = $song->getArtistName();
+        $date = fixTZDate($song->getDate());
+        $artwork = $song->getArtwork();
+        $explicit = $song->isExplicit() ? 1 : 0;
+        $isStreamable = $song->isStreamable() ? 1 : 0;
+
+        $sqlAlbum = "
+            INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable)
+            VALUES ('$id', '$collectionId', '$collectionName', '$trackName', '$artistName', '$date', '$artwork', $explicit, $isStreamable)
+            ON DUPLICATE KEY UPDATE id = '$id', collectionName = '$collectionName', trackName = '$trackName', artistName = '$artistName', date = '$date', artwork = '$artwork', explicit = '$explicit', isStreamable = $isStreamable";
+
+        $sqlArtistAlbum = "
+            INSERT INTO artists_songs (idArtist, idAlbum)
+            VALUES ($idArtist, '$id')
+            ON DUPLICATE KEY UPDATE idArtist = $idArtist, idAlbum = '$id'";
+
+        $this->connect();
+        $stmt = $this->dbh->prepare($sqlAlbum);
+        $resAlbum = $stmt->execute();
+        $stmt = $this->dbh->prepare($sqlArtistAlbum);
+        $resArtistAlbum = $stmt->execute();
+        $this->disconnect();
+
+        return $resAlbum && $resArtistAlbum;
+    }
+
     public function artistUpdated($idArtist, $minDate)
     {
-        $idUser = 1;
+        global $idUser;
 //        $date = "NOW()";
         $date = "$minDate 00:00:00";
         $sql = "
@@ -189,6 +254,39 @@ class DB
         return $res;
     }
 
+    public function removeOldAlbums($days = 14)
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            DELETE aa, al
+            FROM albums al
+              LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+        );
+        $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
+        $this->disconnect();
+        return $res;
+    }
+
+    public function artistIsAdded($id)
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT *
+            FROM users_artists ua
+            WHERE  ua.idUser = :idUser AND ua.idArtist = :idArtist;"
+        );
+        $stmt->execute(array("idUser" => $idUser, "idArtist" => $id));
+        $res = $stmt->fetch();
+        $this->disconnect();
+
+        return $res ? false : true;
+    }
+
     public function selectPerso($sql)
     {
         $this->connect();
@@ -208,6 +306,75 @@ class DB
                 $res[$key] = $value;
         }
         return json_encode($res);
+    }
+
+    public function logRefresh($type = "")
+    {
+        global $idUser;
+        $refresh = $type ? "refresh $type" : "refresh";
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            INSERT INTO logs (type, date, id_user)
+            VALUES (:type, :date, :user);"
+        );
+        $res = $stmt->execute(array("type" => $refresh, "date" => date("Y-m-d H:i:s"), "user" => $idUser));
+        $this->disconnect();
+        return $res;
+    }
+
+    public function getLastRefresh()
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT MAX(date)
+            FROM logs
+            WHERE id_user= :user;"
+        );
+        $stmt->execute(array("user" => $idUser));
+        $res = $stmt->fetch();
+        $this->disconnect();
+        return $res[0];
+    }
+
+    public function getUsersIDs()
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT id, prenom
+            FROM users"
+        );
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+        $this->disconnect();
+        return $res;
+    }
+
+    public function connexion($username, $password)
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT id, username, prenom
+            FROM users
+            WHERE username = :username AND password = :password"
+        );
+        $found = $stmt->execute(array("username" => $username, "password" => md5($password)));
+        $res = $found ? $stmt->fetch() : null;
+        $this->disconnect();
+        return $res;
+    }
+
+    public function removeUsersArtist($idArtist)
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            DELETE FROM users_artists
+            WHERE idArtist = :idArtist AND idUser = :idUser"
+        );
+        $res = $stmt->execute(array("idArtist" => $idArtist, "idUser" => $idUser));
+        $this->disconnect();
+        return $res;
     }
 
 //    public function example()

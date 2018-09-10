@@ -10,6 +10,7 @@ class Artist
     private $id;
     private $name;
     public $albums;
+    public $songs;
     private $lastUpdate;
 
     /**
@@ -20,6 +21,7 @@ class Artist
     {
         $this->id = $id;
         $this->albums = array();
+        $this->songs = array();
     }
 
     public static function withArray($array)
@@ -41,6 +43,7 @@ class Artist
         $this->id = $array["id"];
         $this->name = $array["name"];
         $this->albums = $array["albums"];
+        $this->songs = isset($array["songs"]) ? $array["songs"] : array();
         $this->lastUpdate = $array["lastUpdate"];
     }
 
@@ -49,9 +52,10 @@ class Artist
         $db = new DB();
         $array = $db->getArtist($this->id);
         if ($array) {
-            $this->name =  isset($array["name"]) ? $array["name"] : null;
+            $this->name = isset($array["name"]) ? $array["name"] : null;
             $this->albums = isset($array["albums"]) ? $array["albums"] : null;
-            $this->lastUpdate =  isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
+            $this->songs = isset($array["songs"]) ? $array["songs"] : null;
+            $this->lastUpdate = isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
         }
     }
 
@@ -76,6 +80,8 @@ class Artist
 
         $minDate = $date ? $date : $this->getAlbumsMinDate();
         $update = $db->artistUpdated($this->id, $minDate);
+        /*$removal =*/
+        $db->removeOldAlbums();
         return $update;
 //        $removal = $db->removeOldAlbums($this);
 //        var_dump($removal);
@@ -91,8 +97,26 @@ class Artist
             if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($albumDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($albumDate)))
                 $min = $albumDate;
         }
+
+        /** @var Song $song */
+        foreach ($this->songs as $song) {
+            $songDate = $song->getDate();
+            if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($songDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($songDate)))
+                $min = $songDate;
+        }
         $tmp = str_replace('-', '/', $min);
         return date('Y-m-d', strtotime($tmp . "-1 days"));
+    }
+
+    public function removeUsersArtist() {
+        $db = new db;
+        return $db->removeUsersArtist($this->id);
+    }
+
+    public static function isAdded($id)
+    {
+        $db = new db;
+        return $db->artistIsAdded($id);
     }
 
     /**
@@ -136,6 +160,14 @@ class Artist
     }
 
     /**
+     * @return mixed
+     */
+    public function getSongs()
+    {
+        return $this->songs;
+    }
+
+    /**
      * @param mixed $albums
      */
     public function setAlbums($albums)
@@ -144,11 +176,27 @@ class Artist
     }
 
     /**
+     * @param mixed $songs
+     */
+    public function setSongs($songs)
+    {
+        $this->songs = $songs;
+    }
+
+    /**
      * @param Album $album
      */
     public function setAnAlbum($album)
     {
         $this->albums[$album->getId()] = $album;
+    }
+
+    /**
+     * @param Song $song
+     */
+    public function setASong($song)
+    {
+        $this->songs[$song->getId()] = $song;
     }
 
     /**
@@ -172,21 +220,50 @@ class Artist
         global $display;
         ?>
         <section class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
-            <div class="section-header section__nav">
+            <div class="section-header section__nav clearfix">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
-                <a class="maj-link link section__nav__see-all-link ember-view"
-                   data-am-artist-id="<?= $this->id ?>">MAJ</a>
                 <a class="suppr-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">Suppr</a>
+                <a class="maj-link link section__nav__see-all-link ember-view"
+                   data-am-artist-id="<?= $this->id ?>">MAJ</a>
             </div>
             <div class="section-body l-row <?= $display == "row" ? "l-row--peek" : null ?>">
                 <? /** @var Album $album */
                 foreach ($this->albums as $album) {
 //                    for ($i = 0; $i < 15; $i++)
-                        echo $album->toString();
+                    echo $album->toString();
                 } ?>
             </div>
         </section>
+
+        <!--section class="artist-songs l-content-width section" data-am-artist-id="<?= $this->id ?>">
+            <div class="l-row">
+                <div class="l-column small-12">
+                    <h2 class="section__headline"><?= $this->name ?> - Morceaux</h2>
+                    <table class="table table--see-all">
+                        <thead class="table__head">
+                        <tr>
+                            <th class="table__head__heading--artwork"></th>
+                            <th class="table__head__heading table__head__heading--song">TITRE</th>
+                            <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+                                ARTISTE
+                            </th>
+                            <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+                                ALBUM
+                            </th>
+                            <th class="table__head__heading table__head__heading--duration --invisible">DURÉE</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <? /** @var Song $song */
+                        foreach ($this->songs as $song) {
+                            echo $song->toString();
+                        } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section-->
         <?
     }
 
@@ -198,7 +275,9 @@ class Artist
                 "name" => $this->name,
                 "lastUpdate" => $this->lastUpdate,
                 "albumCount" => count($this->albums),
-                "albums" => $this->albumsToJSONString()
+                "albums" => $this->albumsToJSONString(),
+                "songCount" => count($this->songs),
+                "songs" => $this->songsToJSONString()
             )
         );
     }
@@ -210,6 +289,18 @@ class Artist
         /** @var Album $album */
         foreach ($this->albums as $album) {
             $array[] = $album->toString();
+        }
+
+        return $jsonReturn ? json_encode($array) : $array;
+    }
+
+    public function songsToJSONString($jsonReturn = false)
+    {
+        $array = array();
+
+        /** @var Song $song */
+        foreach ($this->songs as $song) {
+            $array[] = $song->toString();
         }
 
         return $jsonReturn ? json_encode($array) : $array;

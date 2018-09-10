@@ -4,12 +4,25 @@ use AppleMusic\DB as db;
 use AppleMusic\API as api;
 use AppleMusic\Artist as Artist;
 use AppleMusic\Album as Album;
+use AppleMusic\Song as Song;
 
 function displayAlbums($albums)
 {
-    /** @var Album $album */
-    foreach ($albums as $album) {
-        echo Album::withArray(Album::objectToArray($album))->toString("albums");
+    if ($albums) {
+        /** @var Album $album */
+        foreach ($albums as $album) {
+            echo Album::withArray(Album::objectToArray($album))->toString("albums");
+        }
+    }
+}
+
+function displaySongs($songs)
+{
+    if ($songs) {
+        /** @var Song $songs */
+        foreach ($songs as $song) {
+            echo Song::withArray(Song::objectToArray($song))->toString();
+        }
     }
 }
 
@@ -17,8 +30,11 @@ function displayAlbums($albums)
 function getAllAlbums($display = "artists")
 {
     $db = new db;
-    $releases = $db->getUserReleases();
+    $releases = $db->getUserAlbums();
     $artists = array();
+
+    if (!$releases)
+        return json_decode($releases);
 
     switch ($display) {
         case "albums":
@@ -73,12 +89,44 @@ function getAllAlbums($display = "artists")
     return json_decode($releases);
 }
 
+function getAllSongs()
+{
+    $db = new db;
+    $releases = $db->getUserSongs();
+    $artists = array();
+
+    if ($releases) {
+        foreach (json_decode($releases) as $r) {
+            $artistId = $r->idArtist;
+            $song = Song::withArray(Song::objectToArray($r));
+            if (!isset($artists[$artistId])) {
+                $artists[$artistId] = array(
+                    "id" => $artistId,
+                    "name" => $r->artistName,
+                    "albums" => array(),
+                    "songs" => array(),
+                    "lastUpdate" => $r->lastUpdate
+                );
+            }
+            $artists[$artistId]["songs"][] = $song;
+        }
+
+//        foreach ($artists as $artist) {
+//            Artist::withNewRelease($artist)->toString();
+//        }
+    }
+
+    return json_decode($releases);
+}
+
 
 // Récupère tous les artistes
 function getAllNewReleases()
 {
-    $db = new db;/** @var Artist $artist */;
+    $db = new db;
     $releases = array();
+    /*$removal =*/
+    $db->removeOldAlbums();
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         $releases[] = getArtistRelease($artist);
 //        break;
@@ -86,13 +134,21 @@ function getAllNewReleases()
     return $releases;
 }
 
+function removeOldAlbums($days = 14)
+{
+    $db = new db;
+    return $db->removeOldAlbums($days);
+}
+
 /**
  * @param $objArtist
- * @return mixed $albums
+ * @param bool $display
+ * @return mixed
  */
-function getArtistRelease($objArtist)
+function getArtistRelease($objArtist, $display = false)
 {
 //    $db = new db;
+    global $nodisplay;
     // Artiste
     $artist = new Artist($objArtist->id);
     $artist->setName($objArtist->name);
@@ -100,19 +156,45 @@ function getArtistRelease($objArtist)
 
     // Recupération des albums sur l'API
     $api = new api($artist->getId());
-    $newAlbums = $api->update($artist->getLastUpdate());
-    $artist->setAlbums($newAlbums);
+    $newEntities = $api->update($artist->getLastUpdate());
+
+    $artist->setAlbums($newEntities["albums"]);
+    $artist->setSongs($newEntities["songs"]);
 
     $albums = $artist->getAlbums();
-    // Mise en BD des nouveaux albums
+    $songs = $artist->getSongs();
+    // Mise en BD des nouveaux albums & chansons
+
     /** @var Album $album */
     foreach ($albums as $album) {
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
 //        $artist->update();
-        echo $album->toString();
+        echo $nodisplay ? null : $album->toString($display);
     }
-    return $albums;
+
+    if ($songs) {
+        /** @var Song $song */
+        foreach ($songs as $song) {
+            // Ajout de l'album à la BD
+            $song->addSong($artist->getId());
+//        $artist->update();
+            //echo $nodisplay ? null : $song->toString($display);
+        }
+    }
+    return array("albums" => $albums, "songs" => $songs);
+}
+
+function logRefresh($type = "")
+{
+    $db = new db;
+    return $db->logRefresh($type);
+}
+
+function getLastRefresh()
+{
+    $db = new db;
+    return $db->getLastRefresh();
 }
 
 /**
@@ -176,4 +258,58 @@ function getMonth($m, $short = false)
     return isset($monthNames[$m]) ?
         $monthNames[$m] :
         (1 <= $m && $m <= 12 ? strtolower(date("F", strtotime("01-$m-2000"))) : "error");
+}
+
+/**
+ * Vérifie que l'utilisateur est connecté
+ * L'adresse cible dans un cookie sinon et on le redirige vers la page de connexion
+ */
+function checkConnexion()
+{
+    if (!isConnected()) {
+        $_COOKIE["redirect"] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        setcookie("redirect", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        header("location: login.php");
+        exit;
+    }
+}
+
+/**
+ * Vérifie que l'utilisateur est connecté
+ * @return bool
+ */
+function isConnected()
+{
+    return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));
+}
+
+
+function getInitial($str)
+{
+    $tmp = explode(" ", preg_replace("/[^A-Za-z0-9$ ]/", '', $str));
+    if (count($tmp) === 1)
+        return strtoupper($tmp[0][0]);
+    else {
+        end($tmp);
+        return strtoupper($tmp[0][0] . $tmp[key($tmp)][0]);
+    }
+}
+
+function getArtistSVG($str)
+{
+    return '
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 640 640"
+         class="we-artwork__image artist-search-artwork-img">
+        <defs>
+            <linearGradient id="a" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stop-color="#A5ABB8"></stop>
+                <stop offset="100%" stop-color="#848993"></stop>
+            </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#a)"></rect>
+        <text x="320" y="50%" dy="0.35em" font-size="250" fill="#fff" text-anchor="middle"
+              font-family="SF Pro Display,Helvetica,Arial" font-weight="500">' . getInitial($str) . '
+        </text>
+    </svg>
+    ';
 }

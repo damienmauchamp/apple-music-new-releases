@@ -8,6 +8,7 @@ $_VARS = $debug ? $_GET : $_POST;
 use AppleMusic\Album;
 use AppleMusic\API as api;
 use AppleMusic\Artist;
+use AppleMusic\DB as db;
 
 $function = isset($_VARS["f"]) ? intval($_VARS["f"]) : null;
 $idArtist = isset($_VARS["id"]) ? $_VARS["id"] : null;
@@ -20,6 +21,19 @@ if ($function === 1) {
     $artist = new Artist($idArtist);
     $tmp = str_replace('-', '/', date("Y-m-d"));
     getArtistReleases($idArtist, date(DEFAULT_DATE_FORMAT_TIME));
+} else if ($function === 3) {
+    $db = new db;
+    $artists = $db->getUsersArtists();
+    header("Content-type:application/json");
+    echo json_encode($artists);
+} else if ($function === 4) {
+    $infos = isset($_VARS["artist"]) ? $_VARS["artist"] : null;
+    $artist = (object)array(
+        "id" => $infos["id"],
+        "name" => $infos["name"],
+        "lastUpdate" => $infos["lastUpdate"]
+    );
+    getArtistRelease($artist, "albums");
 }
 
 
