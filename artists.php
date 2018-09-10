@@ -62,7 +62,7 @@ $artists = json_decode($db->getUsersArtists());
                             </td>
 
                             <td class="table__row__name">
-                                <a href="#"
+                                <a href="//itunes.apple.com/fr/artist/<?= $artist->id ?>" target="_blank"
                                    class="table__row__link targeted-link targeted-link--no-monochrome-underline">
                                     <div class="spread">
                                         <span id="ember995"
