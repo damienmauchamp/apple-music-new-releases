@@ -1,6 +1,7 @@
 <?php
 
 require dirname(__DIR__) . '/vendor/autoload.php';
+require_once ("../start.php");
 
 use AppleMusic\API as api;
 

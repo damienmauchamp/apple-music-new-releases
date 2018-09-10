@@ -282,61 +282,65 @@ idAlbum</ColNames>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="77" parent="19" name="users_username_uindex">
+    <column id="77" parent="19" name="prenom">
+      <Position>4</Position>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <index id="78" parent="19" name="users_username_uindex">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="78" parent="19" name="users__id_uindex">
+    <index id="79" parent="19" name="users__id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="79" parent="19" name="PRIMARY">
+    <key id="80" parent="19" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="80" parent="19" name="users__id_uindex">
+    <key id="81" parent="19" name="users__id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users__id_uindex</UnderlyingIndexName>
     </key>
-    <key id="81" parent="19" name="users_username_uindex">
+    <key id="82" parent="19" name="users_username_uindex">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>users_username_uindex</UnderlyingIndexName>
     </key>
-    <column id="82" parent="20" name="id">
+    <column id="83" parent="20" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="83" parent="20" name="idUser">
+    <column id="84" parent="20" name="idUser">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="84" parent="20" name="idArtist">
+    <column id="85" parent="20" name="idArtist">
       <Position>3</Position>
       <DataType>varchar(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="85" parent="20" name="lastUpdate">
+    <column id="86" parent="20" name="lastUpdate">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="86" parent="20" name="active">
+    <column id="87" parent="20" name="active">
       <Position>5</Position>
       <DataType>tinyint(1)|0</DataType>
     </column>
-    <index id="87" parent="20" name="users_artists_id_uindex">
+    <index id="88" parent="20" name="users_artists_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="88" parent="20" name="PRIMARY">
+    <key id="89" parent="20" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="89" parent="20" name="users_artists_id_uindex">
+    <key id="90" parent="20" name="users_artists_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users_artists_id_uindex</UnderlyingIndexName>
     </key>

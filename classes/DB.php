@@ -58,6 +58,7 @@ class DB
 
     public function getUserAlbums()
     {
+        global $idUser;
         $sql = "
             SELECT
               al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
@@ -66,7 +67,7 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.lastUpdate < al.date AND ua.active = 1
+            WHERE ua.idUser = $idUser AND ua.lastUpdate < al.date AND ua.active = 1
             ORDER BY ar.name ASC, al.date DESC";
 
         $this->connect();
@@ -79,6 +80,7 @@ class DB
 
     public function getUserSongs()
     {
+        global $idUser;
         $sql = "
             SELECT
               al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
@@ -87,7 +89,7 @@ class DB
               LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND al.date >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ua.active = 1
+            WHERE ua.idUser = $idUser AND al.date >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ua.active = 1
             GROUP BY collectionId
             ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
@@ -101,11 +103,12 @@ class DB
 
     public function getUsersArtists()
     {
+        global $idUser;
         $sql = "
             SELECT ar.id, ar.name, ua.lastUpdate
             FROM artists ar
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = 1 AND ua.active = 1
+            WHERE ua.idUser = $idUser AND ua.active = 1
             ORDER BY name;";
 
         $this->connect();
@@ -124,8 +127,7 @@ class DB
      */
     public function addArtist($artist)
     {
-//        global $idUser;
-        $idUser = 1;
+        global $idUser;
         $id = $artist->getId();
         $name = addslashes($artist->getName());
         $sqlArtist = "
@@ -220,8 +222,7 @@ class DB
 
     public function artistUpdated($idArtist, $minDate)
     {
-//        global $idUser;
-        $idUser = 1;
+        global $idUser;
 //        $date = "NOW()";
         $date = "$minDate 00:00:00";
         $sql = "
@@ -253,8 +254,7 @@ class DB
 
     public function removeOldAlbums($days = 14)
     {
-//        global $idUser;
-        $idUser = 1;
+        global $idUser;
         $this->connect();
         $stmt = $this->dbh->prepare("
             DELETE aa, al
@@ -271,8 +271,7 @@ class DB
 
     public function artistIsAdded($id)
     {
-//        global $idUser;
-        $idUser = 1;
+        global $idUser;
         $this->connect();
         $stmt = $this->dbh->prepare("
             SELECT *
@@ -280,8 +279,9 @@ class DB
             WHERE  ua.idUser = :idUser AND ua.idArtist = :idArtist;"
         );
         $stmt->execute(array("idUser" => $idUser, "idArtist" => $id));
-        $res = $stmt->fetchAll();
+        $res = $stmt->fetch();
         $this->disconnect();
+
         return $res ? false : true;
     }
 
@@ -308,7 +308,7 @@ class DB
 
     public function logRefresh($type = "")
     {
-        $idUser = 1;
+        global $idUser;
         $refresh = $type ? "refresh $type" : "refresh";
         $this->connect();
         $stmt = $this->dbh->prepare("
@@ -322,7 +322,7 @@ class DB
 
     public function getLastRefresh()
     {
-        $idUser = 1;
+        global $idUser;
         $this->connect();
         $stmt = $this->dbh->prepare("
             SELECT MAX(date)
@@ -333,6 +333,31 @@ class DB
         $res = $stmt->fetch();
         $this->disconnect();
         return $res[0];
+    }
+
+    public function getUsersIDs() {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT id, prenom
+            FROM users"
+        );
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+        $this->disconnect();
+        return $res;
+    }
+
+    public function connexion($username, $password) {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT id, username, prenom
+            FROM users
+            WHERE username = :username AND password = :password"
+        );
+        $found = $stmt->execute(array("username" => $username, "password" => md5($password)));
+        $res = $found ? $stmt->fetch() : null;
+        $this->disconnect();
+        return $res;
     }
 
 //    public function example()

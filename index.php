@@ -1,13 +1,13 @@
 <?
 require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
+checkConnexion();
 $root = "";
 global $news;
 
 /**
  * TODO : page de logs
  * TODO : liste d'artistes
- * TODO : multi users (plus tard)
  */
 
 if ($news && $nodisplay) {
@@ -30,7 +30,7 @@ if ($news && $nodisplay) {
     <? include "inc/nav.php"; ?>
 
     <section class="main-header l-content-width section" style="border-top:none">
-        <h1 class="section__headline--hero"><?= $news ? "Refresh" : "Releases" ?></h1>
+        <h1 class="section__headline--hero"><?= $news ? "Mise à jour" : "Sorties" ?></h1>
 
         <h2 class="section__headline">
             Ajouts d'artistes
@@ -42,14 +42,14 @@ if ($news && $nodisplay) {
             <div class="add-artists-label-after">Ajouter</div>
         </div>
 
-        <div>MAJ : <?= getLastRefresh(); ?></div>
+        <div>Dernière MAJ : <?= getLastRefresh(); ?></div>
     </section>
 
     <? if ($news) : ?>
 
         <section class="l-content-width section">
             <h2 class="section__headline">
-                New albums
+                Nouveaux albums
             </h2>
 
             <div class="l-row" id="new-albums">
@@ -78,7 +78,7 @@ if ($news && $nodisplay) {
 
         <section class="artist l-content-width section section--bordered">
             <h2 class="section__headline">
-                All albums
+                Tous les albums
             </h2>
             <div class="l-row">
                 <? displayAlbums($albums) ?>
@@ -86,12 +86,11 @@ if ($news && $nodisplay) {
         </section>
 
 
-
         <section class="l-content-width section">
             <div class="l-row">
                 <div class="l-column small-12">
                     <h2 class="section__headline">
-                        All songs
+                        Toutes les chansons
                     </h2>
                     <table class="table table--see-all">
                         <thead class="table__head">

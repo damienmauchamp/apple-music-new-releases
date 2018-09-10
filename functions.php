@@ -8,17 +8,21 @@ use AppleMusic\Song as Song;
 
 function displayAlbums($albums)
 {
-    /** @var Album $album */
-    foreach ($albums as $album) {
-        echo Album::withArray(Album::objectToArray($album))->toString("albums");
+    if ($albums) {
+        /** @var Album $album */
+        foreach ($albums as $album) {
+            echo Album::withArray(Album::objectToArray($album))->toString("albums");
+        }
     }
 }
 
 function displaySongs($songs)
 {
-    /** @var Song $songs */
-    foreach ($songs as $song) {
-        echo Song::withArray(Song::objectToArray($song))->toString();
+    if ($songs) {
+        /** @var Song $songs */
+        foreach ($songs as $song) {
+            echo Song::withArray(Song::objectToArray($song))->toString();
+        }
     }
 }
 
@@ -28,6 +32,9 @@ function getAllAlbums($display = "artists")
     $db = new db;
     $releases = $db->getUserAlbums();
     $artists = array();
+
+    if (!$releases)
+        return json_decode($releases);
 
     switch ($display) {
         case "albums":
@@ -251,4 +258,27 @@ function getMonth($m, $short = false)
     return isset($monthNames[$m]) ?
         $monthNames[$m] :
         (1 <= $m && $m <= 12 ? strtolower(date("F", strtotime("01-$m-2000"))) : "error");
+}
+
+/**
+ * Vérifie que l'utilisateur est connecté
+ * L'adresse cible dans un cookie sinon et on le redirige vers la page de connexion
+ */
+function checkConnexion()
+{
+    if (!isConnected()) {
+        $_COOKIE["redirect"] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        setcookie("redirect", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        header("location: login.php");
+        exit;
+    }
+}
+
+/**
+ * Vérifie que l'utilisateur est connecté
+ * @return bool
+ */
+function isConnected()
+{
+    return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));
 }

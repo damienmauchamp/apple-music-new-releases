@@ -14,10 +14,24 @@
                             Accueil
                         </a>
                     </div>
+                    <div class="localnav-action localnav-action-button we-localnav__action we-localnav__action--login">
+                        <a id="apple-music-authorize"
+                           class="localnav-button localnav-button--sign-in we-button we-button--compact we-button-flat we-button-flat--plain"
+                           href="#">
+                            Mes artistes
+                        </a>
+                    </div>
                     <div class="localnav-action localnav-action-button we-localnav__action">
                         <a class="localnav-button we-button we-button--compact we-button--applemusic"
                            href="<?= $root ?>index.php?refresh">
-                            Refresh
+                            MAJ
+                        </a>
+                    </div>
+                    <div class="localnav-action localnav-action-button we-localnav__action we-localnav__action--login">
+                        <a id="apple-music-authorize"
+                           class="localnav-button localnav-button--sign-in we-button we-button--compact we-button-flat we-button-flat--plain"
+                           href="<?= $root ?>logout.php">
+                            Déconnexion
                         </a>
                     </div>
                 </div>
