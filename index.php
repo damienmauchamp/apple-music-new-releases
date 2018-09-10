@@ -86,7 +86,7 @@ if ($news && $nodisplay) {
         </section>
 
 
-        <section class="l-content-width section">
+        <section class="l-content-width section section--bordered">
             <div class="l-row">
                 <div class="l-column small-12">
                     <h2 class="section__headline">
@@ -103,7 +103,7 @@ if ($news && $nodisplay) {
                             <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
                                 ALBUM
                             </th>
-                            <th class="table__head__heading table__head__heading--duration"></th>
+                            <th class="table__head__heading table__head__heading--duration">SORTIE</th>
                         </tr>
                         </thead>
                         <tbody>
