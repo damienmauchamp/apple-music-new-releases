@@ -118,10 +118,18 @@ $(function () {
             },
             success: function () {
                 $("#artist-" + id).hide();
-            }, error: function(e) {
+            }, error: function (e) {
                 console.log(e);
             }
         });
+    });
+
+
+    $('#nav-icon').click(function () {
+        $(this).toggleClass('open');
+        var mobilemenu = $('#mobile-menu');
+        mobilemenu.toggle();
+        mobilemenu.toggleClass('menu-open');
     });
 
 });
