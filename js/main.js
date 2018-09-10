@@ -107,6 +107,23 @@ $(function () {
         }
     });
 
+    $(".rm-artist").on("click", function () {
+        var id = $(this).attr("data-artist-id");
+        $.ajax({
+            url: "./ajax/removeArtist.php",
+            method: "GET",
+            dataType: 'json',
+            data: {
+                artist: id
+            },
+            success: function () {
+                $("#artist-" + id).hide();
+            }, error: function(e) {
+                console.log(e);
+            }
+        });
+    });
+
 });
 
 var getNewReleases = function () {

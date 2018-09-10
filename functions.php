@@ -282,3 +282,34 @@ function isConnected()
 {
     return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));
 }
+
+
+function getInitial($str)
+{
+    $tmp = explode(" ", preg_replace("/[^A-Za-z0-9$ ]/", '', $str));
+    if (count($tmp) === 1)
+        return strtoupper($tmp[0][0]);
+    else {
+        end($tmp);
+        return strtoupper($tmp[0][0] . $tmp[key($tmp)][0]);
+    }
+}
+
+function getArtistSVG($str)
+{
+    return '
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 640 640"
+         class="we-artwork__image artist-search-artwork-img">
+        <defs>
+            <linearGradient id="a" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stop-color="#A5ABB8"></stop>
+                <stop offset="100%" stop-color="#848993"></stop>
+            </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#a)"></rect>
+        <text x="320" y="50%" dy="0.35em" font-size="250" fill="#fff" text-anchor="middle"
+              font-family="SF Pro Display,Helvetica,Arial" font-weight="500">' . getInitial($str) . '
+        </text>
+    </svg>
+    ';
+}

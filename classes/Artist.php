@@ -108,6 +108,11 @@ class Artist
         return date('Y-m-d', strtotime($tmp . "-1 days"));
     }
 
+    public function removeUsersArtist() {
+        $db = new db;
+        return $db->removeUsersArtist($this->id);
+    }
+
     public static function isAdded($id)
     {
         $db = new db;

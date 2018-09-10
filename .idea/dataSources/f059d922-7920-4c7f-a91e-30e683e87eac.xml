@@ -335,14 +335,24 @@ idAlbum</ColNames>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="89" parent="20" name="PRIMARY">
+    <index id="89" parent="20" name="users_artists_idUser_idArtist_uindex">
+      <ColNames>idUser
+idArtist</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="90" parent="20" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="90" parent="20" name="users_artists_id_uindex">
+    <key id="91" parent="20" name="users_artists_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users_artists_id_uindex</UnderlyingIndexName>
+    </key>
+    <key id="92" parent="20" name="users_artists_idUser_idArtist_uindex">
+      <ColNames>idUser
+idArtist</ColNames>
+      <UnderlyingIndexName>users_artists_idUser_idArtist_uindex</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
