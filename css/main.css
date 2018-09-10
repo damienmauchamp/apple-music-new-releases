@@ -332,3 +332,39 @@ span.artist-search-count {
         display: none !important;
     }
 }
+
+.clearfix {
+    overflow: auto;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.artist .section-header {
+    display: block;
+}
+
+.artist .section-title {
+    float: left;
+}
+
+.we-loading-spinner {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.select2-selection__choice .artist-search-count {
+    display: none;
+}
+
+.table--see-all .table__row.on-preorder .ember-view,
+.table--see-all .table__row.on-preorder a:hover {
+    color: #8e8e93 !important;
+}

@@ -1,3 +1,4 @@
+
 $(function () {
 
     const addArtist = $(".add-artists");
