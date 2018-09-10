@@ -68,8 +68,9 @@ $option = array(
     $(document).ready(function () {
         $('#nav-icon').click(function () {
             $(this).toggleClass('open');
-            $('#mobile-menu').toggle();
-            $('#mobile-menu').toggleClass('menu-open');
+            var mobilemenu = $('#mobile-menu');
+            mobilemenu.toggle();
+            mobilemenu.toggleClass('menu-open');
         });
     });
 </script>
@@ -129,7 +130,7 @@ $option = array(
     }
 
     #nav-icon span:nth-child(1) {
-        top: 0px;
+        top: 0;
     }
 
     #nav-icon span:nth-child(2), #nav-icon span:nth-child(3) {
@@ -142,7 +143,7 @@ $option = array(
 
     #nav-icon.open span:nth-child(1) {
         top: 18px;
-        width: 0%;
+        width: 0;
         left: 50%;
         height: 2px;
     }
@@ -165,17 +166,8 @@ $option = array(
 
     #nav-icon.open span:nth-child(4) {
         top: 18px;
-        width: 0%;
+        width: 0;
         left: 50%;
         height: 2px;
     }
 </style>
-<script>
-    $(document).ready(function () {
-        $('#nav-icon').click(function () {
-            $(this).toggleClass('open');
-            $('#mobile-menu').toggle();
-            $('#mobile-menu').toggleClass('menu-open');
-        });
-    });
-</script>
