@@ -15,4 +15,5 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script src="<?= $root ?>js/main.js"></script>
     <link rel="icon" type="image/png" href="<?= $root ?>favicon.png">
+    <link rel="apple-touch-icon" href="<?= $root ?>favicon.png"">
 <? // endif; ?>
