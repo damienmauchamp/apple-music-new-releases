@@ -91,24 +91,33 @@ class Artist
     {
         $min = date("Y-m-d");
 
-        /** @var Album $album */
-        foreach ($this->albums as $album) {
-            $albumDate = $album->getDate();
-            if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($albumDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($albumDate)))
-                $min = $albumDate;
+        if ($this->albums) {
+            /** @var Album $album */
+            foreach ($this->albums as $album) {
+                if ($album) {
+                    $albumDate = $album->getDate();
+                    if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($albumDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($albumDate)))
+                        $min = $albumDate;
+                }
+            }
         }
 
-        /** @var Song $song */
-        foreach ($this->songs as $song) {
-            $songDate = $song->getDate();
-            if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($songDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($songDate)))
-                $min = $songDate;
+        if ($this->songs) {
+            /** @var Song $song */
+            foreach ($this->songs as $song) {
+                if ($song) {
+                    $songDate = $song->getDate();
+                    if (strtotime(fixTZDate($min)) > strtotime(fixTZDate($songDate)) && strtotime(fixTZDate($this->getLastUpdate())) > strtotime(fixTZDate($songDate)))
+                        $min = $songDate;
+                }
+            }
         }
         $tmp = str_replace('-', '/', $min);
         return date('Y-m-d', strtotime($tmp . "-1 days"));
     }
 
-    public function removeUsersArtist() {
+    public function removeUsersArtist()
+    {
         $db = new db;
         return $db->removeUsersArtist($this->id);
     }
@@ -219,7 +228,8 @@ class Artist
     {
         global $display;
         ?>
-        <section id="artist-<?= $this->id ?>" class="artist l-content-width section section--bordered" data-am-artist-id="<?= $this->id ?>">
+        <section id="artist-<?= $this->id ?>" class="artist l-content-width section section--bordered"
+                 data-am-artist-id="<?= $this->id ?>">
             <div class="section-header section__nav clearfix">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
                 <a class="suppr-link link section__nav__see-all-link ember-view"
@@ -256,9 +266,9 @@ class Artist
                         </thead>
                         <tbody>
                         <? /** @var Song $song */
-                        foreach ($this->songs as $song) {
-                            echo $song->toString();
-                        } ?>
+        foreach ($this->songs as $song) {
+            echo $song->toString();
+        } ?>
                         </tbody>
                     </table>
                 </div>
@@ -286,9 +296,12 @@ class Artist
     {
         $array = array();
 
-        /** @var Album $album */
-        foreach ($this->albums as $album) {
-            $array[] = $album->toString();
+        /** @var Album $a */
+        foreach ($this->albums as $a) {
+            /** @var Album $album */
+            $album = isset($a) && is_array($a) && isset($a[0]) ? $a[0] : $a;
+            if ($album)
+                $array[] = $album->toString();
         }
 
         return $jsonReturn ? json_encode($array) : $array;
@@ -298,9 +311,13 @@ class Artist
     {
         $array = array();
 
-        /** @var Song $song */
-        foreach ($this->songs as $song) {
-            $array[] = $song->toString();
+        if ($this->songs) {
+            /** @var Song $s */
+            foreach ($this->songs as $s) {
+                /** @var Song $song */
+                $song = isset($s) && is_array($s) && isset($s[0]) ? $s[0] : $s;
+                $array[] = $song->toString();
+            }
         }
 
         return $jsonReturn ? json_encode($array) : $array;

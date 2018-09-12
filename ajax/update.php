@@ -2,7 +2,7 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . "/start.php";
-$debug = false;
+$debug = true;
 $_VARS = $debug ? $_GET : $_POST;
 
 use AppleMusic\Album;
@@ -61,8 +61,11 @@ function getArtistReleases($idArtist, $date = false)
     $artist->update($date);
 
     // Mise en BD des nouveaux albums
-    /** @var Album $album */
-    foreach ($artist->getAlbums() as $album) {
-        $album->addAlbum($artist->getId());
+    if ($artist->getAlbums()) {
+        /** @var Album $album */
+        foreach ($artist->getAlbums() as $album) {
+            if ($album)
+                $album->addAlbum($artist->getId());
+        }
     }
 }

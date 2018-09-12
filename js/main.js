@@ -1,5 +1,12 @@
 $(function () {
 
+    $('body').bind('touchend', function(e) {
+        e.preventDefault();
+        // Add your code here.
+        $(this).click();
+        // This line still calls the standard click event, in case the user needs to interact with the element that is being clicked on, but still avoids zooming in cases of double clicking.
+    });
+
     const addArtist = $(".add-artists");
     // const addArtistSubmit = $(".add-artists-submit");
     const addArtistSubmit = $(".add-artists-label-after");
@@ -100,7 +107,6 @@ $(function () {
     $(document).on('touchstart click', '.suppr-link', function (e) {
         //$(".suppr-link").on("touchstart click", function () {
         if (!flag) {
-        alert(e.type);
             flag = true;
             setTimeout(function () {
                 flag = false;
@@ -113,7 +119,7 @@ $(function () {
     });
 
     $(document).on('touchstart click', '.rm-artist', function () {
-    //$(".rm-artist").on("click", function () {
+        //$(".rm-artist").on("click", function () {
         var id = $(this).attr("data-artist-id");
         $.ajax({
             url: "./ajax/removeArtist.php",
