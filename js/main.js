@@ -158,6 +158,7 @@ var getNewReleases = function () {
     }
 
     $.when(getArtists()).done(function (str) {
+        console.log(str);
         var artists = JSON.parse(str);
         var count = artists.length;
         const spinner = $("#loading-spinner");

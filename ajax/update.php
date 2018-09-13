@@ -2,7 +2,7 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . "/start.php";
-$debug = true;
+global $debug;
 $_VARS = $debug ? $_GET : $_POST;
 
 use AppleMusic\Album;
