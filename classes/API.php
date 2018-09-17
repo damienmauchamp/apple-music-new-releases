@@ -47,6 +47,11 @@ class API
         return $this->fetch($results, "songs");
     }
 
+    /**
+     * @param $results
+     * @param $type
+     * @return Artist|Album|array|null
+     */
     protected function fetch($results, $type)
     {
         switch ($type) {

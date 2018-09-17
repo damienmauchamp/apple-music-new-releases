@@ -1,6 +1,6 @@
 $(function () {
 
-    $('body').bind('touchend', function(e) {
+    $('body').bind('touchend', function (e) {
         e.preventDefault();
         // Add your code here.
         $(this).click();
@@ -68,8 +68,8 @@ $(function () {
      * @param f
      */
     function update(id, f) {
-        // console.log("f", f, "id", id);
-        var c = $(".artist[" + artistDataId + "=\"" + id + "\"").find(".section-body");
+        console.log("f", f, "id", id);
+        var c = $("#artist-" + id).find(".section-body");
         $.ajax({
             url: "./ajax/update.php",
             // dataType: 'json',
@@ -93,59 +93,64 @@ $(function () {
         });
     }
 
-    $(document).on('touchstart click', '.maj-link', function () {
-        //$(".maj-link").on("touchstart click", function (e) {
-        if (!flag) {
-            flag = true;
-            setTimeout(function () {
-                flag = false;
-            }, 100);
+    $(document)
+        .on('touchstart click', '.maj-link', function (e) {
+            alert(e.type + " maj " + $(this).attr(artistDataId));
+            if (!flag) {
+                flag = true;
+                setTimeout(function () {
+                    flag = false;
+                }, 100);
 
-            var id = $(this).attr(artistDataId);
-            update(id, 1);
-        }
-    });
-
-    $(document).on('touchstart click', '.suppr-link', function (e) {
-        //$(".suppr-link").on("touchstart click", function () {
-        if (!flag) {
-            flag = true;
-            setTimeout(function () {
-                flag = false;
-            }, 100);
-            var id = $(this).attr(artistDataId);
-            // $(".artist[" + artistDataId + "=\"" + id + "\"").addClass("--invisible");
-            $("#artist-" + id).addClass("--invisible");
-            update(id, 2);
-        }
-    });
-
-    $(document).on('touchstart click', '.rm-artist', function () {
-        //$(".rm-artist").on("click", function () {
-        var id = $(this).attr("data-artist-id");
-        $.ajax({
-            url: "./ajax/removeArtist.php",
-            method: "GET",
-            dataType: 'json',
-            data: {
-                artist: id
-            },
-            success: function () {
-                $("#artist-" + id).hide();
-            }, error: function (e) {
-                console.log(e);
+                var id = $(this).attr(artistDataId);
+                update(id, 1);
             }
+        })
+        .on('touchstart click', '.suppr-link', function (e) {
+            alert(e.type + " suppr " + $(this).attr(artistDataId));
+            if (!flag) {
+                flag = true;
+                setTimeout(function () {
+                    flag = false;
+                }, 100);
+                var id = $(this).attr(artistDataId);
+                $("#artist-" + id).addClass("--invisible");
+                update(id, 2);
+            }
+        })
+        .on('touchstart click', '.rm-artist', function (e) {
+            var id = $(this).attr("data-artist-id");
+            $.ajax({
+                url: "./ajax/removeArtist.php",
+                method: "GET",
+                dataType: 'json',
+                data: {
+                    artist: id
+                },
+                success: function () {
+                    $("#artist-" + id).hide();
+                }, error: function (e) {
+                    console.log(e);
+                }
+            });
         });
-    });
 
 
     $('#nav-icon').click(function () {
+        console.log(e.type);
         $(this).toggleClass('open');
         var mobilemenu = $('#mobile-menu');
         mobilemenu.toggle();
         mobilemenu.toggleClass('menu-open');
     });
 
+    // $(".album").on("touchstart click", function () {
+    //     alert(e.type + " album " + $(this).attr("id"));
+    // });
+
+    //$(".maj-link").on("touchstart click", function (e) {
+    // $(".suppr-link").on("touchstart click", function (e) {
+    // $(".rm-artist").on("click", function (e) {
 });
 
 var getNewReleases = function () {

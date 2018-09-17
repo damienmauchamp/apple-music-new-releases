@@ -63,6 +63,10 @@ body {
     display: block;
 }
 
+.album {
+    z-index: 2;
+}
+
 .album.preorder .album-subtitle {
     color: #ff9500;
 }
