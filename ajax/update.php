@@ -5,6 +5,8 @@ require_once dirname(__DIR__) . "/start.php";
 global $debug;
 $_VARS = $debug ? $_GET : $_POST;
 
+//echo json_encode($_VARS);exit;
+
 use AppleMusic\Album;
 use AppleMusic\API as api;
 use AppleMusic\Artist;

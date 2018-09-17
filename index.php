@@ -57,8 +57,10 @@ if ($news && $nodisplay) {
                 <? if (!$full) :
                     logRefresh(); ?>
                     <script>getNewReleases();</script>
-                    <div id="loading-spinner"
-                         class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+                    <div class="spinner-cont">
+                        <div id="loading-spinner"
+                             class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+                    </div>
                 <? else :
                     logRefresh("full");
                     $res = getAllNewReleases();

@@ -68,6 +68,7 @@ $(function () {
      * @param f
      */
     function update(id, f) {
+        // console.log("f", f, "id", id);
         var c = $(".artist[" + artistDataId + "=\"" + id + "\"").find(".section-body");
         $.ajax({
             url: "./ajax/update.php",
@@ -78,6 +79,7 @@ $(function () {
                 id: id
             },
             success: function (data) {
+                // console.log("success", data);
                 var html = "";
                 if (parseInt(f) === 1 && data["albumCount"] > 0) {
                     $(data["albums"]).each(function (key, val) {

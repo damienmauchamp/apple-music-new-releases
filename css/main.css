@@ -368,3 +368,7 @@ span.artist-search-count {
 .table--see-all .table__row.on-preorder a:hover {
     color: #8e8e93 !important;
 }
+
+.spinner-cont {
+    overflow: hidden;
+}
