@@ -137,7 +137,6 @@ $(function () {
 
 
     $('#nav-icon').click(function () {
-        console.log(e.type);
         $(this).toggleClass('open');
         var mobilemenu = $('#mobile-menu');
         mobilemenu.toggle();
