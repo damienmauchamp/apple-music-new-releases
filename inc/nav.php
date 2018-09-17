@@ -78,9 +78,6 @@ $option = array(
                     </a>
                 </li>
             <? } ?>
-            <li>
-                <a href="#" id="test">test</a>
-            </li>
         </ul>
     </div>
 </nav>
