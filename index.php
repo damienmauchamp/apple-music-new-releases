@@ -78,15 +78,6 @@ if ($news && $nodisplay) {
         //var_dump($songs);
         ?>
 
-        <section class="artist l-content-width section section--bordered">
-            <h2 class="section__headline">
-                Tous les albums
-            </h2>
-            <div class="l-row">
-                <? displayAlbums($albums) ?>
-            </div>
-        </section>
-
 
         <section class="l-content-width section section--bordered">
             <div class="l-row">
@@ -113,6 +104,15 @@ if ($news && $nodisplay) {
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </section>
+
+        <section class="artist l-content-width section section--bordered">
+            <h2 class="section__headline">
+                Tous les albums
+            </h2>
+            <div class="l-row">
+                <? displayAlbums($albums) ?>
             </div>
         </section>
 

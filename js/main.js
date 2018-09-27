@@ -95,7 +95,8 @@ $(function () {
 
     $(document)
         .on('touchstart click', '.maj-link', function (e) {
-            alert(e.type + " maj " + $(this).attr(artistDataId));
+            // alert(e.type + " maj " + $(this).attr(artistDataId));
+
             if (!flag) {
                 flag = true;
                 setTimeout(function () {
@@ -107,7 +108,7 @@ $(function () {
             }
         })
         .on('touchstart click', '.suppr-link', function (e) {
-            alert(e.type + " suppr " + $(this).attr(artistDataId));
+            // alert(e.type + " suppr " + $(this).attr(artistDataId));
             if (!flag) {
                 flag = true;
                 setTimeout(function () {
