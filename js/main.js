@@ -99,7 +99,7 @@ $(function () {
     //     .on('touchstart click', '.maj-link', function (e) {
     // alert(e.type + " maj " + $(this).attr(artistDataId));
 
-    $(".maj-link").on("touchstart click", function () {
+    $(".maj-link").on("click", function () {
         if (!flag) {
             flag = true;
             setTimeout(function () {
@@ -109,11 +109,14 @@ $(function () {
             var id = $(this).attr(artistDataId);
             update(id, 1);
         }
+    }).bind('touchend', function (e) {
+        e.preventDefault();
+        $(this).click();
     });
     // .on('touchstart click', '.suppr-link', function (e) {
     // alert(e.type + " suppr " + $(this).attr(artistDataId));
 
-    $(".suppr-link").on("touchstart click", function () {
+    $(".suppr-link").on("click", function () {
         if (!flag) {
             flag = true;
             setTimeout(function () {
@@ -123,6 +126,9 @@ $(function () {
             $("#artist-" + id).addClass("--invisible");
             update(id, 2);
         }
+    }).bind('touchend', function (e) {
+        e.preventDefault();
+        $(this).click();
     });
     // .on('touchstart click', '.rm-artist', function (e) {
 
