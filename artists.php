@@ -30,7 +30,20 @@ $artists = json_decode($db->getUsersArtists());
 <div class="main">
     <? include "inc/nav.php"; ?>
 
-    <section class="l-content-width section">
+    <section class="main-header l-content-width section" style="border-top:none">
+
+        <h2 class="section__headline">
+            Ajouts d'artistes
+        </h2>
+        <div class="section-add-artists">
+            <select class="add-artists" id="artists[]" name="artists[]" multiple="multiple"
+                    style="width: 100%;"></select>
+            <label for="artists[]" class="add-artists-label --invisible"></label>
+            <div class="add-artists-label-after">Ajouter</div>
+        </div>
+    </section>
+
+    <section class="l-content-width section section--bordered">
         <div class="l-row">
             <div class="l-column small-12">
                 <h2 class="section__headline">

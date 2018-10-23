@@ -233,7 +233,7 @@ class Artist
             <div class="section-header section__nav clearfix">
                 <h2 class="section-title section__headline"><?= $this->name ?></h2>
                 <a class="suppr-link link section__nav__see-all-link ember-view"
-                   data-am-artist-id="<?= $this->id ?>">Suppr</a>
+                   data-am-artist-id="<?= $this->id ?>" title="Supprimer">&times;</a>
                 <a class="maj-link link section__nav__see-all-link ember-view"
                    data-am-artist-id="<?= $this->id ?>">MAJ</a>
             </div>

@@ -99,6 +99,7 @@ $(function () {
     //     .on('touchstart click', '.maj-link', function (e) {
     // alert(e.type + " maj " + $(this).attr(artistDataId));
 
+    /*
     $(".maj-link").on("click", function () {
         if (!flag) {
             flag = true;
@@ -112,7 +113,7 @@ $(function () {
     }).bind('touchend', function (e) {
         e.preventDefault();
         $(this).click();
-    });
+    });*/
     // .on('touchstart click', '.suppr-link', function (e) {
     // alert(e.type + " suppr " + $(this).attr(artistDataId));
 

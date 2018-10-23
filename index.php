@@ -30,24 +30,14 @@ if ($news && $nodisplay) {
     <? include "inc/nav.php"; ?>
 
     <section class="main-header l-content-width section" style="border-top:none">
-        <h1 class="section__headline--hero"><?= $news ? "Mise à jour" : "Sorties" ?></h1>
-
-        <h2 class="section__headline">
-            Ajouts d'artistes
-        </h2>
-        <div class="section-add-artists">
-            <select class="add-artists" id="artists[]" name="artists[]" multiple="multiple"
-                    style="width: 100%;"></select>
-            <label for="artists[]" class="add-artists-label --invisible"></label>
-            <div class="add-artists-label-after">Ajouter</div>
-        </div>
+        <h1 class="section__headline--hero"><?= $news ? "Mise à jour" : "Nouvelles Sorties" ?></h1>
 
         <div>Dernière MAJ : <?= getLastRefresh(); ?></div>
     </section>
 
     <? if ($news) : ?>
 
-        <section class="l-content-width section">
+        <section class="l-content-width section section--bordered">
             <h2 class="section__headline">
                 Nouveaux albums
             </h2>

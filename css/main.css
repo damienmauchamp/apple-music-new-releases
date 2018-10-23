@@ -57,6 +57,17 @@ body {
 .maj-link, .suppr-link {
     cursor: pointer;
     float: right;
+    font-size: 25px;
+    margin-bottom: 0;
+}
+
+.maj-link:hover, .suppr-link:hover {
+    text-decoration: none;
+    color: #8f0a30;
+}
+
+.maj-link {
+    display: none;
 }
 
 .we-artwork::before {
@@ -213,7 +224,6 @@ span.artist-search-count {
     color: #8e8e93 !important;
 }
 
-
 #nav-icon {
     width: 32px;
     height: 24px;
@@ -360,8 +370,12 @@ span.artist-search-count {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .select2-selection__choice .artist-search-count {
