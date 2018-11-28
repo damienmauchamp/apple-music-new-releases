@@ -9,7 +9,7 @@ class API
     private $id;
     private $country = "fr";
     private $entity = "album";
-    private $limit = 5;
+    private $limit = 200;
     private $sort = "recent";
 
     /**
@@ -156,7 +156,8 @@ class API
 
     private function setAlbumsUrl()
     {
-        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country";
+        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
+//        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country";
     }
 
     private function setArtistsSearchUrl($search)

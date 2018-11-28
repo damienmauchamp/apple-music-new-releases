@@ -31,7 +31,7 @@ class DB
         $DB_nom = $env[0] ? $env[0] : null;
         $DB_login = $env[1] ? $env[1] : null;
         $DB_psw = $env[2] ? $env[2] : null;
-
+		
         try {
             $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
             $this->dbh->exec('SET CHARACTER SET utf8');

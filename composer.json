@@ -6,6 +6,8 @@
   },
   "require": {
     "monolog/monolog": "^1.23",
-    "mobiledetect/mobiledetectlib": "^2.8"
+    "mobiledetect/mobiledetectlib": "^2.8",
+    "ext-json": "^1.4",
+    "ext-curl": "^7.0"
   }
 }
