@@ -42,7 +42,7 @@ class API
     public function fetchSongs()
     {
         $this->entity = "song";
-        $this->limit = 30;
+//        $this->limit = 30;
         $results = json_decode($this->curlRequest(), true);
         return $this->fetch($results, "songs");
     }
