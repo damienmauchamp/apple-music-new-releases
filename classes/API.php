@@ -42,7 +42,7 @@ class API
     public function fetchSongs()
     {
         $this->entity = "song";
-//        $this->limit = 30;
+        $this->limit = 30;
         $results = json_decode($this->curlRequest(), true);
         return $this->fetch($results, "songs");
     }
@@ -156,8 +156,8 @@ class API
 
     private function setAlbumsUrl()
     {
-        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
-//        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country";
+//        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
+        return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
     private function setArtistsSearchUrl($search)
