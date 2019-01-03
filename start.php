@@ -59,6 +59,7 @@ $detect = new Mobile_Detect;
 $mobile = $detect->isMobile();
 //$page = isset($_GET["page"]) ? $_GET["page"] : null;
 $theme = "is-music-theme";
+$daysInterval = 7;
 $news = isset($_GET["refresh"]);
 $full = isset($_GET["full"]);
 //$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;

@@ -91,8 +91,9 @@ function getAllAlbums($display = "artists")
 
 function getAllSongs()
 {
+    global $daysInterval;
     $db = new db;
-    $releases = $db->getUserSongs();
+    $releases = $db->getUserSongs($daysInterval);
     $artists = array();
 
     if ($releases) {

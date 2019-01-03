@@ -79,7 +79,7 @@ class DB
         return $res ? json_encode($res) : null;
     }
 
-    public function getUserSongs()
+    public function getUserSongs($days = 7)
     {
         global $idUser;
         $sql = "
@@ -90,7 +90,7 @@ class DB
               LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = $idUser AND al.date >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ua.active = 1
+            WHERE ua.idUser = $idUser AND al.date >= DATE_SUB(NOW(), INTERVAL $days DAY) AND ua.active = 1
             GROUP BY id
             ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
