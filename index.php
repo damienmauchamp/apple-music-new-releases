@@ -1,12 +1,12 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
+require_once "start.php";
 
 if ($debug) :
     $rustart = getrusage();
     $time_start = microtime(true);
 endif;
 
-require_once "start.php";
 checkConnexion();
 $root = "";
 global $news;
