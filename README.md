@@ -1,5 +1,7 @@
 # applemusic-update
+Fully responsive, based on Apple Music's stylesheet.
 
+## setup
 Create a .env text file in the root directory with your DB logs :  
 DB_name:DB_username:DB_password  
 
