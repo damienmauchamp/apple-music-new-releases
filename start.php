@@ -2,7 +2,7 @@
 //date_default_timezone_set("Europe/Paris");
 session_start();
 require_once("functions.php");
-$debug = true;
+$debug = false;
 
 define("DEFAULT_DATE_FORMAT", "Y-m-d");
 define("DEFAULT_DATE_FORMAT_NO_SECS", "Y-m-d H:i");
