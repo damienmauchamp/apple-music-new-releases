@@ -35,7 +35,6 @@ class Artist
     {
 //        $db = new DB();
         $instance = self::withArray($array);
-
         $instance->fetchArtistInfo();
 //        $artist = $db->getArtist($array["id"]);
 //        $instance->setName($artist["name"]);
