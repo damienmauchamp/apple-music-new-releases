@@ -54,7 +54,7 @@ $artists = json_decode($db->getUsersArtists());
                     <thead class="table__head">
                     <tr>
                         <th class="table__head__heading--artwork"></th>
-                        <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+                        <th class="table__head__heading table__head__heading--artist large-show-tablecell">
                             ARTISTE
                         </th>
                         <th class="table__head__heading table__head__heading--duration"></th>

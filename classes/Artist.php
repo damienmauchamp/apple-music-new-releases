@@ -33,8 +33,13 @@ class Artist
 
     public static function withNewRelease($array)
     {
+//        $db = new DB();
         $instance = self::withArray($array);
+
         $instance->fetchArtistInfo();
+//        $artist = $db->getArtist($array["id"]);
+//        $instance->setName($artist["name"]);
+
         return $instance;
     }
 
