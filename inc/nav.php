@@ -72,8 +72,7 @@ $option = array(
                 $type = $item[2];
                 ?>
                 <li class="<?= $name === "MAJ" ? "maj" : null ?>">
-                    <a
-                            href="<?= $option[$type]["a"]["href"] . $link ?>">
+                    <a href="<?= $option[$type]["a"]["href"] . $link ?>">
                         <?= $name ?>
                     </a>
                 </li>

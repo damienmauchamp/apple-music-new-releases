@@ -74,43 +74,50 @@ if ($news && $nodisplay) {
             //var_dump($songs);
             ?>
 
-
-            <section class="l-content-width section section--bordered">
-                <div class="l-row">
-                    <div class="l-column small-12">
-                        <h2 class="section__headline">
-                            Toutes les chansons
-                        </h2>
-                        <table class="table table--see-all">
-                            <thead class="table__head">
-                            <tr>
-                                <th class="table__head__heading--artwork"></th>
-                                <th class="table__head__heading table__head__heading--song">TITRE</th>
-                                <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
-                                    ARTISTE
-                                </th>
-                                <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
-                                    ALBUM
-                                </th>
-                                <th class="table__head__heading table__head__heading--duration">SORTIE</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <? displaySongs($songs) ?>
-                            </tbody>
-                        </table>
+            <? // songs start
+            if ($songs) : ?>
+                <section class="l-content-width section section--bordered">
+                    <div class="l-row">
+                        <div class="l-column small-12">
+                            <h2 class="section__headline">
+                                Toutes les chansons
+                            </h2>
+                            <table class="table table--see-all">
+                                <thead class="table__head">
+                                <tr>
+                                    <th class="table__head__heading--artwork"></th>
+                                    <th class="table__head__heading table__head__heading--song">TITRE</th>
+                                    <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+                                        ARTISTE
+                                    </th>
+                                    <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+                                        ALBUM
+                                    </th>
+                                    <th class="table__head__heading table__head__heading--duration">SORTIE</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <? displaySongs($songs) ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            <? // songs end
+            endif; ?>
 
-            <section class="artist l-content-width section section--bordered">
-                <h2 class="section__headline">
-                    Tous les albums
-                </h2>
-                <div class="l-row">
-                    <? displayAlbums($albums) ?>
-                </div>
-            </section>
+            <? // albums start
+            if ($albums) : ?>
+                <section class="artist l-content-width section section--bordered">
+                    <h2 class="section__headline">
+                        Tous les albums
+                    </h2>
+                    <div class="l-row">
+                        <? displayAlbums($albums) ?>
+                    </div>
+                </section>
+            <? // albums end
+            endif; ?>
 
         <? endif; ?>
     </div>

@@ -44,6 +44,10 @@ define("MONTHS_NAMES_SHORT", serialize(array(
     11 => "nov.",
     12 => "déc."
 )));
+define("TIMESTAMP_MIDNIGHT", strtotime(date("Y-m-d 00:00:00")));
+define("TIMESTAMP_6AM", strtotime(date("Y-m-d 06:00:00")));
+define("TIMESTAMP_6PM", strtotime(date("Y-m-d 18:00:00")));
+define("TIMESTAMP_NOW", strtotime("now"));
 
 if (isset($argv)) {
     foreach ($argv as $arg) {
@@ -68,7 +72,13 @@ $nodisplay = isset($_GET["nodisplay"]);
 //echo date(DEFAULT_DATE_FORMAT_TIME);
 
 $idUser = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
-$navTitle = (strtotime("now") < strtotime(date("Y-m-d 18:00:00")) ? "Bonjour " : "Bonsoir ") . (isset($_SESSION["prenom"]) ? $_SESSION["prenom"] : null);
+
+$navTitle = "Bonjour ";
+if (TIMESTAMP_MIDNIGHT <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_6AM)
+    $navTitle = "Bonne nuit ";
+else if (TIMESTAMP_6PM <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_MIDNIGHT)
+    $navTitle = "Bonsoir ";
+$navTitle .= (isset($_SESSION["prenom"]) ? $_SESSION["prenom"] : null);
 
 //var_dump($_SESSION);
 //var_dump($idUser);
