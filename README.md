@@ -5,5 +5,6 @@ DB_name:DB_username:DB_password
 
 See [classes/DB.php](classes/DB.php) for more.
 
-## cron task
-\*/30  * * * * php global.php refresh= nodisplay=
+## cron task (every 30 mins)
+\*/30  * * * * php [global.php](global.php) refresh= nodisplay=
+*This command will check if new music is available every 30 minutes and for every users.*
