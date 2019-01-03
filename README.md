@@ -7,4 +7,5 @@ See [classes/DB.php](classes/DB.php) for more.
 
 ## cron task (every 30 mins)
 \*/30  * * * * php [global.php](global.php) refresh= nodisplay=
+
 *This command will check if new music is available every 30 minutes and for every users.*
