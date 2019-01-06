@@ -66,8 +66,11 @@ function getArtistReleases($idArtist, $date = false)
     if ($artist->getAlbums()) {
         /** @var Album $album */
         foreach ($artist->getAlbums() as $album) {
-            if ($album)
+            if ($album && $album instanceof Album) {
+//                $entity = is_array($album) ? $album[0] : $album;
+//                $entity->addAlbum($artist->getId());
                 $album->addAlbum($artist->getId());
+            }
         }
     }
 }
