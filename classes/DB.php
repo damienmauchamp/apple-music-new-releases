@@ -68,11 +68,14 @@ class DB
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = $idUser AND ua.lastUpdate < al.date AND ua.active = 1
+            WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1
             ORDER BY ar.name ASC, al.date DESC";
 
         $this->connect();
-        $stmt = $this->dbh->query($sql);
+//        $stmt = $this->dbh->query($sql);
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue("id_user", $idUser);
+        $stmt->execute();
         $this->disconnect();
 
         $res = $stmt->fetchAll();
@@ -90,14 +93,19 @@ class DB
               LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = $idUser AND al.date >= DATE_SUB(NOW(), INTERVAL $days DAY) AND ua.active = 1
+            WHERE ua.idUser = :id_user AND al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) AND ua.active = 1
             GROUP BY id
             ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
         $this->connect();
-        $stmt = $this->dbh->query($sql);
+//        $stmt = $this->dbh->query($sql);
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue("id_user", $idUser);
+        $stmt->bindValue("n_days", $days);
+        $stmt->execute();
         $this->disconnect();
 
+//        $res = $stmt->rowCount() > 0 ? $stmt->fetchAll() : null;
         $res = $stmt->fetchAll();
         return $res ? json_encode($res) : null;
     }
@@ -109,11 +117,14 @@ class DB
             SELECT ar.id, ar.name, ua.lastUpdate
             FROM artists ar
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = $idUser AND ua.active = 1
+            WHERE ua.idUser = :id_user AND ua.active = 1
             ORDER BY name;";
 
         $this->connect();
-        $stmt = $this->dbh->query($sql);
+//        $stmt = $this->dbh->query($sql);
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue("id_user", $idUser);
+        $stmt->execute();
         $this->disconnect();
 
         $res = $stmt->fetchAll();
