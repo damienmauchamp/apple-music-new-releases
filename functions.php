@@ -233,7 +233,7 @@ function fixDate($date, $format = "string")
 
 function fixTZDate($date)
 {
-    return str_replace("Z", " ", str_replace("T", " ", str_replace("07:00:00", "00:00:00", $date)));
+    return str_replace("Z", " ", str_replace("T", " ", str_replace("07:00:00", "00:00:00", str_replace("08:00:00", "00:00:00", $date))));
 }
 
 /**
