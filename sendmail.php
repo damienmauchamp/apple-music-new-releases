@@ -26,8 +26,6 @@ foreach ($users as $user) {
     $json_albums = $db->getUserAlbums($user_id);
     $json_songs = $db->getUserSongs($daysInterval, $user_id);
 
-//    echo $json_songs;exit;
-
     $albums = $songs = "";
     foreach (json_decode($json_albums) as $item) {
         $albums .= "<li><a href='//itunes.apple.com/fr/album/" . $item->id . "' about='blank'>" . $item->name . "</a> par " . $item->artistName . " (" . date("d/m", strtotime($item->date)) . ")</li>";
@@ -43,7 +41,7 @@ foreach ($users as $user) {
     try {
         $mail->CharSet = 'UTF-8';
         $mail->isSMTP();
-//$mail->SMTPDebug = 2;
+//        $mail->SMTPDebug = 3;
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
         $mail->SMTPAuth = true;
