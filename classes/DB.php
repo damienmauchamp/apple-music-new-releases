@@ -332,7 +332,7 @@ class DB
     {
         $this->connect();
         $stmt = $this->dbh->prepare("
-            INSERT INTO logs (description, date, id_user)
+            INSERT INTO logs (type, date, id_user)
             VALUES (:description, :date, :user);"
         );
         $res = $stmt->execute(array("description" => $description, "date" => date("Y-m-d H:i:s"), "user" => $id_user));
