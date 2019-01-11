@@ -8,6 +8,7 @@
     "monolog/monolog": "^1.23",
     "mobiledetect/mobiledetectlib": "^2.8",
     "ext-json": "^1.4",
-    "ext-curl": "^7.0"
+    "ext-curl": "^7.0",
+    "phpmailer/phpmailer": "^6.0"
   }
 }

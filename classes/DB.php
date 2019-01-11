@@ -31,7 +31,7 @@ class DB
         $DB_nom = $env[0] ? $env[0] : null;
         $DB_login = $env[1] ? $env[1] : null;
         $DB_psw = $env[2] ? $env[2] : null;
-		
+
         try {
             $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
             $this->dbh->exec('SET CHARACTER SET utf8');
@@ -57,9 +57,13 @@ class DB
 
     // GET
 
-    public function getUserAlbums()
+    public function getUserAlbums($userId = false)
     {
         global $idUser;
+
+        if ($userId)
+            $idUser = $userId;
+
         $sql = "
             SELECT
               al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
@@ -82,9 +86,13 @@ class DB
         return $res ? json_encode($res) : null;
     }
 
-    public function getUserSongs($days = 7)
+    public function getUserSongs($days = 7, $userId = false)
     {
         global $idUser;
+
+        if ($userId)
+            $idUser = $userId;
+
         $sql = "
             SELECT
               al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
@@ -385,6 +393,20 @@ class DB
             WHERE idArtist = :idArtist AND idUser = :idUser"
         );
         $res = $stmt->execute(array("idArtist" => $idArtist, "idUser" => $idUser));
+        $this->disconnect();
+        return $res;
+    }
+
+    public function getNotifiedUsers($force = false)
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT id, prenom, mail
+            FROM users" . (!$force ? "
+            WHERE notifications = TRUE" : "")
+        );
+        $stmt->execute();
+        $res = $stmt->fetchAll();
         $this->disconnect();
         return $res;
     }
