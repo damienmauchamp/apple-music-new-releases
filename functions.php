@@ -192,6 +192,12 @@ function logRefresh($type = "")
     return $db->logRefresh($type);
 }
 
+function logMail($description, $id_user)
+{
+    $db = new db;
+    return $db->logMail($description, $id_user);
+}
+
 function getLastRefresh()
 {
     $db = new db;

@@ -67,9 +67,11 @@ foreach ($users as $user) {
 
         $mail->send();
 
+        logMail("Mail envoyé", $user_id);
         echo json_encode(array("response" => true, "data" => array()));
 
     } catch (Exception $e) {
+        logMail("Mail non envoyé", $user_id);
         echo json_encode(array("response" => false, "error" => "Message could not be sent. Mailer Error: ', $mail->ErrorInfo"));
     }
 }

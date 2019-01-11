@@ -328,6 +328,18 @@ class DB
         return json_encode($res);
     }
 
+    function logMail($description, $id_user)
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            INSERT INTO logs (description, date, id_user)
+            VALUES (:description, :date, :user);"
+        );
+        $res = $stmt->execute(array("description" => $description, "date" => date("Y-m-d H:i:s"), "user" => $id_user));
+        $this->disconnect();
+        return $res;
+    }
+
     public function logRefresh($type = "")
     {
         global $idUser;
