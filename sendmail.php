@@ -28,10 +28,10 @@ foreach ($users as $user) {
 
     $albums = $songs = "";
     foreach (json_decode($json_albums) as $item) {
-        $albums .= "<li><a href='//itunes.apple.com/fr/album/" . $item->id . "' about='blank'>" . $item->name . "</a> par " . $item->artistName . " (" . date("d/m", strtotime($item->date)) . ")</li>";
+        $albums .= "<li><a href='https://itunes.apple.com/fr/album/" . $item->id . "' about='blank'>" . $item->name . "</a> par " . $item->artistName . " (" . date("d/m", strtotime($item->date)) . ")</li>";
     }
     foreach (json_decode($json_songs) as $item) {
-        $songs .= "<li><a href='//itunes.apple.com/fr/album/" . $item->collectionId . "?i=" . $item->id . "' about='blank'>" . $item->trackName . "</a> par " . $item->artistName . " (" . date("d/m", strtotime($item->date)) . ")</li>";
+        $songs .= "<li><a href='https://itunes.apple.com/fr/album/" . $item->collectionId . "?i=" . $item->id . "' about='blank'>" . $item->trackName . "</a> par " . $item->artistName . " (" . date("d/m", strtotime($item->date)) . ")</li>";
     }
 
     $body = "<h3>Albums</h3><ul>$albums</ul><h3>Morceaux</h3><ul>$songs</ul>";
