@@ -354,9 +354,10 @@ class DB
         return $res;
     }
 
-    public function getLastRefresh()
+    public function getLastRefresh($userId = null)
     {
         global $idUser;
+        if ($userId) $idUser = $userId;
         $this->connect();
         $stmt = $this->dbh->prepare("
             SELECT MAX(date)
@@ -367,6 +368,42 @@ class DB
         $res = $stmt->fetch();
         $this->disconnect();
         return $res[0];
+    }
+
+    public function getNotificationsStatus($userId = null)
+    {
+        global $idUser;
+        if ($userId) $idUser = $userId;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            SELECT notifications
+            FROM users
+            WHERE id= :user;"
+        );
+        $stmt->execute(array("user" => $idUser));
+        $res = $stmt->fetch();
+        $this->disconnect();
+        return $res[0];
+    }
+
+    /**
+     * @param bool $status
+     * @param null $userId
+     * @return mixed
+     */
+    public function setNotificationsStatus($status, $userId = null)
+    {
+        global $idUser;
+        if ($userId) $idUser = $userId;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            UPDATE users
+            SET notifications= :status
+            WHERE id= :user;"
+        );
+        $res = $stmt->execute(array("user" => $idUser, "status" => $status));
+        $this->disconnect();
+        return $res;
     }
 
     public function getUsersIDs()

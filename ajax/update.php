@@ -36,6 +36,15 @@ if ($function === 1) {
         "lastUpdate" => $infos["lastUpdate"]
     );
     getArtistRelease($artist, "albums");
+} else if ($function === 5) { // notification update
+    $notif = isset($_VARS["notif"]) ? ($_VARS["notif"] === "true" ? true : false) : null;
+    header("Content-type:application/json");
+    if ($notif === null) {
+        echo json_encode(false);
+        return;
+    }
+    $db = new db;
+    echo json_encode($db->setNotificationsStatus($notif));
 }
 
 

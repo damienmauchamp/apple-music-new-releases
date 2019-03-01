@@ -12,6 +12,7 @@ $(function () {
     // const addArtistSubmit = $(".add-artists-submit");
     const addArtistSubmit = $(".add-artists-label-after");
     const artistDataId = "data-am-artist-id";
+    const mailAlert = $("#mail-alert");
     var flag = false;
 
     function template(data) {
@@ -19,6 +20,22 @@ $(function () {
             return data.text;
         return $(data.html);
     }
+
+    mailAlert.on("change", function() {
+        var state = $(this).prop("checked");
+        $.ajax({
+            url: "./ajax/update.php",
+            method: "POST",
+            data: {
+                f: 5,
+                notif: state
+            },
+            success(response) {
+                if (!response)
+                    $(this).prop("checked", !state);
+            }
+        });
+    });
 
     addArtist.select2({
         ajax: {
