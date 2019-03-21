@@ -118,11 +118,15 @@ class DB
         return $res ? json_encode($res) : null;
     }
 
-    public function getUsersArtists()
+    public function getUsersArtists($userId = false, $lastUpdate = true)
     {
         global $idUser;
+
+        if ($userId)
+            $idUser = $userId;
+
         $sql = "
-            SELECT ar.id, ar.name, ua.lastUpdate
+            SELECT ar.id, ar.name" . ($lastUpdate ? ", ua.lastUpdate" : "") . "
             FROM artists ar
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ua.idUser = :id_user AND ua.active = 1
@@ -282,6 +286,23 @@ class DB
             DELETE aa, al
             FROM albums al
               LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
+              LEFT JOIN artists ar ON ar.id = aa.idArtist
+              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+            WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+        );
+        $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
+        $this->disconnect();
+        return $res;
+    }
+
+    public function removeOldSongs($days = 21)
+    {
+        global $idUser;
+        $this->connect();
+        $stmt = $this->dbh->prepare("
+            DELETE aa, al
+            FROM songs al
+              LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
               LEFT JOIN artists ar ON ar.id = aa.idArtist
               LEFT JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"

@@ -119,7 +119,7 @@ class Album
         return strtotime(date(DEFAULT_DATE_FORMAT . " 00:00:00")) < strtotime(fixTZDate($this->date));
     }
 
-    public function toString($newDisplay = null)
+    public function toString($newDisplay = null, $idArtist = null)
     {
         global $display;
 
@@ -130,7 +130,7 @@ class Album
         return '
         <a href="' . $this->getLink() . '" target="_blank"
            id="album-' . $this->id . '"
-           data-am-kind="album" data-am-album-id="' . $this->id . '"
+           data-am-kind="album" data-am-album-id="' . $this->id . '" ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
            class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . ($display == "row" ? "2" : "6") . ' medium-3 large-2 ember-view"
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture

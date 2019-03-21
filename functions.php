@@ -128,6 +128,7 @@ function getAllNewReleases()
     $releases = array();
     /*$removal =*/
     $db->removeOldAlbums();
+    $db->removeOldSongs();
     foreach (json_decode($db->getUsersArtists()) as $artist) {
         $releases[] = getArtistRelease($artist);
 //        break;
@@ -171,7 +172,7 @@ function getArtistRelease($objArtist, $display = false)
         // Ajout de l'album à la BD
         $album->addAlbum($artist->getId());
 //        $artist->update();
-        echo $nodisplay ? null : $album->toString($display);
+        echo $nodisplay ? null : $album->toString($display, $artist->getId());
     }
 
     if ($songs) {
@@ -324,4 +325,19 @@ function getArtistSVG($str)
         </text>
     </svg>
     ';
+}
+
+function removeIntIndex($array) {
+    foreach ($array as $key => $value) {
+        if (is_int($key)) {
+            unset($array[$key]);
+        }
+    }
+    return $array;
+}
+
+function writeJSON($name, $content) {
+    $fp = fopen($name, 'w');
+    fwrite($fp, json_encode($content));
+    fclose($fp);
 }

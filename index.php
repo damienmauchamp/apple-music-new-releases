@@ -13,7 +13,19 @@ global $news;
 
 /**
  * TODO : page de logs
- * TODO : liste d'artistes
+
+artists that needs update
+var needToUpdateIds = [];
+$("#new-albums .album").each(function() {
+    needToUpdateIds.push($(this).data("amArtistId"));
+});
+needToUpdateIds.forEach(function(x) {
+  console.log("'" + x + "', ");
+});
+
+UPDATE users_artists
+SET lastUpdate = NOW()
+WHERE idUser = 1 AND idArtist IN
  */
 
 if ($news && $nodisplay) {
