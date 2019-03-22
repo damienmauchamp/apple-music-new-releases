@@ -11,21 +11,28 @@ checkConnexion();
 $root = "";
 global $news;
 
+if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
+    header("Content-type:text/html");
+    displaySongs(getAllSongs());
+    exit;
+}
+
+
 /**
  * TODO : page de logs
-
-artists that needs update
-var needToUpdateIds = [];
-$("#new-albums .album").each(function() {
-    needToUpdateIds.push($(this).data("amArtistId"));
-});
-needToUpdateIds.forEach(function(x) {
-  console.log("'" + x + "', ");
-});
-
-UPDATE users_artists
-SET lastUpdate = NOW()
-WHERE idUser = 1 AND idArtist IN
+ *
+ * artists that needs update
+ * var needToUpdateIds = [];
+ * $("#new-albums .album").each(function() {
+ * needToUpdateIds.push($(this).data("amArtistId"));
+ * });
+ * needToUpdateIds.forEach(function(x) {
+ * console.log("'" + x + "', ");
+ * });
+ *
+ * UPDATE users_artists
+ * SET lastUpdate = NOW()
+ * WHERE idUser = 1 AND idArtist IN
  */
 
 if ($news && $nodisplay) {
@@ -88,9 +95,41 @@ if ($news && $nodisplay) {
 
         <? else :
             $albums = getAllAlbums();
-            $songs = getAllSongs();
+            $songs = false;//getAllSongs();
             //var_dump($songs);
             ?>
+            <section class="l-content-width section section--bordered">
+                <div class="l-row">
+                    <div class="l-column small-12">
+                        <h2 class="section__headline">
+                            Toutes les chansons
+                        </h2>
+                        <table class="table table--see-all" id="song-table-table">
+                            <thead class="table__head">
+                            <tr>
+                                <th class="table__head__heading--artwork"></th>
+                                <th class="table__head__heading table__head__heading--song">TITRE</th>
+                                <th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+                                    ARTISTE
+                                </th>
+                                <th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+                                    ALBUM
+                                </th>
+                                <th class="table__head__heading table__head__heading--duration">SORTIE</th>
+                            </tr>
+                            </thead>
+                            <tbody id="song-table-tbody">
+                            <? //displaySongs($songs)
+                            ?>
+                            </tbody>
+                        </table>
+                        <div class="spinner-cont">
+                            <div id="loading-spinner"
+                                 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <? // songs start
             if ($songs) : ?>
@@ -139,6 +178,20 @@ if ($news && $nodisplay) {
 
         <? endif; ?>
     </div>
+
+    <script>
+        var load_songs = function () {
+            $.ajax({
+                url: "index.php",
+                method: "POST",
+                data: {load_songs: true},
+                success: function(data) {
+                    $("#song-table-tbody").append(data);
+                    $("#loading-spinner").hide();
+                }
+            });
+        }();
+    </script>
     </body>
     </html>
 <?
