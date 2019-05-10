@@ -36,55 +36,49 @@ function getAllAlbums($display = "artists")
     if (!$releases)
         return json_decode($releases);
 
-    switch ($display) {
-        case "albums":
-            ?>
-            <section class="artist l-content-width section">
-                <div class="section-header section__headline">
-                    <h2 class="section-title">Tous les albums</h2>
-                </div>
+    if ($display === "albums") {
+    	echo '
+    	<section class="artist l-content-width section">
+            <div class="section-header section__headline">
+                <h2 class="section-title">Tous les albums</h2>
+            </div>
 
-                <div class="section-body l-row">
-                    <?
-                    foreach (json_decode($releases) as $r) {
-                        $artistId = $r->idArtist;
-                        $album = Album::withArray(Album::objectToArray($r));
-                        if (!isset($artists[$artistId])) {
-                            $artists[$artistId] = array(
-                                "id" => $artistId,
-                                "name" => $r->artistName,
-                                "albums" => array(),
-                                "lastUpdate" => $r->lastUpdate
-                            );
-                        }
-                        $album->toString();
+            <div class="section-body l-row">';
+                foreach (json_decode($releases) as $r) {
+                    $artistId = $r->idArtist;
+                    $album = Album::withArray(Album::objectToArray($r));
+                    if (!isset($artists[$artistId])) {
+                        $artists[$artistId] = array(
+                            "id" => $artistId,
+                            "name" => $r->artistName,
+                            "albums" => array(),
+                            "lastUpdate" => $r->lastUpdate
+                        );
                     }
-                    ?>
-                </div>
-            </section>
-            <?
-            break;
-        case "artists":
-        default:
-            foreach (json_decode($releases) as $r) {
-                // Artiste
-                $artistId = $r->idArtist;
-                $album = Album::withArray(Album::objectToArray($r));
-                if (!isset($artists[$artistId])) {
-                    $artists[$artistId] = array(
-                        "id" => $artistId,
-                        "name" => $r->artistName,
-                        "albums" => array(),
-                        "lastUpdate" => $r->lastUpdate
-                    );
+                    $album->toString();
                 }
-                $artists[$artistId]["albums"][] = $album;
+        echo '
+            </div>
+        </section>';
+    } else { //"artists"
+        foreach (json_decode($releases) as $r) {
+            // Artiste
+            $artistId = $r->idArtist;
+            $album = Album::withArray(Album::objectToArray($r));
+            if (!isset($artists[$artistId])) {
+                $artists[$artistId] = array(
+                    "id" => $artistId,
+                    "name" => $r->artistName,
+                    "albums" => array(),
+                    "lastUpdate" => $r->lastUpdate
+                );
             }
+            $artists[$artistId]["albums"][] = $album;
+        }
 
-            foreach ($artists as $artist) {
-                Artist::withNewRelease($artist)->toString();
-            }
-            break;
+        foreach ($artists as $artist) {
+            Artist::withNewRelease($artist)->toString();
+        }
     }
     return json_decode($releases);
 }
