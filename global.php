@@ -11,10 +11,10 @@ $db = new db;
 foreach ($db->getUsersIDs() as $user) {
     $idUser = $user["id"];
     $_SESSION["id_user"] = $idUser;
-    logRefresh("no display --- $idUser");
     $res = getAllNewReleases();
-    $albums = $res["albums"];
-    $songs = $res["songs"];
+    $albums = $res && isset($res["albums"]) ? $res['albums'] : null;
+    $songs = $res && isset($res["songs"]) ? $res['songs'] : null;
+    logRefresh("no display --- $idUser");
     echo json_encode(true);
     //exit;
 }

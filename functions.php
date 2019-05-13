@@ -37,26 +37,26 @@ function getAllAlbums($display = "artists")
         return json_decode($releases);
 
     if ($display === "albums") {
-    	echo '
+        echo '
     	<section class="artist l-content-width section">
             <div class="section-header section__headline">
                 <h2 class="section-title">Tous les albums</h2>
             </div>
 
             <div class="section-body l-row">';
-                foreach (json_decode($releases) as $r) {
-                    $artistId = $r->idArtist;
-                    $album = Album::withArray(Album::objectToArray($r));
-                    if (!isset($artists[$artistId])) {
-                        $artists[$artistId] = array(
-                            "id" => $artistId,
-                            "name" => $r->artistName,
-                            "albums" => array(),
-                            "lastUpdate" => $r->lastUpdate
-                        );
-                    }
-                    $album->toString();
-                }
+        foreach (json_decode($releases) as $r) {
+            $artistId = $r->idArtist;
+            $album = Album::withArray(Album::objectToArray($r));
+            if (!isset($artists[$artistId])) {
+                $artists[$artistId] = array(
+                    "id" => $artistId,
+                    "name" => $r->artistName,
+                    "albums" => array(),
+                    "lastUpdate" => $r->lastUpdate
+                );
+            }
+            $album->toString();
+        }
         echo '
             </div>
         </section>';
@@ -199,7 +199,8 @@ function getLastRefresh()
     return $db->getLastRefresh();
 }
 
-function getNotificationsStatus() {
+function getNotificationsStatus()
+{
     $db = new db;
     return $db->getNotificationsStatus();
 }
@@ -274,8 +275,10 @@ function getMonth($m, $short = false)
 function checkConnexion()
 {
     if (!isConnected()) {
-        $_COOKIE["redirect"] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        setcookie("redirect", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        if ($_SERVER && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
+            $_COOKIE["redirect"] = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            setcookie("redirect", "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        }
         header("location: login.php");
         exit;
     }
@@ -321,7 +324,8 @@ function getArtistSVG($str)
     ';
 }
 
-function removeIntIndex($array) {
+function removeIntIndex($array)
+{
     foreach ($array as $key => $value) {
         if (is_int($key)) {
             unset($array[$key]);
@@ -330,7 +334,8 @@ function removeIntIndex($array) {
     return $array;
 }
 
-function writeJSON($name, $content) {
+function writeJSON($name, $content)
+{
     $fp = fopen($name, 'w');
     fwrite($fp, json_encode($content));
     fclose($fp);

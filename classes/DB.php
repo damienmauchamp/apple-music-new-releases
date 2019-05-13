@@ -4,6 +4,7 @@ namespace AppleMusic;
 
 use PDO;
 use PDOException;
+use Dotenv;
 
 class DB
 {
@@ -25,20 +26,25 @@ class DB
      */
     private function connect()
     {
+
+        // loading .env data
+        if (is_file(dirname(__DIR__) . '/.env')) {
+            $dotenv = Dotenv\Dotenv::create(dirname(__DIR__));
+            $dotenv->load();
+        }
+
         $DB_serveur = "localhost";
-//        $DB_nom = "applemusic-update";
-        $env = explode(":", $this->getEnv());
-        $DB_nom = $env[0] ? $env[0] : null;
-        $DB_login = $env[1] ? $env[1] : null;
-        $DB_psw = $env[2] ? $env[2] : null;
+        $DB_nom = $_ENV['DB_NAME'];
+        $DB_login = $_ENV['DB_USERNAME'];
+        $DB_psw = $_ENV['DB_PWD'];
 
         try {
-            $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3307;dbname=' . $DB_nom, $DB_login, $DB_psw);
+            $this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3306;dbname=' . $DB_nom, $DB_login, $DB_psw);
             $this->dbh->exec('SET CHARACTER SET utf8');
             $this->dbh->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
         } catch (PDOException $e) {
             echo "Erreur ! : " . $e->getMessage() . "<br/>";
-            die("Connexion impossible à la base de données.");
+            die("Connexion impossible à la base de données." .  $e->getMessage());
         }
     }
 
