@@ -75,9 +75,9 @@ class DB
               al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
               ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
             FROM albums al
-              LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
-              LEFT JOIN artists ar ON ar.id = aa.idArtist
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+              INNER JOIN artists_albums aa ON al.id = aa.idAlbum
+              INNER JOIN artists ar ON ar.id = aa.idArtist
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1
             ORDER BY ar.name ASC, al.date DESC";
 
@@ -104,10 +104,10 @@ class DB
               al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
               ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.isStreamable AS isStreamable
             FROM songs al
-              LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
-              LEFT JOIN artists ar ON ar.id = aa.idArtist
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = :id_user AND al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) AND ua.active = 1
+              INNER JOIN artists_songs aa ON al.id = aa.idAlbum
+              INNER JOIN artists ar ON ar.id = aa.idArtist
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user AND ua.active = 1
+            WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) 
             GROUP BY id
             ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
 
@@ -134,8 +134,8 @@ class DB
         $sql = "
             SELECT ar.id, ar.name" . ($lastUpdate ? ", ua.lastUpdate" : "") . "
             FROM artists ar
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = :id_user AND ua.active = 1
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.active = 1
+            WHERE ua.idUser = :id_user
             ORDER BY name;";
 
         $this->connect();
@@ -274,7 +274,7 @@ class DB
         $stmt = $this->dbh->prepare("
             SELECT ar.id AS id, ar.name AS name, ua.lastUpdate AS lastUpdate, ua.active AS active
             FROM artists ar
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id
             WHERE ar.id = :idArtist"
         );
         $stmt->execute(array("idArtist" => $idArtist));
@@ -287,34 +287,38 @@ class DB
     public function removeOldAlbums($days = 14)
     {
         global $idUser;
+        $this->disableForeignKeysCheck();
         $this->connect();
         $stmt = $this->dbh->prepare("
             DELETE aa, al
             FROM albums al
-              LEFT JOIN artists_albums aa ON al.id = aa.idAlbum
-              LEFT JOIN artists ar ON ar.id = aa.idArtist
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+              INNER JOIN artists_albums aa ON al.id = aa.idAlbum
+              INNER JOIN artists ar ON ar.id = aa.idArtist
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :idUser
+            WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
         $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
         $this->disconnect();
+        $this->enableForeignKeysCheck();
         return $res;
     }
 
     public function removeOldSongs($days = 21)
     {
         global $idUser;
+        $this->disableForeignKeysCheck();
         $this->connect();
         $stmt = $this->dbh->prepare("
             DELETE aa, al
             FROM songs al
-              LEFT JOIN artists_songs aa ON al.id = aa.idAlbum
-              LEFT JOIN artists ar ON ar.id = aa.idArtist
-              LEFT JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ua.idUser = :idUser AND DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+              INNER JOIN artists_songs aa ON al.id = aa.idAlbum
+              INNER JOIN artists ar ON ar.id = aa.idArtist
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :idUser
+            WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
         $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
         $this->disconnect();
+        $this->enableForeignKeysCheck();
         return $res;
     }
 
@@ -463,6 +467,7 @@ class DB
     public function removeUsersArtist($idArtist)
     {
         global $idUser;
+        $this->disableForeignKeysCheck();
         $this->connect();
         $stmt = $this->dbh->prepare("
             DELETE FROM users_artists
@@ -470,6 +475,7 @@ class DB
         );
         $res = $stmt->execute(array("idArtist" => $idArtist, "idUser" => $idUser));
         $this->disconnect();
+        $this->enableForeignKeysCheck();
         return $res;
     }
 
@@ -486,6 +492,26 @@ class DB
         $this->disconnect();
         return $res;
     }
+
+    private function enableForeignKeysCheck() {
+        //SET FOREIGN_KEY_CHECKS = 1;
+        return $this->foreignKeysCheck(true);
+    }
+
+    private function disableForeignKeysCheck() {
+        //SET FOREIGN_KEY_CHECKS = 0;
+        return $this->foreignKeysCheck(false);
+    }
+
+    private function foreignKeysCheck($mode = true)
+    {
+        $this->connect();
+        $stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = :mode");
+        $res = $stmt->execute(array("mode" => ($mode ? '1' : '0')));
+        $this->disconnect();
+        return $res;
+    }
+
 
 //    public function example()
 //    {
