@@ -1,1 +1,5 @@
 vendor
+.idea
+.git
+.env
+autolog.php
