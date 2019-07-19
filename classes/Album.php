@@ -33,7 +33,7 @@ class Album
         $this->artistName = $array["artistName"];
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
-        $this->link = "https://itunes.apple.com/fr/album/" . $array["id"];
+        $this->link = "https://music.apple.com/fr/album/" . $array["id"];
         $this->explicit = $array["explicit"];
     }
 

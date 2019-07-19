@@ -44,7 +44,7 @@ class Song
         $this->artistName = $array["artistName"];
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
-        $this->link = "https://itunes.apple.com/fr/album/" . $array["collectionId"] . "?i=" . $array["id"];
+        $this->link = "https://music.apple.com/fr/album/" . $array["collectionId"] . "?i=" . $array["id"];
         $this->explicit = $array["explicit"];
         $this->isStreamable = $array["isStreamable"];
     }

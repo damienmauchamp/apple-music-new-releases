@@ -162,20 +162,26 @@ class DB
         $name = addslashes($artist->getName());
         $sqlArtist = "
             INSERT INTO artists (id, name)
-            VALUES ('$id', '$name')
-            ON DUPLICATE KEY UPDATE id = '$id'";
+            VALUES (:id, :name)
+            ON DUPLICATE KEY UPDATE id = :id, name = :name";
 
         $sqlUserArtist = "
             INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
-            VALUES ($idUser, '$id', NOW(), 1)
-            ON DUPLICATE KEY UPDATE idUser = $idUser, idArtist = '$id'";
+            VALUES (:id_user, :id, NOW(), 1)
+            ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
 
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlArtist);
-        $resArtist = $stmt->execute();
+        $resArtist = $stmt->execute(array(
+            'id' => $id,
+            'name' => $name
+        ));
         $stmt = $this->dbh->prepare($sqlUserArtist);
-        $resUserArtist = $stmt->execute();
+        $resUserArtist = $stmt->execute(array(
+            'id_user' => $idUser,
+            'id' => $id
+        ));
         $this->disconnect();
 //        var_dump($sqlArtist, $sqlUserArtist);exit;
 //        echo json_encode($sqlUserArtist);
@@ -198,19 +204,29 @@ class DB
 
         $sqlAlbum = "
             INSERT INTO albums (id, name, artistName, date, artwork, explicit)
-            VALUES ('$id', '$name', '$artistName', '$date', '$artwork', $explicit)
-            ON DUPLICATE KEY UPDATE id = '$id'";
+            VALUES (:id, :name, :artist_name, :date, :artwork, :explicit)
+            ON DUPLICATE KEY UPDATE name = :name, artistName = :artist_name, date = :date, artwork = :artwork, explicit = :explicit";
 
         $sqlArtistAlbum = "
             INSERT INTO artists_albums (idArtist, idAlbum)
-            VALUES ($idArtist, '$id')
-            ON DUPLICATE KEY UPDATE idArtist = $idArtist, idAlbum = '$id'";
+            VALUES (:id_artist, :id_album)
+            ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id_album";
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlAlbum);
-        $resAlbum = $stmt->execute();
+        $resAlbum = $stmt->execute(array(
+            'id' => $id,
+            'name' => $name,
+            'artist_name' => $artistName,
+            'date' => $date,
+            'artwork' => $artwork,
+            'explicit' => $explicit
+        ));
         $stmt = $this->dbh->prepare($sqlArtistAlbum);
-        $resArtistAlbum = $stmt->execute();
+        $resArtistAlbum = $stmt->execute(array(
+            'id_artist' => $idArtist,
+            'id_album' => $id
+        ));
         $this->disconnect();
         return $resAlbum && $resArtistAlbum;
     }
@@ -234,19 +250,32 @@ class DB
 
         $sqlAlbum = "
             INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable)
-            VALUES ('$id', '$collectionId', '$collectionName', '$trackName', '$artistName', '$date', '$artwork', $explicit, $isStreamable)
-            ON DUPLICATE KEY UPDATE id = '$id', collectionName = '$collectionName', trackName = '$trackName', artistName = '$artistName', date = '$date', artwork = '$artwork', explicit = '$explicit', isStreamable = $isStreamable";
+            VALUES (:id, :collection_id, :collection_name, :track_name, :artist_name, :date, :artwork, :explicit, :isStreamable)
+            ON DUPLICATE KEY UPDATE id = :id, collectionName = :collection_name, trackName = :track_name, artistName = :artist_name, date = :date, artwork = :artwork, explicit = :explicit, isStreamable = :isStreamable";
 
         $sqlArtistAlbum = "
             INSERT INTO artists_songs (idArtist, idAlbum)
-            VALUES ($idArtist, '$id')
-            ON DUPLICATE KEY UPDATE idArtist = $idArtist, idAlbum = '$id'";
+            VALUES (:id_artist, :id)
+            ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id";
 
         $this->connect();
         $stmt = $this->dbh->prepare($sqlAlbum);
-        $resAlbum = $stmt->execute();
+        $resAlbum = $stmt->execute(array(
+            'id' => $id,
+            'collection_id' => $collectionId,
+            'collection_name' => $collectionName,
+            'track_name' => $trackName,
+            'artist_name' => $artistName,
+            'date' => $date,
+            'artwork' => $artwork,
+            'explicit' => $explicit,
+            'isStreamable' => $isStreamable
+        ));
         $stmt = $this->dbh->prepare($sqlArtistAlbum);
-        $resArtistAlbum = $stmt->execute();
+        $resArtistAlbum = $stmt->execute(array(
+            'id' => $id,
+            'id_artist' => $idArtist
+        ));
         $this->disconnect();
 
         return $resAlbum && $resArtistAlbum;
@@ -259,11 +288,15 @@ class DB
         $date = "$minDate 00:00:00";
         $sql = "
             UPDATE users_artists
-            SET lastUpdate = '$date'
-            WHERE idArtist = $idArtist AND idUser = $idUser";
+            SET lastUpdate = :date
+            WHERE idArtist = :id_artist AND idUser = :id_user";
         $this->connect();
         $stmt = $this->dbh->prepare($sql);
-        $res = $stmt->execute();
+        $res = $stmt->execute(array(
+            'date' => $date,
+            'id_artist' => $idArtist,
+            'id_user' => $idUser
+        ));
         $this->disconnect();
         return $res;
     }
@@ -275,9 +308,9 @@ class DB
             SELECT ar.id AS id, ar.name AS name, ua.lastUpdate AS lastUpdate, ua.active AS active
             FROM artists ar
               INNER JOIN users_artists ua ON ua.idArtist = ar.id
-            WHERE ar.id = :idArtist"
+            WHERE ar.id = :id_artist"
         );
-        $stmt->execute(array("idArtist" => $idArtist));
+        $stmt->execute(array("id_artist" => $idArtist));
         $this->disconnect();
 
         $res = $stmt->fetch();
@@ -294,10 +327,10 @@ class DB
             FROM albums al
               INNER JOIN artists_albums aa ON al.id = aa.idAlbum
               INNER JOIN artists ar ON ar.id = aa.idArtist
-              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :idUser
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
             WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
-        $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
+        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));
         $this->disconnect();
         $this->enableForeignKeysCheck();
         return $res;
@@ -313,10 +346,10 @@ class DB
             FROM songs al
               INNER JOIN artists_songs aa ON al.id = aa.idAlbum
               INNER JOIN artists ar ON ar.id = aa.idArtist
-              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :idUser
+              INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
             WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
-        $res = $stmt->execute(array("idUser" => $idUser, "days" => $days));
+        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));
         $this->disconnect();
         $this->enableForeignKeysCheck();
         return $res;
@@ -329,9 +362,9 @@ class DB
         $stmt = $this->dbh->prepare("
             SELECT *
             FROM users_artists ua
-            WHERE  ua.idUser = :idUser AND ua.idArtist = :idArtist;"
+            WHERE  ua.idUser = :id_user AND ua.idArtist = :id_artist;"
         );
-        $stmt->execute(array("idUser" => $idUser, "idArtist" => $id));
+        $stmt->execute(array("id_user" => $idUser, "id_artist" => $id));
         $res = $stmt->fetch();
         $this->disconnect();
 
