@@ -3,7 +3,15 @@ Fully responsive, based on Apple Music's stylesheet.
 
 ## setup
 Create a .env text file in the root directory with your DB logs :  
-DB_name:DB_username:DB_password  
+`
+DB_NAME="DB_name"  
+DB_USERNAME="DB_username" 
+DB_PWD="DB_password"
+`
+
+To setup email notifications, add :
+`EMAIL_USERNAME="xxxxx@xxxxx.xxx"
+EMAIL_PWD="xxxxxx"`
 
 See [classes/DB.php](classes/DB.php) for more.
 
