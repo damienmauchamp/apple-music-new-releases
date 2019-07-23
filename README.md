@@ -4,8 +4,8 @@ Fully responsive, based on Apple Music's stylesheet.
 ## setup
 Create a .env text file in the root directory with your DB logs :  
 `
-DB_NAME="DB_name"  
-DB_USERNAME="DB_username" 
+DB_NAME="DB_name"<br/>  
+DB_USERNAME="DB_username" <br/>
 DB_PWD="DB_password"
 `
 
