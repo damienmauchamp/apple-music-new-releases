@@ -21,6 +21,6 @@ See [classes/DB.php](classes/DB.php) for more.
 ## cron task (every 30 mins)
 Execute `crontab -e` and add this line (edit it as you wish) :
 ```
-\*/30  * * * * php /c/wamp64/www/tests/utils/amu/global.php refresh= nodisplay= >/dev/null 2>&1
+\*/30  * * * * php global.php refresh= nodisplay= >/dev/null 2>&1
 ```
 *This command will check if new music is available every 30 minutes and for every users.*
