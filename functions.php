@@ -123,7 +123,11 @@ function getAllNewReleases()
     /*$removal =*/
     $db->removeOldAlbums();
     //$db->removeOldSongs();
-    foreach (json_decode($db->getUsersArtists()) as $artist) {
+    $artists = $db->getUsersArtists();
+    if (!$artists) {
+        return $releases;
+    }
+    foreach (json_decode($artists) as $artist) {
         $releases[] = getArtistRelease($artist);
 //        break;
     }

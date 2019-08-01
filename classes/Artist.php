@@ -242,14 +242,15 @@ class Artist
                    data-am-artist-id="<?= $this->id ?>">MAJ</a>
             </div>
             <div class="section-body l-row <?= $display == "row" ? "l-row--peek" : null ?>">
-                <? /** @var Album $album */
+                <?php /** @var Album $album */
                 foreach ($this->albums as $album) {
 //                    for ($i = 0; $i < 15; $i++)
                     echo $album->toString();
                 } ?>
             </div>
         </section>
-
+        <?php
+        /*
         <!--section class="artist-songs l-content-width section" data-am-artist-id="<?= $this->id ?>">
             <div class="l-row">
                 <div class="l-column small-12">
@@ -269,16 +270,15 @@ class Artist
                         </tr>
                         </thead>
                         <tbody>
-                        <? /** @var Song $song */
+                         ** @var Song $song *
         foreach ($this->songs as $song) {
             echo $song->toString();
-        } ?>
+        }
                         </tbody>
                     </table>
                 </div>
             </div>
-        </section-->
-        <?
+        </section--> */
     }
 
     public function toJSON()
@@ -326,7 +326,5 @@ class Artist
 
         return $jsonReturn ? json_encode($array) : $array;
     }
-
-
 }
 ?>

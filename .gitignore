@@ -3,3 +3,4 @@ vendor
 .git
 .env
 autolog.php
+*desktop.ini
