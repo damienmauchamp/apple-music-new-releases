@@ -131,8 +131,10 @@ class DB
         if ($userId)
             $idUser = $userId;
 
-        $sql = "
-            SELECT ar.id, ar.name" . ($lastUpdate ? ", ua.lastUpdate" : "") . "
+        $lastUpdateStr = $lastUpdate ? ", ua.lastUpdate" : "";
+
+        $sql = 
+            "SELECT ar.id, ar.name$lastUpdateStr
             FROM artists ar
               INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.active = 1
             WHERE ua.idUser = :id_user
