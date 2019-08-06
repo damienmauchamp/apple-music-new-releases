@@ -185,6 +185,78 @@ $(function () {
     //$(".maj-link").on("touchstart click", function (e) {
     // $(".suppr-link").on("touchstart click", function (e) {
     // $(".rm-artist").on("click", function (e) {
+
+
+    /* CONTEXT MENU */
+    // Trigger action when the contexmenu is about to be shown
+    $(document).bind("contextmenu", function (event) {
+
+        var $album;
+        if ($(this).hasClass('album')) {
+            $album = $(this);
+        } else if (event.target.closest('.album')) {
+            $album = $(event.target.closest('.album'));
+        } else {
+            return true;
+        }
+        
+        // Avoid the real one
+        event.preventDefault();
+
+        $(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
+        $(".custom-menu li[data-action='open-browser'] a").attr('href', $album.attr('href'));
+
+        // Show contextmenu
+        $(".custom-menu").finish().toggle(100).
+        
+        // In the right position (the mouse)
+        css({
+            top: event.pageY + "px",
+            left: event.pageX + "px"
+        });
+    });
+
+    // If the document is clicked somewhere
+    /**
+     * @todo: if right-click, OK but hide.
+     * @todo: if wheel-click, nothing happens
+     * @todo: if mousewheel, prevent and hide
+     */
+    $(document).bind("mousedown", function (e) {
+        
+        // If the clicked element is not the menu
+        if (!$(e.target).parents(".custom-menu").length > 0) {
+            
+            // Hide it
+            $(".custom-menu").hide(100);
+
+            $(".custom-menu li a").attr('href', '#');
+        }
+    });
+
+    // If the menu element is clicked
+    $(document).on('click', '.custom-menu li', function(e){
+        
+        // This is the triggered action name
+        switch($(this).attr("data-action")) {
+            
+            // A case for each action. Your actions here
+            case "first":
+                alert("first");
+                break;
+            case
+                "second":
+                alert("second");
+                break;
+            case
+                "third":
+                alert("third");
+                break;
+        }
+      
+        // Hide it AFTER the action was triggered
+        $(".custom-menu").hide(100);
+    });
 });
 
 var getNewReleases = function () {

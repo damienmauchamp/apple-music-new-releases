@@ -33,7 +33,7 @@ class Album
         $this->artistName = $array["artistName"];
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
-        $this->link = "https://music.apple.com/fr/album/" . $array["id"];
+        $this->link = "https://music.apple.com/fr/album/" . preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($array["name"])), "-")) . "/" . $array["id"];
         $this->explicit = $array["explicit"];
     }
 
@@ -101,8 +101,11 @@ class Album
         return str_replace("http:", "", str_replace("https:", "", $link));
     }
 
-    public function getLink()
+    public function getLink($itmss = false)
     {
+        if ($itmss) {
+            return preg_replace('/^https?/', 'itmss', $this->link);
+        }
         return $this->link;
     }
 
@@ -128,7 +131,7 @@ class Album
         $style = '<style>#album-' . $this->id . ' .artwork:after { content: "' . $this->getDate("string") . '" }</style>';
 
         return '
-        <a href="' . $this->getLink() . '" target="_blank"
+        <a href="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" target="_blank"
            id="album-' . $this->id . '"
            data-am-kind="album" data-am-album-id="' . $this->id . '" ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
            class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . ($display == "row" ? "2" : "6") . ' medium-3 large-2 ember-view"

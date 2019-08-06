@@ -192,6 +192,12 @@ if ($news && $nodisplay) {
             });
         }();
     </script>
+
+    <ul class='custom-menu'>
+        <li data-action="open-itunes"><a href="#">Afficher sur iTunes</a></li>
+        <li data-action="open-browser"><a href="#" target="_blank">Afficher dans le navigateur</a></li>
+    </ul>
+
     </body>
     </html>
 <?

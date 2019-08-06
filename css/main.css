@@ -390,3 +390,33 @@ span.artist-search-count {
 .spinner-cont {
     overflow: hidden;
 }
+
+/* CONTEXT MENU */
+.custom-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+}
+
+.custom-menu li {
+    padding: 0;
+    cursor: pointer;
+}
+
+.custom-menu li a {
+    padding: 8px 12px;
+    color: var(--main-color);
+    text-decoration: none;
+    display: block;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
