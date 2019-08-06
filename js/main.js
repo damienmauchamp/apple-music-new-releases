@@ -189,19 +189,19 @@ $(function () {
 
     /* CONTEXT MENU */
     // Trigger action when the contexmenu is about to be shown
-    $(document).bind("contextmenu", function (event) {
+    $(document).bind("contextmenu", function (e) {
 
         var $album;
         if ($(this).hasClass('album')) {
             $album = $(this);
-        } else if (event.target.closest('.album')) {
-            $album = $(event.target.closest('.album'));
+        } else if (e.target.closest('.album')) {
+            $album = $(e.target.closest('.album'));
         } else {
             return true;
         }
         
         // Avoid the real one
-        event.preventDefault();
+        e.preventDefault();
 
         $(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
         $(".custom-menu li[data-action='open-browser'] a").attr('href', $album.attr('href'));
@@ -211,49 +211,35 @@ $(function () {
         
         // In the right position (the mouse)
         css({
-            top: event.pageY + "px",
-            left: event.pageX + "px"
+            top: e.pageY + "px",
+            left: e.pageX + "px"
         });
     });
 
     // If the document is clicked somewhere
-    /**
-     * @todo: if right-click, OK but hide.
-     * @todo: if wheel-click, nothing happens
-     * @todo: if mousewheel, prevent and hide
-     */
-    $(document).bind("mousedown", function (e) {
+    $(document).on("mousedown", function (e) {
         
         // If the clicked element is not the menu
         if (!$(e.target).parents(".custom-menu").length > 0) {
-            
-            // Hide it
             $(".custom-menu").hide(100);
-
             $(".custom-menu li a").attr('href', '#');
+        } else {
+            switch (e.which) {
+                case 1: // left
+                    return true;
+                    break;
+                case 2: // middle
+                case 3: // right
+                default:
+                    $(".custom-menu").hide(100);
+                    $(".custom-menu li a").attr('href', '#');
+                    return true;
+            }
         }
     });
 
     // If the menu element is clicked
-    $(document).on('click', '.custom-menu li', function(e){
-        
-        // This is the triggered action name
-        switch($(this).attr("data-action")) {
-            
-            // A case for each action. Your actions here
-            case "first":
-                alert("first");
-                break;
-            case
-                "second":
-                alert("second");
-                break;
-            case
-                "third":
-                alert("third");
-                break;
-        }
-      
+    $(document).on('click', '.custom-menu li', function(e){      
         // Hide it AFTER the action was triggered
         $(".custom-menu").hide(100);
     });
