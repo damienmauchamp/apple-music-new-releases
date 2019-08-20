@@ -54,6 +54,7 @@ if ($function === 1) {
  */
 function getArtistReleases($idArtist, $date = false)
 {
+    print_r(array(1, $date)); // debug
     $artist = new Artist($idArtist);
     $artist->getArtistDB();
 

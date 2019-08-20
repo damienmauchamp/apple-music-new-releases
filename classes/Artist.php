@@ -82,8 +82,11 @@ class Artist
     {
         $db = new DB();
 
+        print_r(array(2, $date)); // debug
         $minDate = $date ? $date : $this->getAlbumsMinDate();
+        print_r(array(3, $minDate)); // debug
         $update = $db->artistUpdated($this->id, $minDate);
+        print_r(array(4, $update)); // debug
         /*$removal =*/
         $db->removeOldAlbums();
         return $update;
