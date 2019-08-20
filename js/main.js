@@ -86,7 +86,7 @@ $(function () {
      * @param f
      */
     function update(id, f) {
-        console.log("f", f, "id", id);
+        //console.log("f", f, "id", id);
         var c = $("#artist-" + id).find(".section-body");
         $.ajax({
             url: "./ajax/update.php",

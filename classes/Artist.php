@@ -288,9 +288,9 @@ class Artist
                 "id" => $this->id,
                 "name" => $this->name,
                 "lastUpdate" => $this->lastUpdate,
-                "albumCount" => count($this->albums),
+                "albumCount" => $this->albums ? count($this->albums) : 0,
                 "albums" => $this->albumsToJSONString(),
-                "songCount" => count($this->songs),
+                "songCount" => $this->songs ? count($this->songs) : 0,
                 "songs" => $this->songsToJSONString()
             )
         );
