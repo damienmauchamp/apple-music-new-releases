@@ -46,7 +46,7 @@ class Artist
     {
         $this->id = $array["id"];
         $this->name = $array["name"];
-        $this->albums = $array["albums"];
+        $this->albums = isset($array["albums"]) ? $array["albums"] : array();
         $this->songs = isset($array["songs"]) ? $array["songs"] : array();
         $this->lastUpdate = $array["lastUpdate"];
     }
@@ -57,8 +57,8 @@ class Artist
         $array = $db->getArtist($this->id);
         if ($array) {
             $this->name = isset($array["name"]) ? $array["name"] : null;
-            $this->albums = isset($array["albums"]) ? $array["albums"] : null;
-            $this->songs = isset($array["songs"]) ? $array["songs"] : null;
+            $this->albums = isset($array["albums"]) ? $array["albums"] : array();
+            $this->songs = isset($array["songs"]) ? $array["songs"] : array();
             $this->lastUpdate = isset($array["lastUpdate"]) ? $array["lastUpdate"] : null;
         }
     }
@@ -288,10 +288,12 @@ class Artist
                 "id" => $this->id,
                 "name" => $this->name,
                 "lastUpdate" => $this->lastUpdate,
-                "albumCount" => $this->albums ? count($this->albums) : 0,
+                "albumCount" => ($this->albums ? count($this->albums) : 0),
                 "albums" => $this->albumsToJSONString(),
-                "songCount" => $this->songs ? count($this->songs) : 0,
-                "songs" => $this->songsToJSONString()
+                "songCount" => ($this->songs ? count($this->songs) : 0),
+                "songs" => $this->songsToJSONString(),
+                "_albums" => $this->albums,
+                "_songs" => $this->songs
             )
         );
     }

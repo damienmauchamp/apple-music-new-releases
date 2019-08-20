@@ -60,7 +60,8 @@ function getArtistReleases($idArtist, $date = false)
     // Recupération des albums sur l'API
     $api = new api($artist->getId());
     $newAlbums = $api->update($artist->getLastUpdate());
-    $artist->setAlbums($newAlbums);
+    $artist->setAlbums($newAlbums['albums']);
+    $artist->setSongs($newAlbums['songs']);
 
     // json
     header("Content-type:application/json");
