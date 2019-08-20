@@ -287,7 +287,7 @@ class DB
     {
         global $idUser;
 //        $date = "NOW()";
-        $date = "$minDate 00:00:00";
+        $date = date("Y-m-d 00:00:00", strtotime($minDate));
         print_r(array('artistUpdated', $idArtist, $minDate, $date)); // debug
         $sql = "
             UPDATE users_artists
