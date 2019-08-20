@@ -288,6 +288,7 @@ class DB
         global $idUser;
 //        $date = "NOW()";
         $date = "$minDate 00:00:00";
+        print_r(array('artistUpdated', $idArtist, $minDate, $date)); // debug
         $sql = "
             UPDATE users_artists
             SET lastUpdate = :date
