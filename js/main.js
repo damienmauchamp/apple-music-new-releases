@@ -141,6 +141,8 @@ $(function () {
                 flag = false;
             }, 100);
             var id = $(this).attr(artistDataId);
+
+            /** @todo: opacity reduction, loader, hide after returning */
             $("#artist-" + id).addClass("--invisible");
             update(id, 2);
         }
