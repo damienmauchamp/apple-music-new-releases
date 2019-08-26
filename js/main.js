@@ -262,6 +262,7 @@ var getNewReleases = function () {
         var artists = JSON.parse(str);
         var count = artists.length;
         const spinner = $("#loading-spinner");
+        spinner.show();
         $(artists).each(function (i, artist) {
             $.ajax({
                 url: "./ajax/update.php",
@@ -273,9 +274,10 @@ var getNewReleases = function () {
                     // $("#new-albums").append(data);
                     // $(data).insertBefore(spinner);
                     $(data).insertBefore(spinner, $("#new-albums"));
+                    spinner.show();
                 }, complete: function () {
                     if (!--count) {
-                        $("#loading-spinner").hide();
+                        spinner.hide();
                     }
                 }
             });
