@@ -198,6 +198,10 @@ $(function () {
             $album = $(this);
         } else if (e.target.closest('.album')) {
             $album = $(e.target.closest('.album'));
+        } else if ($(this).hasClass('song')) {
+            $album = $(this);
+        } else if (e.target.closest('.song')) {
+            $album = $(e.target.closest('.song'));
         } else {
             return true;
         }
@@ -206,7 +210,7 @@ $(function () {
         e.preventDefault();
 
         $(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
-        $(".custom-menu li[data-action='open-browser'] a").attr('href', $album.attr('href'));
+        $(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
 
         // Show contextmenu
         $(".custom-menu").finish().toggle(100).
