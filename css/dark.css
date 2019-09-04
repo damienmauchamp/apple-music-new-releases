@@ -1,0 +1,91 @@
+/*
+général :
+background: #1F2022
+color: #E5E5E5
+border-color: #464646
+(sidebar)background: #2D2E30
+(sidebar titles/icons)color: #7C7C7C
+(links)color: #1689FB
+(menu)color: #FFFFFF
+
+entité album :
+(album)color: #DDDDDD
+(artist)color: #999999
+
+h1 :
+color: #FFFFFF
+h2 :
+color: #DDDDDD
+*/
+
+@media (prefers-color-scheme: dark) {
+	:root {
+	    --main-color: #E5E5E5;
+	    --main-bg-color: #1F2022;
+	}
+
+	body {
+		color: var(--main-color);
+	}
+
+	/* NAVBAR */
+	.we-localnav__background {
+	    background-color: rgba(0,0,0,0.7) !important;
+	}
+	.we-button-flat--plain {
+		color: white;
+	}
+	#nav-icon span {
+	    background: #FFF;
+	}
+	#mobile-menu {
+	    background-color: rgba(0,0,0,0.7);
+	}
+	#mobile-menu ul li {
+	    border-color: rgba(68,68,68,0.5);
+	}
+	#mobile-menu ul li a {
+	    color: white;
+	}
+
+	/* GENERAL */
+	h1.section__headline--hero {
+	    color: #FFF;
+	}
+	h2.localnav-title {
+	    color: #FFF;
+	}
+	h2.section__headline {
+	    color: #DDDDDD;
+	}
+	h3, .table__row__headline, .tracklist-item__text__headline {
+	    color: #DDDDDD;
+	}
+	*:not(.preorder) h4 {
+	    color: #999999;
+	}
+
+	.section--bordered, .table--see-all .table__head, .table__head, .table__row, .table--artwork .table__row:last-child, .table--see-all .table__row:last-child {
+	    border-color: #464646;
+	}
+
+	.table--artwork .table__row__artwork, .table--see-all .table__row__artwork {
+		border-bottom: none;
+	}
+
+
+	.is-itunes-theme .table__body--work .table__row:focus, .is-itunes-theme .table__body--work .table__row:hover, .is-itunes-theme .table__body--work:focus, .is-itunes-theme .table__body--work:focus tr, .is-itunes-theme .table__body--work:hover, .is-itunes-theme .table__body--work:hover tr, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:focus, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:hover, .is-music-theme .table__body--work .table__row:focus, .is-music-theme .table__body--work .table__row:hover, .is-music-theme .table__body--work:focus, .is-music-theme .table__body--work:focus tr, .is-music-theme .table__body--work:hover, .is-music-theme .table__body--work:hover tr, .is-music-theme .table__row.we-selectable-item--allows-interaction:focus, .is-music-theme .table__row.we-selectable-item--allows-interaction:hover {
+	    /*background: rgb(24, 25, 27);*/
+	    background-color: rgb(38, 39, 41);
+	}
+
+	.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-itunes-theme .table--see-all .table__body--work:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work:hover td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-music-theme .table--see-all .table__body--work:focus td:first-child, .is-music-theme .table--see-all .table__body--work:hover td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child {
+	    -webkit-box-shadow: -4px 0 0 0 rgb(38, 39, 41);
+	    box-shadow: -4px 0 0 0 rgb(38, 39, 41);
+	}
+
+	.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-itunes-theme .table--see-all .table__body--work:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work:hover td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-music-theme .table--see-all .table__body--work:focus td:last-child, .is-music-theme .table--see-all .table__body--work:hover td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child {
+	    -webkit-box-shadow: 4px 0 0 0 rgb(38, 39, 41);
+	    box-shadow: 4px 0 0 0 rgb(38, 39, 41);
+	}
+}

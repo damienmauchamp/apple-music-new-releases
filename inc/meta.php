@@ -8,6 +8,7 @@
     <script src="<?= $root ?>libs/select2/select2.min.js"></script>
     <link rel="stylesheet" href="<?= $root ?>css/albums.css">
     <link rel="stylesheet" href="<?= $root ?>css/main.css">
+    <link rel="stylesheet" href="<?= $root ?>css/dark.css">
     <link rel="stylesheet" href="<?= $root ?>css/fonts/sf-display.css">
     <link rel="stylesheet" href="<?= $root ?>css/fonts/sf-text.css">
 <? // if ($mobile) : ?>
@@ -15,5 +16,5 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script src="<?= $root ?>js/main.js"></script>
     <link rel="icon" type="image/png" href="<?= $root ?>favicon.png">
-    <link rel="apple-touch-icon" href="<?= $root ?>favicon.png"">
+    <link rel="apple-touch-icon" href="<?= $root ?>favicon.png">
 <? // endif; ?>
