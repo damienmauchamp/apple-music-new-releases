@@ -88,4 +88,14 @@ color: #DDDDDD
 	    -webkit-box-shadow: 4px 0 0 0 rgb(38, 39, 41);
 	    box-shadow: 4px 0 0 0 rgb(38, 39, 41);
 	}
+
+	/* CONTEXT MENU */
+	.custom-menu {
+		background-color: #1f2022;
+	    border-color: #464646;
+	}
+	.custom-menu li:hover {
+		background-color: #262729;
+	}
+
 }
