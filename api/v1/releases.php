@@ -1,33 +1,38 @@
 <?php
+// exec
 
-$routes = [
-	'/releases' => "Test:getUserAlbums"
-];
+$start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date('Y-m-d 00:00:00', strtotime('2019-10-28'));
+try {
+	$start_date = new DateTime($start_date);
+} catch(Exception $e) {
+	exit($e);
+}
 
-class Test
-{
-	public function getUserAlbums($params = []) {
-		return "Params: " . print_r($params, 1);
+$db = new AppleMusic\DB();
+$sql = "
+	SELECT *
+	FROM albums a
+	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."'
+	ORDER BY a.added ASC";
+$res = $db->selectPerso($sql);
+
+$status_code = $res ? 200 : 204;
+
+foreach ($res as $i => $item) {
+	foreach ($item as $key => $value) {
+	    if (is_int($key)) {
+	        unset($res[$i][$key]);
+	    }
 	}
 }
 
-$class_method = $routes[$api_request->infos->route];
-$cm_array = explode(':', $class_method);
+echo json_encode(array(
+	'status' => $status_code,
+	'data' => $res ?: []
+));
 
-// instanciation
-eval("\$abc = new $cm_array[0];");
-
-// exec
-eval("echo \$abc->$cm_array[1](\$api_request->params);");
-
-echo json_encode($api_request);
-// exec
-
-
-
+//$start_date->format('Y-m-d H:i:s');
 exit();
 
 $test = "Test::getUserAlbums();";
 $x = eval($test);
-
-$db = new AppleMusic\DB();
