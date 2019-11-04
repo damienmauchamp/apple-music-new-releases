@@ -198,7 +198,7 @@ class DB
     public function addAlbum($album, $idArtist)
     {
         $id = $album->getId();
-        $name = addslashes($album->getName());
+        $name = $album->getName();
         $artistName = $album->getArtistName();
         $date = fixTZDate($album->getDate());
         $artwork = $album->getArtwork();
@@ -244,7 +244,7 @@ class DB
     {
         $id = $song->getId();
         $collectionId = $song->getCollectionId();
-        $collectionName = addslashes($song->getCollectionName());
+        $collectionName = $song->getCollectionName();
         $trackName = $song->getTrackName();
         $artistName = $song->getArtistName();
         $date = fixTZDate($song->getDate());

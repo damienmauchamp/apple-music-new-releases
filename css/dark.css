@@ -24,8 +24,9 @@ color: #DDDDDD
 	    --main-bg-color: #1F2022;
 	}
 
-	body {
+	html, body {
 		color: var(--main-color);
+		background: var(--main-bg-color);
 	}
 
 	/* NAVBAR */
