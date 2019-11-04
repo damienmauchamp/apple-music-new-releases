@@ -1,7 +1,7 @@
 <?php
 // exec
 
-$start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date('Y-m-d 00:00:00', strtotime('2019-10-28'));
+$start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date('Y-m-d 00:00:00');
 try {
 	$start_date = new DateTime($start_date);
 } catch(Exception $e) {
