@@ -54,6 +54,6 @@ if(!is_file($api_request->infos->file_path)) {
     http_response_code(404);
 }
 
-//header("Content-type: application/json");
+header("Content-type: application/json");
 require __DIR__ . '/../vendor/autoload.php';
 require $api_request->infos->file_path;
