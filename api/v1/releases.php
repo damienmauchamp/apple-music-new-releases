@@ -5,11 +5,8 @@ $start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date
 try {
 	$start_date = new \DateTime($start_date);
 } catch(Exception $e) {
-	exit(json_encode(array(
-		'status' => 500,
-		'data' => [],
-		'error' => $e
-	)));
+    http_response_code(500);
+	exit($e);
 }
 
 $db = new AppleMusic\DB();
@@ -33,10 +30,6 @@ foreach ($res as $i => $item) {
 echo json_encode(array(
 	'status' => $status_code,
 	'data' => $res ?: [],
-	'params' => $_GET,
-	'start_date' => $start_date->format('Y-m-d H:i:s'),
-	'sql' => $sql,
-	'raw' => $db->selectPerso($sql)
 ));
 
 //$start_date->format('Y-m-d H:i:s');
