@@ -34,7 +34,8 @@ echo json_encode(array(
 	'status' => $status_code,
 	'data' => $res ?: [],
 	'params' => $_GET,
-	'start_date' => $start_date
+	'start_date' => $start_date->format('Y-m-d H:i:s'),
+	'sql' => $sql
 ));
 
 //$start_date->format('Y-m-d H:i:s');
