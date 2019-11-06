@@ -35,7 +35,8 @@ echo json_encode(array(
 	'data' => $res ?: [],
 	'params' => $_GET,
 	'start_date' => $start_date->format('Y-m-d H:i:s'),
-	'sql' => $sql
+	'sql' => $sql,
+	'raw' => $db->selectPerso($sql)
 ));
 
 //$start_date->format('Y-m-d H:i:s');
