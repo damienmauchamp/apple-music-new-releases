@@ -203,7 +203,7 @@ class DB
         $date = fixTZDate($album->getDate());
         $artwork = $album->getArtwork();
         $explicit = $album->isExplicit() ? 1 : 0;
-        $added = new DateTime();
+        $added = new \DateTime();
 
         $sqlAlbum = "
             INSERT INTO albums (id, name, artistName, date, artwork, explicit, added)
@@ -251,7 +251,7 @@ class DB
         $artwork = $song->getArtwork();
         $explicit = $song->isExplicit() ? 1 : 0;
         $isStreamable = $song->isStreamable() ? 1 : 0;
-        $added = new DateTime();
+        $added = new \DateTime();
 
         $sqlAlbum = "
             INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable, added)
