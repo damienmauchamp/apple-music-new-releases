@@ -33,7 +33,8 @@ foreach ($res as $i => $item) {
 echo json_encode(array(
 	'status' => $status_code,
 	'data' => $res ?: [],
-	'params' => $_GET
+	'params' => $_GET,
+	'start_date' => $start_date
 ));
 
 //$start_date->format('Y-m-d H:i:s');
