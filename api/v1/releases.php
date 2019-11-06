@@ -3,9 +3,13 @@
 
 $start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date('Y-m-d 00:00:00');
 try {
-	$start_date = new DateTime($start_date);
+	$start_date = new \DateTime($start_date);
 } catch(Exception $e) {
-	exit($e);
+	exit(json_encode(array(
+		'status' => 500,
+		'data' => $res ?: [],
+		'error' => $e
+	)));
 }
 
 $db = new AppleMusic\DB();
@@ -28,7 +32,8 @@ foreach ($res as $i => $item) {
 
 echo json_encode(array(
 	'status' => $status_code,
-	'data' => $res ?: []
+	'data' => $res ?: [],
+	'params' => $_GET
 ));
 
 //$start_date->format('Y-m-d H:i:s');
