@@ -7,7 +7,7 @@ try {
 } catch(Exception $e) {
 	exit(json_encode(array(
 		'status' => 500,
-		'data' => $res ?: [],
+		'data' => [],
 		'error' => $e
 	)));
 }
