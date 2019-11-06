@@ -25,6 +25,8 @@ foreach ($res as $i => $item) {
 	        unset($res[$i][$key]);
 	    }
 	}
+	$res[$i]['id'] = intval($res[$i]['id']);
+	$res[$i]['explicit'] = boolval($res[$i]['explicit']);
 }
 
 echo json_encode(array(
