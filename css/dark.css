@@ -1,3 +1,49 @@
+/* 
+(R,G,B)
+a.blue #0070c9, hover:#004175
+a.red #da0f47, hover:#8f0a30
+*/
+
+
+/* MAIN THEME : light; */
+:root, :root .light {
+    --main-bg-color: #FFF;
+    --main-color: #333;
+    --main-title-color: #111;
+    --main-subtitle-color: #8E8E93;
+    /* hamburger-background-color: #000 */
+    --main-border-color: #E5E5E5;
+    --main-row-bg-hover: #F8F8F8;
+    --main-nav-bg-color: rgba(255, 255, 255, .9);
+    --main-nav-border: rgba(51, 51, 51, .2);
+    --main-nav-item-border: #D6D6D6;
+
+    /* dark theme */
+    --dark-bg-color: #1F2022;
+    --dark-color: #E5E5E5;
+    --dark-title-color: #DDD;
+    --dark-subtitle-color: #999;
+    /* hamburger-background-color: #FFF */
+    --dark-border-color: #464646;
+    --dark-row-bg-hover: #262729;
+    --dark-nav-bg-color: rgba(0,0,0,0.7);
+    --dark-nav-border: rgba(51, 51, 51, .2);
+    --dark-nav-item-border: rgba(68,68,68,0.5);
+
+    /* night theme */
+    --night-bg-color: #000;
+    --night-color: #FFF;
+}
+
+:root .dark {
+    --main-bg-color: var(--dark-bg-color);
+}
+
+:root .night {
+    --main-bg-color: var(--night-bg-color);
+}
+
+
 /*
 général :
 background: #1F2022
@@ -19,9 +65,9 @@ color: #DDDDDD
 */
 
 @media (prefers-color-scheme: dark) {
-	:root {
-	    --main-color: #E5E5E5;
-	    --main-bg-color: #1F2022;
+	:root:not(.light):not(.night) {
+	    --main-color: var(--dark-bg-color);;
+	    --main-bg-color: var(--dark-bg-color);
 	}
 
 	html, body {

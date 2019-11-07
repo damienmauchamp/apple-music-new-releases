@@ -43,10 +43,20 @@ body {
     }
 }
 
+.section__headline--hero {
+    margin-bottom: .32353em;
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.20604;
+    font-weight: 700;
+    letter-spacing: .01em;
+    font-family: "SF Pro Display", "SF Pro Icons", "Apple WebExp Icons Custom", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .icon-explicit::after, .icon-explicit::before {
     /*content: "";*/
     content: "";
-    background: url(https://host.pluspremieres.us/files/explicit.svg) no-repeat center;
+    background: url(../img/explicit.svg) no-repeat center;
     height: 13px;
     width: 13px;
     background-size: 9px;
