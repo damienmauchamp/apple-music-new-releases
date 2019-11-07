@@ -169,7 +169,7 @@ class DB
 
         $sqlUserArtist = "
             INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
-            VALUES (:id_user, :id, NOW(), 1)
+            VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
             ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
 
 
