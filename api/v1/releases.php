@@ -21,6 +21,7 @@ $res = $db->selectPerso($sql);
 $status_code = $res ? 200 : 204;
 
 $return = array();
+$ixxx = array();
 
 foreach ($res as $i => $item) {
 	foreach ($item as $key => $value) {
@@ -33,8 +34,9 @@ foreach ($res as $i => $item) {
 
 	if ($only_explicit) {
 		// find duplicates
-		$index = array_keys(array_filter($array, function($element) use($item){ return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}))[0];
-		$return[] = $res[$index];
+		$indexes = array_keys(array_filter($array, function($element) use($item){ return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}))[0];
+		$ixxx[] = $indexes;
+		$return[] = $res[$indexes[0]];
 	}
 }
 
@@ -42,7 +44,8 @@ echo json_encode(array(
 	'status' => $status_code,
 	'data' => $only_explicit ? ($return ?: []) : ($res ?: []),
 	'res' => $res,
-	'ret' => $return
+	'ret' => $return,
+	'indexes' => $ixxx
 ));
 
 //$start_date->format('Y-m-d H:i:s');
