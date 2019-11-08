@@ -42,7 +42,7 @@ foreach ($res as $i => $item) {
 
 echo json_encode(array(
 	'status' => $status_code,
-	'data' => $only_explicit ? ($return ?: []) : ($res ?: []),
+	'data' => $only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []),
 	'res' => $res,
 	'ret' => $return,
 	'indexes' => $ixxx
