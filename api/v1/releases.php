@@ -34,7 +34,7 @@ foreach ($res as $i => $item) {
 
 	if ($only_explicit) {
 		// find duplicates
-		$indexes = array_keys(array_filter($array, function($element) use($item){ return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}))[0];
+		$indexes = array_keys(array_filter($array, function($element) use($item){ return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}));
 		$ixxx[] = $indexes;
 		$return[] = $res[$indexes[0]];
 	}
