@@ -30,6 +30,7 @@ foreach ($res as $i => $item) {
 	}
 	$res[$i]['id'] = intval($res[$i]['id']);
 	$res[$i]['explicit'] = boolval($res[$i]['explicit']);
+	$res[$i]['link'] = "https://music.apple.com/fr/album/" . preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($item["name"])), "-")) . "/" . $item["id"];
 
 	if ($only_explicit) {
 		// find duplicates
