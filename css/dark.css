@@ -4,6 +4,15 @@ a.blue #0070c9, hover:#004175
 a.red #da0f47, hover:#8f0a30
 */
 
+/** add to main.css */
+.select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple {
+	border: none;
+}
+
+.select2-dropdown {
+	border: none;
+}
+
 
 /* MAIN THEME : light; */
 :root {
@@ -11,72 +20,241 @@ a.red #da0f47, hover:#8f0a30
     --main-color: #333;
     --main-title-color: #111;
     --main-subtitle-color: #8E8E93;
-    /* hamburger-background-color: #000 */
+    --main-hamburger-background-color: #000;
     --main-border-color: #E5E5E5;
     --main-row-bg-hover: #F8F8F8;
     --main-nav-bg-color: rgba(255, 255, 255, .9);
     --main-nav-border: rgba(51, 51, 51, .2);
     --main-nav-item-border: #D6D6D6;
 
+    --main-input-background: #FFFFFF;
+    --main-input-tag-background-color: none;
+    --main-input-tag-color: none;
+
     /* light-theme */
     --light-bg-color: #FFF;
     --light-color: #333;
     --light-title-color: #111;
     --light-subtitle-color: #8E8E93;
-    /* hamburger-background-color: #000 */
+    --light-hamburger-background-color: #000;
     --light-border-color: #E5E5E5;
     --light-row-bg-hover: #F8F8F8;
     --light-nav-bg-color: rgba(255, 255, 255, .9);
     --light-nav-border: rgba(51, 51, 51, .2);
     --light-nav-item-border: #D6D6D6;
 
+    --light-input-background: #FFFFFF;
+    --light-input-tag-background-color: none;
+    --light-input-tag-color: none;
+
     /* dark theme */
     --dark-bg-color: #1F2022;
     --dark-color: #E5E5E5;
     --dark-title-color: #DDD;
     --dark-subtitle-color: #999;
-    /* hamburger-background-color: #FFF */
+    --dark-hamburger-background-color: #FFF;
     --dark-border-color: #464646;
     --dark-row-bg-hover: #262729;
     --dark-nav-bg-color: rgba(0,0,0,0.7);
     --dark-nav-border: rgba(51, 51, 51, .2);
     --dark-nav-item-border: rgba(68,68,68,0.5);
 
+    --dark-input-background: #222224;
+    --dark-input-tag-background-color: #5E5E63;
+    --dark-input-tag-color: #FFFFFF;
+
     /* night theme */
-    --night-bg-color: #000;
-    --night-color: #FFF;
+	--night-bg-color: #000000;
+	--night-color: #FFFFFF;
+	--night-title-color: #FFFFFF;
+	--night-subtitle-color: #8D8D92;
+	--night-hamburger-background-color: #FFFFFF;
+	--night-border-color: #2B2B2D;
+	--night-row-bg-hover: #1C1C1E; /*#0F0F10*/
+	--night-nav-bg-color: rgba(7,7,7,0.7);
+	--night-nav-border: rgba(51, 51, 51, .2);
+	--night-nav-item-border: rgba(51, 51, 51, .2);
+
+    --night-input-background: #222224;
+    --night-input-tag-background-color: #5E5E63;
+    --night-input-tag-color: #FFFFFF;
 }
 
 :root, :root .light {
-    --main-bg-color: var(--light-bg-color);
-    --main-color: var(--light-color);
+	--main-bg-color: var(--light-bg-color);
+	--main-color: var(--light-color);
+	--main-title-color: var(--light-title-color);
+	--main-subtitle-color: var(--light-subtitle-color);
+	--main-hamburger-background-color: var(--light-hamburger-background-color);
+	--main-border-color: var(--light-border-color);
+	--main-row-bg-hover: var(--light-row-bg-hover);
+	--main-nav-bg-color: var(--light-nav-bg-color);
+	--main-nav-border: var(--light-nav-border);
+	--main-nav-item-border: var(--light-nav-item-border);
+
+    --main-input-background: var(--light-input-background);
+    --main-input-tag-background-color: var(--light-input-tag-background-color);
+    --main-input-tag-color: var(--light-input-tag-color);
 }
 
 :root .dark {
-    --main-bg-color: var(--dark-bg-color);
-    --main-color: var(--dark-color);
+	--main-bg-color: var(--dark-bg-color);
+	--main-color: var(--dark-color);
+	--main-title-color: var(--dark-title-color);
+	--main-subtitle-color: var(--dark-subtitle-color);
+	--main-hamburger-background-color: var(--dark-hamburger-background-color);
+	--main-border-color: var(--dark-border-color);
+	--main-row-bg-hover: var(--dark-row-bg-hover);
+	--main-nav-bg-color: var(--dark-nav-bg-color);
+	--main-nav-border: var(--dark-nav-border);
+	--main-nav-item-border: var(--dark-nav-item-border);
+
+    --main-input-background: var(--dark-input-background);
+    --main-input-tag-background-color: var(--dark-input-tag-background-color);
+    --main-input-tag-color: var(--dark-input-tag-color);
 }
 
 :root .night {
-    --main-bg-color: var(--night-bg-color);
-    --main-color: var(--night-color);
+	--main-bg-color: var(--night-bg-color);
+	--main-color: var(--night-color);
+	--main-title-color: var(--night-title-color);
+	--main-subtitle-color: var(--night-subtitle-color);
+	--main-hamburger-background-color: var(--night-hamburger-background-color);
+	--main-border-color: var(--night-border-color);
+	--main-row-bg-hover: var(--night-row-bg-hover);
+	--main-nav-bg-color: var(--night-nav-bg-color);
+	--main-nav-border: var(--night-nav-border);
+	--main-nav-item-border: var(--night-nav-item-border);
+
+    --main-input-background: var(--night-input-background);
+    --main-input-tag-background-color: var(--night-input-tag-background-color);
+    --main-input-tag-color: var(--night-input-tag-color);
 }
 
-body {
-    color: var(--main-color);
-    background: var(--main-bg-color);
+/* GENERAL */
+html, body {
+	color: var(--main-color);
+	background: var(--main-bg-color);
 }
 .main {
     background: var(--main-bg-color);
 }
+
+h1.section__headline--hero {
+    color: var(--main-title-color);
+}
+h2.localnav-title {
+    color: var(--main-color);
+}
+h2.section__headline {
+    color: var(--main-title-color);
+}
+h3, .table__row__headline, .tracklist-item__text__headline {
+    color: var(--main-title-color);
+}
+*:not(.preorder) h4 {
+    color: var(--main-subtitle-color);
+}
+
+
+/* NAVBAR */
+.we-localnav__background {
+    background-color: var(--main-nav-bg-color) !important;
+}
+.we-button-flat--plain {
+	color: white;
+}
+#nav-icon span {
+    background: var(--main-hamburger-background-color);
+}
+#mobile-menu {
+    background-color: var(--main-nav-bg-color);
+}
+#mobile-menu ul li {
+    border-color: var(--main-nav-item-border);
+}
+#mobile-menu ul li a {
+    color: var(--main-color);
+}
+
+/* SECTIONS */
+.section--bordered, .table--see-all .table__head, .table__head, .table__row, .table--artwork .table__row:last-child, .table--see-all .table__row:last-child {
+    border-color: var(--main-border-color);
+}
+
+.table--artwork .table__row__artwork, .table--see-all .table__row__artwork {
+	border-bottom: none;
+}
+
+
+.is-itunes-theme .table__body--work .table__row:focus, .is-itunes-theme .table__body--work .table__row:hover, .is-itunes-theme .table__body--work:focus, .is-itunes-theme .table__body--work:focus tr, .is-itunes-theme .table__body--work:hover, .is-itunes-theme .table__body--work:hover tr, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:focus, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:hover, .is-music-theme .table__body--work .table__row:focus, .is-music-theme .table__body--work .table__row:hover, .is-music-theme .table__body--work:focus, .is-music-theme .table__body--work:focus tr, .is-music-theme .table__body--work:hover, .is-music-theme .table__body--work:hover tr, .is-music-theme .table__row.we-selectable-item--allows-interaction:focus, .is-music-theme .table__row.we-selectable-item--allows-interaction:hover {
+    /*background: rgb(24, 25, 27);*/
+    background-color: var(--main-row-bg-hover);
+}
+
+.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-itunes-theme .table--see-all .table__body--work:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work:hover td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-music-theme .table--see-all .table__body--work:focus td:first-child, .is-music-theme .table--see-all .table__body--work:hover td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child {
+    -webkit-box-shadow: -4px 0 0 0 var(--main-row-bg-hover);
+    box-shadow: -4px 0 0 0 var(--main-row-bg-hover);
+}
+
+.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-itunes-theme .table--see-all .table__body--work:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work:hover td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-music-theme .table--see-all .table__body--work:focus td:last-child, .is-music-theme .table--see-all .table__body--work:hover td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child {
+    -webkit-box-shadow: 4px 0 0 0 var(--main-row-bg-hover);
+    box-shadow: 4px 0 0 0 var(--main-row-bg-hover);
+}
+
+/* SELECT2 */
+
+.select2 input {
+	color: var(--main-color);
+}
+
+.select2-results__option {
+	color: var(--main-color);
+}
+
+.select2-dropdown {
+	/* background: #1C1C1E; TODO !*/
+	/* + 'Ajouter' + gestion .light*/
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: var(--main-input-background);
+    color: var(--main-color);
+}
+
+/* CONTEXT MENU */
 .custom-menu {
     color: var(--main-color);
     background: var(--main-bg-color);
+	background-color: var(--main-bg-color);
+    border-color: var(--main-border-color);
+}
+.custom-menu li:hover {
+	background-color: var(--main-row-bg-hover);
 }
 .custom-menu li a {
     color: var(--main-color);
 }
 
+@media (prefers-color-scheme: dark) {
+	:root:not(.light):not(.night) {
+		--main-bg-color: var(--dark-bg-color);
+		--main-color: var(--dark-color);
+		--main-title-color: var(--dark-title-color);
+		--main-subtitle-color: var(--dark-subtitle-color);
+		--main-hamburger-background-color: var(--dark-hamburger-background-color);
+		--main-border-color: var(--dark-border-color);
+		--main-row-bg-hover: var(--dark-row-bg-hover);
+		--main-nav-bg-color: var(--dark-nav-bg-color);
+		--main-nav-border: var(--dark-nav-border);
+		--main-nav-item-border: var(--dark-nav-item-border);
+
+	    --main-input-background: var(--dark-input-background);
+	    --main-input-tag-background-color: var(--dark-input-tag-background-color);
+	    --main-input-tag-color: var(--dark-input-tag-color);
+	}
+
+}
 
 /*
 général :
@@ -97,86 +275,3 @@ color: #FFFFFF
 h2 :
 color: #DDDDDD
 */
-
-@media (prefers-color-scheme: dark) {
-	:root:not(.light):not(.night) {
-	    --main-color: var(--dark-bg-color);;
-	    --main-bg-color: var(--dark-bg-color);
-	}
-
-	html, body {
-		color: var(--main-color);
-		background: var(--main-bg-color);
-	}
-
-	/* NAVBAR */
-	.we-localnav__background {
-	    background-color: rgba(0,0,0,0.7) !important;
-	}
-	.we-button-flat--plain {
-		color: white;
-	}
-	#nav-icon span {
-	    background: #FFF;
-	}
-	#mobile-menu {
-	    background-color: rgba(0,0,0,0.7);
-	}
-	#mobile-menu ul li {
-	    border-color: rgba(68,68,68,0.5);
-	}
-	#mobile-menu ul li a {
-	    color: white;
-	}
-
-	/* GENERAL */
-	h1.section__headline--hero {
-	    color: #FFF;
-	}
-	h2.localnav-title {
-	    color: #FFF;
-	}
-	h2.section__headline {
-	    color: #DDDDDD;
-	}
-	h3, .table__row__headline, .tracklist-item__text__headline {
-	    color: #DDDDDD;
-	}
-	*:not(.preorder) h4 {
-	    color: #999999;
-	}
-
-	.section--bordered, .table--see-all .table__head, .table__head, .table__row, .table--artwork .table__row:last-child, .table--see-all .table__row:last-child {
-	    border-color: #464646;
-	}
-
-	.table--artwork .table__row__artwork, .table--see-all .table__row__artwork {
-		border-bottom: none;
-	}
-
-
-	.is-itunes-theme .table__body--work .table__row:focus, .is-itunes-theme .table__body--work .table__row:hover, .is-itunes-theme .table__body--work:focus, .is-itunes-theme .table__body--work:focus tr, .is-itunes-theme .table__body--work:hover, .is-itunes-theme .table__body--work:hover tr, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:focus, .is-itunes-theme .table__row.we-selectable-item--allows-interaction:hover, .is-music-theme .table__body--work .table__row:focus, .is-music-theme .table__body--work .table__row:hover, .is-music-theme .table__body--work:focus, .is-music-theme .table__body--work:focus tr, .is-music-theme .table__body--work:hover, .is-music-theme .table__body--work:hover tr, .is-music-theme .table__row.we-selectable-item--allows-interaction:focus, .is-music-theme .table__row.we-selectable-item--allows-interaction:hover {
-	    /*background: rgb(24, 25, 27);*/
-	    background-color: rgb(38, 39, 41);
-	}
-
-	.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-itunes-theme .table--see-all .table__body--work:focus td:first-child, .is-itunes-theme .table--see-all .table__body--work:hover td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:first-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:first-child, .is-music-theme .table--see-all .table__body--work:focus td:first-child, .is-music-theme .table--see-all .table__body--work:hover td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:first-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:first-child {
-	    -webkit-box-shadow: -4px 0 0 0 rgb(38, 39, 41);
-	    box-shadow: -4px 0 0 0 rgb(38, 39, 41);
-	}
-
-	.is-itunes-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-itunes-theme .table--see-all .table__body--work:focus td:last-child, .is-itunes-theme .table--see-all .table__body--work:hover td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-itunes-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:focus td:last-child, .is-music-theme .table--see-all .table__body--work .table__row:hover td:last-child, .is-music-theme .table--see-all .table__body--work:focus td:last-child, .is-music-theme .table--see-all .table__body--work:hover td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:focus td:last-child, .is-music-theme .table--see-all .table__row.we-selectable-item--allows-interaction:hover td:last-child {
-	    -webkit-box-shadow: 4px 0 0 0 rgb(38, 39, 41);
-	    box-shadow: 4px 0 0 0 rgb(38, 39, 41);
-	}
-
-	/* CONTEXT MENU */
-	.custom-menu {
-		background-color: #1f2022;
-	    border-color: #464646;
-	}
-	.custom-menu li:hover {
-		background-color: #262729;
-	}
-
-}
