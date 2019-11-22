@@ -306,41 +306,37 @@ h3, .table__row__headline, .tracklist-item__text__headline {
 }
 
 @media (prefers-color-scheme: dark) {
-	:root:not(.light):not(.night) {
-		--main-bg-color: var(--dark-bg-color);
-		--main-color: var(--dark-color);
-		--main-title-color: var(--dark-title-color);
-		--main-subtitle-color: var(--dark-subtitle-color);
-		--main-hamburger-background-color: var(--dark-hamburger-background-color);
-		--main-border-color: var(--dark-border-color);
-		--main-row-bg-hover: var(--dark-row-bg-hover);
-		--main-nav-bg-color: var(--dark-nav-bg-color);
-		--main-nav-border: var(--dark-nav-border);
-		--main-nav-item-border: var(--dark-nav-item-border);
+    :root:not(.light):not(.night) {
+        --main-bg-color: var(--night-bg-color);
+        --main-color: var(--night-color);
+        --main-title-color: var(--night-title-color);
+        --main-subtitle-color: var(--night-subtitle-color);
+        --main-hamburger-background-color: var(--night-hamburger-background-color);
+        --main-border-color: var(--night-border-color);
+        --main-row-bg-hover: var(--night-row-bg-hover);
+        --main-nav-bg-color: var(--night-nav-bg-color);
+        --main-nav-border: var(--night-nav-border);
+        --main-nav-item-border: var(--night-nav-item-border);
 
-	    --main-input-background: var(--dark-input-background);
-	    --main-input-tag-background-color: var(--dark-input-tag-background-color);
-	    --main-input-tag-color: var(--dark-input-tag-color);
-	}
+        --main-input-background: var(--night-input-background);
+        --main-input-tag-background-color: var(--night-input-tag-background-color);
+        --main-input-tag-color: var(--night-input-tag-color);
+    }
+    :root:not(.light):not(.night) .variant-dark {
+        --main-bg-color: var(--dark-bg-color);
+        --main-color: var(--dark-color);
+        --main-title-color: var(--dark-title-color);
+        --main-subtitle-color: var(--dark-subtitle-color);
+        --main-hamburger-background-color: var(--dark-hamburger-background-color);
+        --main-border-color: var(--dark-border-color);
+        --main-row-bg-hover: var(--dark-row-bg-hover);
+        --main-nav-bg-color: var(--dark-nav-bg-color);
+        --main-nav-border: var(--dark-nav-border);
+        --main-nav-item-border: var(--dark-nav-item-border);
+
+        --main-input-background: var(--dark-input-background);
+        --main-input-tag-background-color: var(--dark-input-tag-background-color);
+        --main-input-tag-color: var(--dark-input-tag-color);
+    }
 
 }
-
-/*
-général :
-background: #1F2022
-color: #E5E5E5
-border-color: #464646
-(sidebar)background: #2D2E30
-(sidebar titles/icons)color: #7C7C7C
-(links)color: #1689FB
-(menu)color: #FFFFFF
-
-entité album :
-(album)color: #DDDDDD
-(artist)color: #999999
-
-h1 :
-color: #FFFFFF
-h2 :
-color: #DDDDDD
-*/

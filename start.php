@@ -65,7 +65,7 @@ $mobile = $detect->isMobile();
 
 // theme
 $theme = "is-music-theme";
-if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', 'night'])) {
+if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', 'night', 'variant-dark'])) {
     $theme .= " {$_COOKIE['theme']}";
 }
 
