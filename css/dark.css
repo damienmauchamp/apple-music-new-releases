@@ -58,6 +58,9 @@ a.red #da0f47, hover:#8f0a30
 .notification-bottom.two-button .notification-button {
     width: 50%;
 }
+/*
+$('body').append('<div class="notification-mask"><div class="notification"><div class="notification-top"><p>test ets festf sefseft esftef sfte sfistef esft esf esfesfe. Se leifj, ifjsmofdsf.</p></div><div class="notification-bottom two-button"><div class="notification-button">Annuler</div><div class="notification-button">OK</div></div></div></div>');
+*/
 
 
 /* ************************* */
