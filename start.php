@@ -62,7 +62,13 @@ if (isset($argv)) {
 $detect = new Mobile_Detect;
 $mobile = $detect->isMobile();
 //$page = isset($_GET["page"]) ? $_GET["page"] : null;
+
+// theme
 $theme = "is-music-theme";
+if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', 'night'])) {
+    $theme .= " {$_COOKIE['theme']}";
+}
+
 $daysInterval = 3;
 $news = isset($_GET["refresh"]);
 $full = isset($_GET["full"]);

@@ -13,6 +13,54 @@ a.red #da0f47, hover:#8f0a30
 	border: none;
 }
 
+.notification-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.notification {
+    background-color: var(--main-input-background);
+    border-radius: 30px;
+    position: relative;
+    margin: auto;
+    width: 72%;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.notification-top {
+    border-bottom: 1px solid var(--main-notification-border-color);
+}
+
+.notification-top, .notification-bottom .notification-button {
+    padding: 20px;
+    font-size: 20px;
+}
+
+.notification-bottom .notification-button {
+    display: inline-block;
+    color: var(--main-notification-link-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.notification-bottom .notification-button:nth-child(n+2) {
+    border-left: 1px solid var(--main-notification-border-color);
+}
+
+.notification-bottom.two-button .notification-button {
+    width: 50%;
+}
+
+
+/* ************************* */
 
 /* MAIN THEME : light; */
 :root {
@@ -31,6 +79,9 @@ a.red #da0f47, hover:#8f0a30
     --main-input-tag-background-color: none;
     --main-input-tag-color: none;
 
+    --main-notification-link-color: #3478F6;
+    --main-notification-border-color: #DBDBDB;
+
     /* light-theme */
     --light-bg-color: #FFF;
     --light-color: #333;
@@ -46,6 +97,9 @@ a.red #da0f47, hover:#8f0a30
     --light-input-background: #FFFFFF;
     --light-input-tag-background-color: none;
     --light-input-tag-color: none;
+
+    --light-notification-link-color: #3478F6;
+    --light-notification-border-color: #DBDBDB;
 
     /* dark theme */
     --dark-bg-color: #1F2022;
@@ -63,6 +117,9 @@ a.red #da0f47, hover:#8f0a30
     --dark-input-tag-background-color: #5E5E63;
     --dark-input-tag-color: #FFFFFF;
 
+    --light-notification-link-color: #5A91F7;
+    --light-notification-border-color: #39393B;
+
     /* night theme */
 	--night-bg-color: #000000;
 	--night-color: #FFFFFF;
@@ -78,6 +135,9 @@ a.red #da0f47, hover:#8f0a30
     --night-input-background: #222224;
     --night-input-tag-background-color: #5E5E63;
     --night-input-tag-color: #FFFFFF;
+
+    --light-notification-link-color: #5A91F7;
+    --light-notification-border-color: #39393B;
 }
 
 :root, :root .light {
@@ -95,6 +155,9 @@ a.red #da0f47, hover:#8f0a30
     --main-input-background: var(--light-input-background);
     --main-input-tag-background-color: var(--light-input-tag-background-color);
     --main-input-tag-color: var(--light-input-tag-color);
+
+    --main-notification-link-color: var(--light-notification-link-color);
+    --main-notification-border-color: var(--light-notification-border-color);
 }
 
 :root .dark {
@@ -112,6 +175,9 @@ a.red #da0f47, hover:#8f0a30
     --main-input-background: var(--dark-input-background);
     --main-input-tag-background-color: var(--dark-input-tag-background-color);
     --main-input-tag-color: var(--dark-input-tag-color);
+
+    --main-notification-link-color: var(--dark-notification-link-color);
+    --main-notification-border-color: var(--dark-notification-border-color);
 }
 
 :root .night {
@@ -129,6 +195,9 @@ a.red #da0f47, hover:#8f0a30
     --main-input-background: var(--night-input-background);
     --main-input-tag-background-color: var(--night-input-tag-background-color);
     --main-input-tag-color: var(--night-input-tag-color);
+
+    --main-notification-link-color: var(--night-notification-link-color);
+    --main-notification-border-color: var(--night-notification-border-color);
 }
 
 /* GENERAL */

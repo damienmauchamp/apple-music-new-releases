@@ -251,6 +251,23 @@ $(function () {
     });
 });
 
+var change_theme = function(theme) {
+    if (['light', 'dark', 'night'].includes(theme)) {
+        document.cookie = "theme=" + theme;
+        $('body').addClass(theme);
+    } else {
+        document.cookie = "theme=variant";
+        $('body')
+            .removeClass('light')
+            .removeClass('dark')
+            .removeClass('night');
+    }
+    /*
+transition: background-color .5s ease .7s;
+    */
+
+}
+
 var getNewReleases = function () {
 
     function getArtists() {
