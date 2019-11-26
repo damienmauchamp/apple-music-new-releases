@@ -260,7 +260,7 @@ var change_theme = function(theme) {
         document.cookie = "theme=" + theme;
         $('body').addClass(theme);
     } else {
-        document.cookie = "theme=variant";
+        document.cookie = "theme=variant; expires=Fri, 31 Dec 9999 23:59:59 GMT;";
     }
     /*
 transition: background-color .5s ease .7s;
