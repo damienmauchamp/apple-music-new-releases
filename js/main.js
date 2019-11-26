@@ -249,7 +249,59 @@ $(function () {
         // Hide it AFTER the action was triggered
         $(".custom-menu").hide(100);
     });
+
+
+    // notifications
+    $(document).on('click', '#notification-button-submit', function(e) {
+        $(this).closest('.notification').fadeOut('fast', function() {
+            $(this).closest('.notification-mask').fadeOut('fast', function() {
+                $(this).remove();
+            });
+        });
+    });
+
+    // theme selector
+    $(document).change('.theme-input', function(e){
+        change_theme($(e.target).val());
+    });
+
+    $(document).on('click', '#settings', function() {
+        $('.notification-mask').remove();
+        console.log('test');
+        open_theme_settings();
+    })
 });
+
+var display_notification = function(options) {
+     $('body').append('<div class="notification-mask" style="display:none"><div class="notification"><div class="notification-top"><div class="notification-title">'+options.title+'</div><div class="notification-body">'+options.body+'</div></div><div class="notification-bottom"><!--div class="notification-button">Annuler</div--><div class="notification-button" id="notification-button-submit">OK</div></div></div></div>');
+     $('.notification-mask').fadeIn(50);
+}
+
+var open_theme_settings = function() {
+
+    var theme = getCookie('theme') || 'variant';
+
+    display_notification({
+        title: `Changement de thème`,
+        body: `
+<h3>Forcé :</h3>
+<input type="radio" class="theme-input" name="theme" id="light" value="light"/>
+<label for="light">Clair</label>
+<input type="radio" class="theme-input" name="theme" id="dark" value="dark"/>
+<label for="dark">Sombre</label>
+<input type="radio" class="theme-input" name="theme" id="night" value="night"/>
+<label for="night">Nuit</label>
+
+<h3>Variant :</h3>
+<input type="radio" class="theme-input" name="theme" id="variant" value="variant"/>
+<label for="variant">Clair / Nuit</label>
+<input type="radio" class="theme-input" name="theme" id="variant-dark" value="variant-dark"/>
+<label for="variant-dark">Clair / Sombre</label>
+        `
+    });
+
+    $('.theme-input#'+theme).prop('checked', true);
+}
 
 var change_theme = function(theme) {
     var themes = ['light', 'dark', 'night', 'variant-dark'];
@@ -257,10 +309,12 @@ var change_theme = function(theme) {
         $('body').removeClass(t);
     });
     if (themes.includes(theme)) {
-        document.cookie = "theme=" + theme;
+        setCookie('theme', theme, 99999);
+        //document.cookie = "theme=" + theme;
         $('body').addClass(theme);
     } else {
-        document.cookie = "theme=variant; expires=Fri, 31 Dec 9999 23:59:59 GMT;";
+        setCookie('theme', 'variant', 99999);
+        //document.cookie = "theme=variant; expires=Fri, 31 Dec 9999 23:59:59 GMT;";
     }
     /*
 transition: background-color .5s ease .7s;
@@ -306,3 +360,26 @@ var getNewReleases = function () {
     });
 
 };
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}

@@ -13,6 +13,10 @@ a.red #da0f47, hover:#8f0a30
 	border: none;
 }
 
+#settings {
+    cursor: pointer;
+}
+
 .notification-mask {
     position: fixed;
     top: 0;
@@ -33,6 +37,7 @@ a.red #da0f47, hover:#8f0a30
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+    max-height: 75%;
 }
 
 .notification-top {
@@ -44,6 +49,16 @@ a.red #da0f47, hover:#8f0a30
     font-size: 20px;
 }
 
+.notification-title {
+    padding: 0 0 10px;
+}
+
+.notification-body {
+    max-height: 50vh;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
 .notification-bottom .notification-button {
     display: inline-block;
     color: var(--main-notification-link-color);
@@ -53,6 +68,10 @@ a.red #da0f47, hover:#8f0a30
 
 .notification-bottom .notification-button:nth-child(n+2) {
     border-left: 1px solid var(--main-notification-border-color);
+}
+
+.notification-bottom .notification-button {
+    width: 100%;
 }
 
 .notification-bottom.two-button .notification-button {

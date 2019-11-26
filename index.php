@@ -63,6 +63,8 @@ if ($news && $nodisplay) {
                     <input type="checkbox"
                            id="mail-alert" <?= getNotificationsStatus() ? "checked=\"checked\"" : "" ?>/>
                     Notifications par mail</label>
+
+                <i class="fa fa-cog" id="settings"></i>
             </div>
         </section>
 

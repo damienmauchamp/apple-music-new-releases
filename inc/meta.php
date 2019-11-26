@@ -18,3 +18,6 @@
     <link rel="icon" type="image/png" href="<?= $root ?>favicon.png">
     <link rel="apple-touch-icon" href="<?= $root ?>favicon.png">
 <? // endif; ?>
+
+    <script src="<?= $root ?>libs/fontawesome/fontawesome-5.11.2.js"></script>
+    <link rel="stylesheet" href="<?= $root ?>libs/fontawesome/css/fontawesome-5.11.2.css">
