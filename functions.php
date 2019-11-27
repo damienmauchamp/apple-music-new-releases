@@ -122,7 +122,7 @@ function getAllNewReleases()
     $releases = array();
     /*$removal =*/
     $db->removeOldAlbums();
-    //$db->removeOldSongs();
+    $db->removeOldSongs();
     $artists = $db->getUsersArtists();
     if (!$artists) {
         return $releases;
@@ -134,7 +134,7 @@ function getAllNewReleases()
     return $releases;
 }
 
-function removeOldAlbums($days = 14)
+function removeOldAlbums($days = 180)
 {
     $db = new db;
     return $db->removeOldAlbums($days);

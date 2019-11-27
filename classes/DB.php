@@ -323,12 +323,12 @@ class DB
         return $res;
     }
 
-    public function removeOldAlbums($days = 14)
+    public function removeOldAlbums($days = 180)
     {
         global $idUser;
         $this->disableForeignKeysCheck();
         $this->connect();
-        $stmt = $this->dbh->prepare("
+        /*$stmt = $this->dbh->prepare("
             DELETE aa, al
             FROM albums al
               INNER JOIN artists_albums aa ON al.id = aa.idAlbum
@@ -336,18 +336,26 @@ class DB
               INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
             WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
-        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));
+        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));*/
+        $stmt = $this->dbh->prepare("
+            DELETE aa, al
+            FROM albums al
+              JOIN artists_albums aa ON al.id = aa.idAlbum
+              JOIN artists ar ON ar.id = aa.idArtist
+            WHERE al.date < DATE_SUB(NOW(), INTERVAL :days DAY);"
+        );
+        $res = $stmt->execute(array("days" => $days));
         $this->disconnect();
         $this->enableForeignKeysCheck();
         return $res;
     }
 
-    public function removeOldSongs($days = 21)
+    public function removeOldSongs($days = 90)
     {
         global $idUser;
         $this->disableForeignKeysCheck();
         $this->connect();
-        $stmt = $this->dbh->prepare("
+        /*$stmt = $this->dbh->prepare("
             DELETE aa, al
             FROM songs al
               INNER JOIN artists_songs aa ON al.id = aa.idAlbum
@@ -355,7 +363,15 @@ class DB
               INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
             WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
         );
-        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));
+        $res = $stmt->execute(array("id_user" => $idUser, "days" => $days));*/
+        $stmt = $this->dbh->prepare("
+            DELETE aa, al
+            FROM songs al
+              JOIN artists_songs aa ON al.id = aa.idAlbum
+              JOIN artists ar ON ar.id = aa.idArtist
+            WHERE al.date < DATE_SUB(NOW(), INTERVAL :days DAY);"
+        );
+        $res = $stmt->execute(array("days" => $days));
         $this->disconnect();
         $this->enableForeignKeysCheck();
         return $res;
@@ -368,7 +384,7 @@ class DB
         $stmt = $this->dbh->prepare("
             SELECT *
             FROM users_artists ua
-            WHERE  ua.idUser = :id_user AND ua.idArtist = :id_artist;"
+            WHERE ua.idUser = :id_user AND ua.idArtist = :id_artist;"
         );
         $stmt->execute(array("id_user" => $idUser, "id_artist" => $id));
         $res = $stmt->fetch();
