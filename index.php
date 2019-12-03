@@ -73,11 +73,12 @@ if ($news && $nodisplay) {
             </div>
         </section>
 
-        <? if (true) : $display = 'grid'; ?>
-            <?= getThisWeekReleases(); ?>
-        <? endif; ?>
-
         <? if ($news) : ?>
+
+            <?
+                $display = 'grid';
+                getThisWeekReleases();
+            ?>
 
             <section class="l-content-width section section--bordered">
                 <h2 class="section__headline">
