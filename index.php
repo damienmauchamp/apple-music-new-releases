@@ -75,11 +75,6 @@ if ($news && $nodisplay) {
 
         <? if ($news) : ?>
 
-            <?
-                $display = 'grid';
-                getThisWeekReleases();
-            ?>
-
             <section class="l-content-width section section--bordered">
                 <h2 class="section__headline">
                     Nouveaux albums
@@ -106,6 +101,9 @@ if ($news && $nodisplay) {
             </section>
 
         <? else :
+            $display = 'grid';
+            echo getThisWeekReleases();
+
             $display = 'row';
             $albums = getAllAlbums();
             $songs = false;//getAllSongs();
