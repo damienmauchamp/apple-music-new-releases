@@ -26,6 +26,44 @@ function displaySongs($songs)
     }
 }
 
+function getThisWeekReleases() {
+    $db = new db;
+    $releases = $db->getUserWeekReleases();
+
+    if (!$releases) {
+        return '';
+    }
+
+    $html = '
+        <section class="main-header l-content-width section section--bordered">
+            <div class="section-header section__headline">
+                <h1 class="section__headline--hero">Sorties de la semaine</h1>
+            </div>
+
+            <div class="section-body l-row">';
+
+    foreach (json_decode($releases) as $r) {
+        $artistId = $r->idArtist;
+        $album = Album::withArray(Album::objectToArray($r));
+        if (!isset($artists[$artistId])) {
+            $artists[$artistId] = array(
+                "id" => $artistId,
+                "name" => $r->artistName,
+                "albums" => array(),
+                "lastUpdate" => $r->lastUpdate
+            );
+        }
+        $display = 'grid';
+        $html .= $album->toString('grid');
+    }
+
+    $html .= '
+            </div>
+        </section>';
+
+    return $html;
+}
+
 // Dernières sorties depuis actualisation, dans la BD
 function getAllAlbums($display = "artists")
 {

@@ -73,6 +73,10 @@ if ($news && $nodisplay) {
             </div>
         </section>
 
+        <? if (true) : $display = 'grid'; ?>
+            <?= getThisWeekReleases(); ?>
+        <? endif; ?>
+
         <? if ($news) : ?>
 
             <section class="l-content-width section section--bordered">
@@ -101,6 +105,7 @@ if ($news && $nodisplay) {
             </section>
 
         <? else :
+            $display = 'row';
             $albums = getAllAlbums();
             $songs = false;//getAllSongs();
             //var_dump($songs);

@@ -245,7 +245,8 @@ class Artist
                 <?php /** @var Album $album */
                 foreach ($this->albums as $album) {
 //                    for ($i = 0; $i < 15; $i++)
-                    echo $album->toString();
+                    $display = 'row';
+                    echo $album->toString('row');
                 } ?>
             </div>
         </section>
