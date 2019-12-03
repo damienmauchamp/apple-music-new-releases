@@ -37,7 +37,7 @@ function getThisWeekReleases() {
     $html = '
         <section class="main-header l-content-width section section--bordered">
             <div class="section-header section__headline">
-                <h1 class="section__headline--hero">Sorties de la semaine</h1>
+                <h2 class="section-title section__headline" style="font-size: 120%;">Sorties de la semaine</h2>
             </div>
 
             <div class="section-body l-row">';
