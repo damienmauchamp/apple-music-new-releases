@@ -59,6 +59,9 @@ if (isset($argv)) {
     }
 }
 
+define('DEFAULT_PATH', __DIR__);
+define('LOG_FILE', DEFAULT_PATH . '/log.log');
+
 $detect = new Mobile_Detect;
 $mobile = $detect->isMobile();
 //$page = isset($_GET["page"]) ? $_GET["page"] : null;

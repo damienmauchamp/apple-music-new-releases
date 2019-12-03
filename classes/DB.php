@@ -109,7 +109,7 @@ class DB
               INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user AND ua.active = 1
             WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) 
             GROUP BY id
-            ORDER BY al.isStreamable ASC, al.date ASC, ar.name ASC";
+            ORDER BY al.isStreamable ASC, al.date ASC, al.collectionName, al.collectionId, ar.name ASC";
 
         $this->connect();
 //        $stmt = $this->dbh->query($sql);
@@ -283,6 +283,21 @@ class DB
             'id_artist' => $idArtist
         ));
         $this->disconnect();
+
+        /*if (strstr($artistName, 'Dinos')) {
+            file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
+                'id' => $id,
+                'collection_id' => $collectionId,
+                'collection_name' => $collectionName,
+                'track_name' => $trackName,
+                'artist_name' => $artistName,
+                'date' => $date,
+                'artwork' => $artwork,
+                'explicit' => $explicit,
+                'isStreamable' => $isStreamable,
+                'added' => $added->format('Y-m-d H:i:s')
+            )) . "\n", FILE_APPEND);
+        }*/
 
         return $resAlbum && $resArtistAlbum;
     }

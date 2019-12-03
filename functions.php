@@ -154,6 +154,9 @@ function getArtistRelease($objArtist, $display = false)
     $artist->setName($objArtist->name);
     $artist->setLastUpdate($objArtist->lastUpdate);
 
+    //https://itunes.apple.com/search?term=Dinos&entity=songs&limit=200&sort=recent&country=fr
+    //file_put_contents(LOG_FILE, "\n\n\nFetching artist {$objArtist->name}, id {$objArtist->id}\n", FILE_APPEND);
+
     // Recupération des albums sur l'API
     $api = new api($artist->getId());
     $newEntities = $api->update($artist->getLastUpdate());
@@ -163,7 +166,14 @@ function getArtistRelease($objArtist, $display = false)
 
     $albums = $artist->getAlbums();
     $songs = $artist->getSongs();
-    // Mise en BD des nouveaux albums & chansons
+
+    /*if ($objArtist->id == "331066376") {
+        file_put_contents(LOG_FILE, "\n\n\n---> {$objArtist->name}, id:{$objArtist->id}\n", FILE_APPEND);
+        file_put_contents(LOG_FILE, "\nALBUMS " . json_encode($albums) . "\n", FILE_APPEND);
+        file_put_contents(LOG_FILE, "\nSONGS " . json_encode($songs) . "\n", FILE_APPEND);
+    }*/
+
+    // Mise en BD des nouveaux albums & nouvelles chansons
 
     /** @var Album $album */
     foreach ($albums as $album) {

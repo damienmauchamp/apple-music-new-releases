@@ -37,14 +37,18 @@ class API
     public function fetchAlbums()
     {
         $results = json_decode($this->curlRequest(), true);
+        //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
         return $this->fetch($results, "albums");
     }
 
     public function fetchSongs()
     {
-        $this->entity = "song";
-        $this->limit = 30;
+        $this->entity = 'song';
+        //$this->limit = 200;
         $results = json_decode($this->curlRequest(), true);
+        if ($this->id == "331066376") {
+            file_put_contents(LOG_FILE, "Songs found: " . json_encode($results) . "\n", FILE_APPEND);
+        }
         return $this->fetch($results, "songs");
     }
 
@@ -61,6 +65,22 @@ class API
                 if (isset($results["results"])) {
                     foreach ($results["results"] as $collection) {
                         if ($collection["wrapperType"] === "track") {
+
+                            /*if (strstr($collection["artistName"], 'Dinos')) {
+                                file_put_contents(LOG_FILE, "\nCREATING SONG: " . json_encode(array(
+                                    "id" => $collection["trackId"],
+                                    "collectionId" => $collection["collectionId"],
+                                    "collectionName" => $collection["collectionName"],
+                                    "trackName" => $collection["trackName"],
+                                    "name" => $collection["collectionName"],
+                                    "artistName" => $collection["artistName"],
+                                    "date" => $collection["releaseDate"],
+                                    "artwork" => $collection["artworkUrl100"],
+                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+                                    "isStreamable" => $collection["isStreamable"]
+                                )) . "\n", FILE_APPEND);
+                            }*/
+
                             $song = Song::withArray(
                                 array(
                                     "id" => $collection["trackId"],
@@ -75,10 +95,14 @@ class API
                                     "isStreamable" => $collection["isStreamable"]
                                 )
                             );
+
+                            /*if (strstr($collection["artistName"], 'Dinos')) {
+                                file_put_contents(LOG_FILE, "\nADDING CREATED SONG: " . $song->getId() . "\n", FILE_APPEND);
+                            }*/
                             $songs[] = $song;
                             //$songs = new Artist($collection["artistId"]);
                             //$songs->setName($collection["artistName"]);
-                            break;
+                            //break;
                         }
                     }
                 }
@@ -158,6 +182,9 @@ class API
     private function setAlbumsUrl()
     {
 //        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
+        /*if ($this->id == "331066376") {
+            file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
+        }*/
         return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
@@ -191,7 +218,9 @@ class API
 
     public function update($lastUpdate)
     {
+        //file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
         $albums = $this->fetchAlbums();
+        //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
         $songs = $this->fetchSongs();
         $new = array(
             "albums" => array(),
@@ -213,8 +242,14 @@ class API
             $songDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($song->getDate()));
             $lastUpdateDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate));
             if (strtotime($songDate) >= strtotime($lastUpdateDate)) {
+                //file_put_contents(LOG_FILE, "\nADDING SONG " . json_encode(['collectionId' => $song->getCollectionId(), 'collectionName' => $song->getCollectionName(), 'trackName' => $song->getTrackName(), 'artistName' => $song->getArtistName()]) . "\n", FILE_APPEND);
                 $new["songs"][] = $song;
                 $song->addSong($this->id);
+            } else {
+                /*if (strstr($song->getArtistName(), 'Dinos')) {
+                    $array_log = ["songDate" => strtotime($songDate), "lastUpdateDate" => strtotime($lastUpdateDate)];
+                    file_put_contents(LOG_FILE, "\nNOT ADDING SONG " . json_encode($song) . ", reason: " . json_encode($array_log) . " \n", FILE_APPEND);
+                }*/
             }
         }
         return $new;
