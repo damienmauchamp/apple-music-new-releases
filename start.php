@@ -72,7 +72,7 @@ if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', '
     $theme .= " {$_COOKIE['theme']}";
 }
 
-$daysInterval = 3;
+$daysInterval = 7;
 $news = isset($_GET["refresh"]);
 $full = isset($_GET["full"]);
 $delay = !empty($_GET['delay']) ? intval($_GET['delay']) : 0;
