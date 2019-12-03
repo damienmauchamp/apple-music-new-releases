@@ -185,6 +185,11 @@ function getArtistRelease($objArtist, $display = false)
     return array("albums" => $albums, "songs" => $songs);
 }
 
+function editLastUpdated($days = 7, $id_user = 0) {
+    $db = new db;
+    return $db->editLastUpdated($days, $id_user);
+}
+
 function logRefresh($type = "")
 {
     $db = new db;

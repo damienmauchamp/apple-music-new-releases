@@ -17,6 +17,11 @@ if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
     exit;
 }
 
+// reduce lastUpdated by a week
+if ($delay) {
+    editLastUpdated($delay);
+}
+
 
 /**
  * TODO : page de logs

@@ -23,6 +23,7 @@ class API
 
     public function searchArtist($search)
     {
+        $this->entity = 'songs';
         $results = json_decode($this->curlSearch($search), true);
         return $this->fetch($results, "artistsSearch");
     }
@@ -162,7 +163,8 @@ class API
 
     private function setArtistsSearchUrl($search)
     {
-        return "https://itunes.apple.com/search?term=$search&country=$this->country";
+        //return "https://itunes.apple.com/search?term=$search&country=$this->country";
+        return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
     private function curlRequest()

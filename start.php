@@ -72,6 +72,7 @@ if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', '
 $daysInterval = 3;
 $news = isset($_GET["refresh"]);
 $full = isset($_GET["full"]);
+$delay = !empty($_GET['delay']) ? intval($_GET['delay']) : 0;
 //$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;
 $display = $news ? "column" : "row";
 $nodisplay = isset($_GET["nodisplay"]);

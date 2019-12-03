@@ -414,7 +414,25 @@ class DB
         return json_encode($res);
     }
 
-    function logMail($description, $id_user)
+    public function editLastUpdated($days = 7, $id_user = 0) {
+        $this->connect();
+        $user_condition = "";
+        $params = ["days" => $days];
+        if ($id_user > 0) {
+            $user_condition = "WHERE ua.idUser = :id_user";
+            $params['id_user'] = $id_user;
+        }
+        $stmt = $this->dbh->prepare("
+            UPDATE users_artists ua
+            SET ua.lastUpdate = DATE_SUB(ua.lastUpdate, INTERVAL :days DAY)
+            {$user_condition};"
+        );
+        $res = $stmt->execute($params);
+        $this->disconnect();
+        return $res;
+    }
+
+    public function logMail($description, $id_user)
     {
         $this->connect();
         $stmt = $this->dbh->prepare("
