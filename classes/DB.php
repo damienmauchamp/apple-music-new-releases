@@ -109,7 +109,7 @@ class DB
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1 AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date AND al.date <= NOW()
 			GROUP BY al.id
-			ORDER BY al.date DESC, ar.name ASC, al.date DESC";
+			ORDER BY al.date DESC, ar.name ASC, al.explicit DESC, al.date DESC";
 
 		$this->connect();
 //		$stmt = $this->dbh->query($sql);

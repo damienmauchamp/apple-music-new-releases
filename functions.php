@@ -42,7 +42,15 @@ function getThisWeekReleases() {
 
             <div class="section-body l-row">';
 
+    $array_releases = [];
     foreach (json_decode($releases) as $r) {
+        // avoiding duplicates + removing non explicits
+        $str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '_', "{$r->name} {$r->artistName}"), '_');
+        if (!empty($array_releases[$str])) {
+            continue;
+        }
+        $array_releases[$str] = true;
+
         $artistId = $r->idArtist;
         $album = Album::withArray(Album::objectToArray($r));
         if (!isset($artists[$artistId])) {
