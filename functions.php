@@ -45,7 +45,7 @@ function getThisWeekReleases() {
     $array_releases = [];
     foreach (json_decode($releases) as $r) {
         // avoiding duplicates + removing non explicits
-        $str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '_', "{$r->name} {$r->artistName}"), '_');
+        $str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '', "{$r->name} {$r->artistName}"));
         if (!empty($array_releases[$str])) {
             continue;
         }
