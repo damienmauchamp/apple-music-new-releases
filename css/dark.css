@@ -238,6 +238,7 @@ $('body').append('<div class="notification-mask"><div class="notification"><div 
 html, body {
 	color: var(--main-color);
 	background: var(--main-bg-color);
+    overflow-x: hidden;
 }
 .main {
     background: var(--main-bg-color);
