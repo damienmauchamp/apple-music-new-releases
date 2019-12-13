@@ -6826,7 +6826,7 @@ html[dir=rtl] .controls-social-tray {
     opacity: 0;
     -webkit-animation: animation-wrapper-appear .1s cubic-bezier(.21, .11, .18, 1) 1s forwards;
     animation: animation-wrapper-appear .1s cubic-bezier(.21, .11, .18, 1) 1s forwards;
-    background-image: url(/assets/images/loading-spinner-small-89b12d3c4bf034acf043c7e19e2a9ccd.svg);
+    background-image: url(/img/loading-spinner-small.svg);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain
@@ -6836,7 +6836,7 @@ html[dir=rtl] .controls-social-tray {
     .animation-wrapper__spinner {
         height: 35px;
         width: 35px;
-        background-image: url(/assets/images/loading-spinner-large-2cbc4da7c3996a3a0178735cf08b63c1.svg)
+        background-image: url(/img/loading-spinner-small.svg)
     }
 }
 
@@ -15126,7 +15126,7 @@ black))) {
     width: 35px;
     height: 35px;
     display: block;
-    background-image: url(/assets/images/loading-spinner-small-89b12d3c4bf034acf043c7e19e2a9ccd.svg);
+    background-image: url(/img/loading-spinner-small.svg);
     background-position: center center;
     background-size: 20px 20px;
     -webkit-transition: background-image 0s linear;
@@ -15142,7 +15142,7 @@ black))) {
 
 @media only screen and (min-width:736px) {
     .ac-video-poster::before {
-        background-image: url(/assets/images/loading-spinner-large-2cbc4da7c3996a3a0178735cf08b63c1.svg);
+        background-image: url(/img/loading-spinner-small.svg);
         background-size: 35px 35px
     }
 }
@@ -16938,7 +16938,7 @@ html[dir=rtl] .we-customer-review__separator {
 .we-loading-spinner {
     min-width: 20px;
     height: 20px;
-    background-image: url(/assets/images/loading-spinner-small-89b12d3c4bf034acf043c7e19e2a9ccd.svg);
+    background-image: url(/img/loading-spinner-small.svg);
     background-size: 20px;
     background-position: center center;
     background-repeat: no-repeat
@@ -16960,7 +16960,7 @@ html[dir=rtl] .we-customer-review__separator {
     }
     .we-loading-spinner {
         height: 35px;
-        background-image: url(/assets/images/loading-spinner-large-2cbc4da7c3996a3a0178735cf08b63c1.svg);
+        background-image: url(/img/loading-spinner-small.svg);
         background-size: 35px
     }
     .tracklist {
