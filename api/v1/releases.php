@@ -3,7 +3,7 @@
 $now = new DateTime();
 
 $start_date = array_key_exists('start_date', $_GET) ? $_GET['start_date'] : date('Y-m-d 00:00:00');
-$min_release_date = array_key_exists('min_release_date', $_GET) ? $_GET['min_release_date'] : $now->sub(new DateInterval('P1M'))->format('Y-m-d 00:00:00');
+$min_release_date = array_key_exists('min_release_date', $_GET) ? $_GET['min_release_date'] : date($now->sub(new DateInterval('P1M'))->format('Y-m-d 00:00:00'));
 $only_explicit = array_key_exists('only_explicit', $_GET) ? boolval($_GET['only_explicit']) : true;
 
 // start_date
@@ -34,7 +34,7 @@ $db = new AppleMusic\DB();
 $sql = "
 	SELECT *
 	FROM albums a
-	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."' AND a.date >= {$min_release_date}
+	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."' AND a.date >= '".$min_release_date->format('Y-m-d H:i:s')."'
 	ORDER BY a.added ASC, a.explicit DESC";
 $res = $db->selectPerso($sql);
 
