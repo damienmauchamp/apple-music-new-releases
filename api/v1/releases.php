@@ -10,8 +10,11 @@ $only_explicit = array_key_exists('only_explicit', $_GET) ? boolval($_GET['only_
 try {
 	$start_date = new \DateTime($start_date);
 } catch(Exception $e) {
-    http_response_code(500);
-    exit("Error : '{$start_date}' is not a valid date.");
+    http_response_code(400);
+	exit(json_encode(array(
+		'status' => $status_code,
+		'data' => ['error' => "'{$start_date}' is not a valid date."]
+	)));
 	//exit($e);
 }
 
@@ -19,8 +22,11 @@ try {
 try {
 	$min_release_date = new \DateTime($min_release_date);
 } catch(Exception $e) {
-    http_response_code(500);
-    exit("Error : '{$min_release_date}' is not a valid date.");
+    http_response_code(400);
+	exit(json_encode(array(
+		'status' => $status_code,
+		'data' => ['error' => "'{$min_release_date}' is not a valid date."]
+	)));
 	//exit($e);
 }
 
@@ -53,13 +59,11 @@ foreach ($res as $i => $item) {
 	}
 }
 
-echo json_encode(array(
+http_response_code($status_code);
+exit(json_encode(array(
 	'status' => $status_code,
 	'data' => $only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: [])
-));
+)));
 
-//$start_date->format('Y-m-d H:i:s');
-exit();
-
-$test = "Test::getUserAlbums();";
-$x = eval($test);
+//$test = "Test::getUserAlbums();";
+//$x = eval($test);
