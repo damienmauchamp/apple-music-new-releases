@@ -59,10 +59,8 @@ foreach ($res as $i => $item) {
 	}
 }
 
-echo '<pre>';
-print_r($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []));
-echo '</pre>';
-
+$data = json_encode($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []));
+exit($data);
 http_response_code($status_code);
 exit(json_encode(array(
 	'status' => $status_code,
