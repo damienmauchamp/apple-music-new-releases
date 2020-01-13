@@ -36,6 +36,7 @@ $sql = "
 	FROM albums a
 	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."' AND a.date >= '".$min_release_date->format('Y-m-d H:i:s')."'
 	ORDER BY a.added ASC, a.explicit DESC";
+echo $sql;
 $res = $db->selectPerso($sql);
 
 $status_code = $res ? 200 : 204;
