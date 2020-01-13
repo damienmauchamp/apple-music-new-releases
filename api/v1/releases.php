@@ -59,7 +59,7 @@ foreach ($res as $i => $item) {
 	}
 }
 
-$data = json_encode($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []));
+$data = json_encode(array_values($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: [])));
 exit($data);
 http_response_code($status_code);
 exit(json_encode(array(
