@@ -4,4 +4,4 @@ vendor
 .env
 autolog.php
 *desktop.ini
-.log
+*.log
