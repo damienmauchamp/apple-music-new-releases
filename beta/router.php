@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/..' . '/vendor/autoload.php';
+
 define('PAGE_FOLDER', 'pages');
 define('ERRORS_FOLDER', 'errors');
 define('PAGE_ERROR_404', ERRORS_FOLDER . '/404.php');
@@ -39,17 +41,51 @@ $page = (object) [
 				'title' => "Sorties de la semaine",
 				'display' => [
 					'format' => 'grid',
+					'flex' => 2, // 0, null or false for none, 1 or 2 for the number of rows
 					'bordered' => true
 				],
 				'options' => [
 					'max_days' => 7,
 					'explicit_only' => true,
 					'preorders' => false,
+					'order' => 'added_date',
+					"hide_if_no_results" => true
 				],
-				'code' => "week_releases",
+				'code' => "album_week_releases",
 			],
-			[], // pré-commandes (à venir)
-			[] // liste chanson (Nouveaux titres)
+			[
+				'type' => "songs",
+				'title' => "Chansons récents",
+				'display' => [
+					'bordered' => true,
+					'rank' => false
+				],
+				'options' => [
+					'max_days' => 7,
+					'explicit_only' => true,
+					'preorders' => true,
+					'order' => 'release_date',
+					"hide_if_no_results" => true
+				],
+				'code' => "songs_week_releases",
+			], // liste chanson (Nouveaux titres)
+			[
+				'type' => "albums",
+				'title' => "Sorties de la semaine",
+				'display' => [
+					'format' => 'grid',
+					'flex' => 0, // 0, null or false for none, 1 or 2 for the number of rows
+					'bordered' => true
+				],
+				'options' => [
+					'max_days' => 7,
+					'explicit_only' => true,
+					'preorders' => false,
+					'order' => 'added_date',
+					"hide_if_no_results" => true
+				],
+				'code' => "album_week_releases",
+			], // pré-commandes (à venir)
 		]
 	]
 ];
@@ -65,6 +101,13 @@ switch ($page->request->route) {
     	$page->name = 'test';
     	$page->title = 'Test';
 		break;
+	case '/artists':
+	case '/artistes':
+    	$page->file = 'artists.php';
+    	$page->name = 'artists';
+    	$page->title = 'Mes artistes';
+    	// liste des artistes
+		break;
 	case '/albums':
     	$page->file = 'XXXXXX.php';
     	$page->name = 'XXXXXX';
@@ -75,12 +118,6 @@ switch ($page->request->route) {
     	$page->name = 'songs';
     	$page->title = 'Chansons';
     	// liste des chansons (>60j)
-	case '/artists':
-	case '/artistes':
-    	$page->file = 'artists.php';
-    	$page->name = 'artists';
-    	$page->title = 'Mes artistes';
-    	// liste des artistes
 	default:
         $page->file = PAGE_ERROR_404;
     	$page->name = 'error';
@@ -89,7 +126,7 @@ switch ($page->request->route) {
 		break;
 }
 
-$page->request->file_path = str_replace('\\', '/', __DIR__ . "/".PAGE_FOLDER."/$page->file");
+$page->request->file_path = str_replace('\\', '/', __DIR__ . "/".PAGE_FOLDER."/{$page->file}");
 if(!is_file($page->request->file_path)) {
     $page->file = PAGE_ERROR_404;
     $page->request->file_path = str_replace('\\', '/', __DIR__ . "/$page->file");
