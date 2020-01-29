@@ -90,16 +90,21 @@ $page = (object) [
 	]
 ];
 switch ($page->request->route) {
+	// vérifier la base URL
 	case '/':
     case '':
     	//$page->file = 'index.php';
     	//$page->name = 'home';
     	//$page->title = '';
 		break;
+    case '/home':
+		break;
     case '/test':
     	$page->file = 'test.php';
     	$page->name = 'test';
     	$page->title = 'Test';
+
+    	$page->content = [];
 		break;
 	case '/artists':
 	case '/artistes':
@@ -135,12 +140,25 @@ if(!is_file($page->request->file_path)) {
 
 //header("Content-type: application/json");
 require __DIR__ . '/../vendor/autoload.php';
+?>
 
-// common
-echo "<title>[BETA] AMU v2" . ($page->title ? " | {$page->title}" : "") . "</title>";
+<!DOCTYPE html>
+<html>
 
-// define variables
-echo "REDIRECT {$page->name}:{$page->file}\n\n";
+<head>
+	<title>[BETA] AMU v2 <?= $page->title ? " | {$page->title}" : "" ?></title>
 
-// redirect
-require $page->request->file_path;
+	<?= ''; // include meta.inc.php ?>
+
+</head>
+
+<body>
+	
+	<div class="main" id="main">
+		<!--?= "REDIRECT {$page->name}:{$page->file}\n\n" ?-->
+		<?php require $page->request->file_path; ?>
+	</div>
+
+</body>
+
+</html>
