@@ -72,6 +72,54 @@ function getThisWeekReleases() {
     return $html;
 }
 
+function getUpcomingReleases() {
+    $db = new db;
+    $releases = $db->getUserUpcomingReleases();
+
+    if (!$releases) {
+        return '';
+    }
+
+    $html = '
+        <section class="l-content-width section section--bordered" data-am-artist-id="968750077">
+            <div class="section-header section__nav clearfix">
+                <h2 class="section-title section__headline">À venir</h2>
+            </div>
+            <div class="section-body l-row l-row--peek">';
+
+    $array_releases = [];
+    foreach (json_decode($releases) as $r) {
+        // avoiding duplicates + removing non explicits
+        $str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '', "{$r->name} {$r->artistName}"));
+        if (!empty($array_releases[$str])) {
+            continue;
+        }
+        $array_releases[$str] = true;
+
+        $artistId = $r->idArtist;
+        $album = Album::withArray(Album::objectToArray($r));
+        if (!isset($artists[$artistId])) {
+            $artists[$artistId] = array(
+                "id" => $artistId,
+                "name" => $r->artistName,
+                "albums" => array(),
+                "lastUpdate" => $r->lastUpdate
+            );
+        }
+        $display = 'row';
+        $html .= $album->toString('row');
+    }
+
+    //$html .= '<pre>'.print_r($releases, 1).'</pre>';
+
+    $html .= '
+            </div>
+        </section>';
+
+    return $html;
+
+}
+
 // Dernières sorties depuis actualisation, dans la BD
 function getAllAlbums($display = "artists")
 {

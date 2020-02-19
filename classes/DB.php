@@ -122,6 +122,40 @@ class DB
 		return $res ? json_encode($res) : null;
 	}
 
+	public function getUserUpcomingReleases($userId = false)
+	{
+		global $idUser;
+
+		if ($userId)
+			$idUser = $userId;
+
+		$sql = "
+			SELECT
+			  al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
+			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
+			FROM albums al
+			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
+			  INNER JOIN artists ar ON ar.id = aa.idArtist
+			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
+			WHERE ua.idUser = :id_user
+				AND ua.lastUpdate < al.date
+				AND ua.active = 1
+				-- AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date
+				AND al.date > NOW()
+			GROUP BY al.id
+			ORDER BY al.date ASC, al.added DESC, ar.name ASC, al.explicit DESC";
+
+		$this->connect();
+//		$stmt = $this->dbh->query($sql);
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue("id_user", $idUser);
+		$stmt->execute();
+		$this->disconnect();
+
+		$res = $stmt->fetchAll();
+		return $res ? json_encode($res) : null;
+	}
+
 	public function getUserSongs($days = 7, $userId = false)
 	{
 		global $idUser;

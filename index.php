@@ -101,12 +101,20 @@ if ($news && $nodisplay) {
             </section>
 
         <? else :
+            // Weekly releases : Sorties de la semaine
             $display = 'grid';
             echo getThisWeekReleases();
 
+            // Upcoming Releases
             $display = 'row';
-            $albums = getAllAlbums();
-            $songs = false;//getAllSongs();
+            echo getUpcomingReleases();
+
+            //exit();
+
+            // Latest releases by artists
+            $display = 'row';
+            $albums = []; //getAllAlbums();
+            $songs = []; //false;//getAllSongs();
             //var_dump($songs);
             ?>
             <section class="l-content-width section section--bordered">
