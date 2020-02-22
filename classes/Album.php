@@ -138,7 +138,7 @@ class Album
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
-                <img src="' . $this->getArtwork(500) . '"
+                <img src="' . $this->getArtwork(500) . '" loading="lazy"
                      style="background-color: transparent;" class="we-artwork__image artwork-img" alt="">
             </picture>
 

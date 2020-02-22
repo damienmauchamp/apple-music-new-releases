@@ -163,7 +163,7 @@ class Song
         <tr data-date="' . $this->date . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" id="ember988" class="song table__row  we-selectable-item ' . ($this->isStreamable() ? 'is-available we-selectable-item--allows-interaction' : 'on-preorder') . ' ember-view" title="' . (!$this->isStreamable() ? intval(date("d", strtotime($this->date) - strtotime("now"))) . " jours" : null) . '">
             <td class="table__row__artwork">
                 <picture id="ember989" class="we-artwork--less-round we-artwork ember-view">
-                    <img class="we-artwork__image ember989" src="' . $this->getArtwork(44) . '" style="background-color: #251637;" alt="" height="44" width="44">
+                    <img class="we-artwork__image ember989" src="' . $this->getArtwork(44) . '" loading="lazy" style="background-color: #251637;" alt="" height="44" width="44">
                 </picture>
             </td>
             <td class="table__row__name">
