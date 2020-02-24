@@ -290,46 +290,12 @@ class DB
 			'explicit' => $explicit,
 			'added' => $added->format('Y-m-d H:i:s')
 		));
-		echo "<pre>".print_r($this->dbh->errorInfo(), true)."</pre>";
-
-		$debug_1 = print_r([
-			'requete' => $sqlAlbum,
-			'params' => array(
-				'id' => $id,
-				'name' => $name,
-				'artist_name' => $artistName,
-				'date' => $date,
-				'artwork' => $artwork,
-				'explicit' => $explicit,
-				'added' => $added->format('Y-m-d H:i:s')
-			),
-			'resultat' => $resAlbum,
-		], true);
-		echo "<pre>".print_r($debug_1, true)."</pre>";
-		file_put_contents(__DIR__ . '/../logs/debug.txt', $debug_1, FILE_APPEND);
 
 		$stmt = $this->dbh->prepare($sqlArtistAlbum);
 		$resArtistAlbum = $stmt->execute(array(
 			'id_artist' => $idArtist,
 			'id_album' => $id
 		));
-		echo "<pre>".print_r($this->dbh->errorInfo(), true)."</pre>";
-
-		$debug_2 = print_r([
-			'requete' => $sqlArtistAlbum,
-			'params' => array(
-				'id_artist' => $idArtist,
-				'id_album' => $id
-			),
-			'resultat' => $resArtistAlbum,
-		], true);
-		echo "<pre>".print_r($debug_2, true)."</pre>";
-		file_put_contents(__DIR__ . '/../logs/debug.txt', $debug_2, FILE_APPEND);
-
-
-		file_put_contents(__DIR__ . '/../logs/debug.txt', "\n----------------\n", FILE_APPEND);
-
-
 		$this->disconnect();
 		return $resAlbum && $resArtistAlbum;
 	}
