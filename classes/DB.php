@@ -289,7 +289,7 @@ class DB
 			'artwork' => $artwork,
 			'explicit' => $explicit,
 			'added' => $added->format('Y-m-d H:i:s')
-		)) or die($this->dbh->errorInfo());
+		)) or die(print_r($this->dbh->errorInfo(), true));
 
 		$debug_1 = print_r([
 			'requete' => $sqlAlbum,
@@ -310,7 +310,7 @@ class DB
 		$resArtistAlbum = $stmt->execute(array(
 			'id_artist' => $idArtist,
 			'id_album' => $id
-		)) or die($this->dbh->errorInfo());
+		)) or die(print_r($this->dbh->errorInfo(), true));
 
 		$debug_2 = print_r([
 			'requete' => $sqlArtistAlbum,
