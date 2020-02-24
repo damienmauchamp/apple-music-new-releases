@@ -304,7 +304,7 @@ class DB
 			),
 			'resultat' => $resAlbum,
 		], true);
-		file_put_contents(__DIR__ . '../logs/debug.txt', $debug_1, FILE_APPEND);
+		file_put_contents(__DIR__ . '/../logs/debug.txt', $debug_1, FILE_APPEND);
 
 		$stmt = $this->dbh->prepare($sqlArtistAlbum);
 		$resArtistAlbum = $stmt->execute(array(
@@ -320,10 +320,10 @@ class DB
 			),
 			'resultat' => $resArtistAlbum,
 		], true);
-		file_put_contents(__DIR__ . '../logs/debug.txt', $debug_2, FILE_APPEND);
+		file_put_contents(__DIR__ . '/../logs/debug.txt', $debug_2, FILE_APPEND);
 
 
-		file_put_contents(__DIR__ . '../logs/debug.txt', "\n----------------\n", FILE_APPEND);
+		file_put_contents(__DIR__ . '/../logs/debug.txt', "\n----------------\n", FILE_APPEND);
 
 
 		$this->disconnect();
