@@ -289,12 +289,43 @@ class DB
 			'artwork' => $artwork,
 			'explicit' => $explicit,
 			'added' => $added->format('Y-m-d H:i:s')
-		));
+		)) or die($this->dbh->errorInfo());
+
+		$debug_1 = print_r([
+			'requete' => $sqlAlbum,
+			'params' => array(
+				'id' => $id,
+				'name' => $name,
+				'artist_name' => $artistName,
+				'date' => $date,
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				'added' => $added->format('Y-m-d H:i:s')
+			),
+			'resultat' => $resAlbum,
+		], true);
+		file_put_contents(__DIR__ . '../logs/debug.txt', $debug_1, FILE_APPEND);
+
 		$stmt = $this->dbh->prepare($sqlArtistAlbum);
 		$resArtistAlbum = $stmt->execute(array(
 			'id_artist' => $idArtist,
 			'id_album' => $id
-		));
+		)) or die($this->dbh->errorInfo());
+
+		$debug_2 = print_r([
+			'requete' => $sqlArtistAlbum,
+			'params' => array(
+				'id_artist' => $idArtist,
+				'id_album' => $id
+			),
+			'resultat' => $resArtistAlbum,
+		], true);
+		file_put_contents(__DIR__ . '../logs/debug.txt', $debug_2, FILE_APPEND);
+
+
+		file_put_contents(__DIR__ . '../logs/debug.txt', "\n----------------\n", FILE_APPEND);
+
+
 		$this->disconnect();
 		return $resAlbum && $resArtistAlbum;
 	}
