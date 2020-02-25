@@ -11,6 +11,7 @@ a.red #da0f47, hover:#8f0a30
 
 .select2-dropdown {
 	border: none;
+    background-color: var(--main-bg-color);
 }
 
 #settings {

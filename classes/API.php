@@ -23,7 +23,7 @@ class API
 
     public function searchArtist($search)
     {
-        $this->entity = 'songs';
+        $this->entity = 'musicArtist';
         $results = json_decode($this->curlSearch($search), true);
         return $this->fetch($results, "artistsSearch");
     }
@@ -141,6 +141,13 @@ class API
                 }
                 return $albums;
             case "artistsSearch":
+                /*$searchResults = [];
+                foreach ($results["results"] as $artistItem) {
+                    $genre = !empty($artistItem['primaryGenreName']) ? "({$artistItem['primaryGenreName']})" : "";
+                    // ({$artistItem['primaryGenreName']})
+                    $searchResults[] = "<span class=\"artist-search-name\">{$artistItem['artistName']}</span> <span class=\"artist-search-count\"></span>";
+                }
+                return $searchResults;*/
                 $ids = array();
                 foreach ($results["results"] as $collection) {
                     $id = isset($collection["artistId"]) ? $collection["artistId"] : 0;
@@ -151,6 +158,7 @@ class API
                             $ids[$id]["id"] = $id;
 //                        $ids[$id]["text"] = $collection["artistName"];
                         }
+                        $ids[$id]["primaryGenreName"] = !empty($collection["primaryGenreName"]) ? $collection["primaryGenreName"] : '';
                         $ids[$id]["n"] = $n;
                         $ids[$id]["names"][$collection["artistName"]] = isset($ids[$id]["names"][$collection["artistName"]]) ? $ids[$id]["names"][$collection["artistName"]] + 1 : 1;
                     }
@@ -166,14 +174,20 @@ class API
                             $index = $name;
                         }
                     }
+
+                    $genre = $ids[$idA]["primaryGenreName"] ? "({$ids[$idA]["primaryGenreName"]})" : '';
+
 //                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
                     $ids[$idA]["text"] = "$index";
-                    $ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> " . "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
+                    //$ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> " . "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
+                    $ids[$idA]["html"] = "<span class=\"artist-search-name\">{$index}</span> " . "<span class=\"artist-search-count\">{$genre}</span>";
                 }
 
                 // ordre
                 $this->array_sort_by_column($ids, "n", SORT_DESC);
                 return $ids;
+
+                //primaryGenreName
             default:
                 return null;
         }
