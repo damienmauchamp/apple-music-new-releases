@@ -338,6 +338,8 @@ var change_theme = function(theme) {
     /*
 transition: background-color .5s ease .7s;
     */
+    // changing the html tag's background color to match the body's
+    $('html').css('background', $('body').css('background-color'));
 
 }
 
