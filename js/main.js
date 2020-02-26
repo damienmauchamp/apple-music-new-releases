@@ -1,5 +1,24 @@
 $(function () {
 
+    // theme match on html tag
+    //var prefersColorScheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    //var theme = $('body').className();
+    //var bodyThemeClass = $('body')[0].className.replace(/\s*is\-music\-theme\s*/, '');
+    $('html').css('background', $('body').css('background-color'));
+
+    //$(.maClasse).parents('li').css(propriété, valeur);
+    // :root, :root .light : --light
+    // :root .dark : --dark
+    // :root .night : --night
+    // prefers-color-scheme: dark :
+    //  - :root:not(.light):not(.night) : night
+    //  - :root:not(.light):not(.night) .variant-dark : dark
+
+    // matchMedia('(prefers-color-scheme: dark)').matches
+
+    // $('html').css('background', 'var(--dark-bg-color)')
+
+
     /*
 	$('body').bind('touchend', function (e) {
         e.preventDefault();
