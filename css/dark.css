@@ -4,6 +4,11 @@ a.blue #0070c9, hover:#004175
 a.red #da0f47, hover:#8f0a30
 */
 
+.we-loading-spinner {
+
+    background-image: url(./img/loading-spinner-small.svg);
+}
+
 /** add to main.css */
 .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple {
 	border: none;
