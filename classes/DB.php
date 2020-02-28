@@ -646,6 +646,20 @@ class DB
 		return $res;
 	}
 
+	public function getArtistIdFromSong($idSong) {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT idArtist
+			FROM artists_songs
+			WHERE idAlbum = :idSong"
+		);
+		$stmt->execute(array("idSong" => $idSong));
+		$res = $stmt->fetch();
+		$this->disconnect();
+		return $res['idArtist'];
+
+	}
+
 	private function enableForeignKeysCheck() {
 		//SET FOREIGN_KEY_CHECKS = 1;
 		return $this->foreignKeysCheck(true);

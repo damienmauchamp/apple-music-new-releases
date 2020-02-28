@@ -35,6 +35,11 @@ class Song
         return $instance;
     }
 
+    public function getArtistId() {
+        $db = new db;
+        return $db->getArtistIdFromSong($this->id);
+    }
+
     protected function fill($array)
     {
         $this->id = $array["id"];
@@ -44,6 +49,8 @@ class Song
         $this->artistName = $array["artistName"];
         $this->date = $array["date"];
         $this->artwork = $array["artwork"];
+        $this->artistLink = "https://music.apple.com/fr/artist/" . $this->getArtistId();
+        $this->albumLink = "https://music.apple.com/fr/album/" . $array["collectionId"];
         $this->link = "https://music.apple.com/fr/album/" . $array["collectionId"] . "?i=" . $array["id"];
         $this->explicit = $array["explicit"];
         $this->isStreamable = $array["isStreamable"];
@@ -181,14 +188,14 @@ class Song
                 </div>
             </td>
             <td class="table__row__artist small-hide large-show-tablecell">
-                <a href="' . $this->link . '" target="_blank" class="table__row__link table__row__link--secondary">
+                <a href="' . $this->artistLink . '" target="_blank" class="table__row__link table__row__link--secondary">
                     <div class="spread">
                         <span id="ember997" class="we-truncate we-truncate--single-line ember-view">' . $this->getArtistName() . '</span>
                     </div>
                 </a>
             </td>
             <td class="table__row__album small-hide medium-show-tablecell">
-                <a href="' . $this->link . '" target="_blank" class="table__row__link table__row__link--secondary">
+                <a href="' . $this->albumLink . '" target="_blank" class="table__row__link table__row__link--secondary">
                     <div class="spread">
                         <span id="ember998" class="we-truncate we-truncate--single-line ember-view">' . $this->getCollectionName() . '</span>
                     </div>
