@@ -168,7 +168,7 @@ class Song
             </td>
             <td class="table__row__name">
                 <a href="' . $this->link . '" target="_blank" class="table__row__link targeted-link targeted-link--no-monochrome-underline" data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;card&quot;,&quot;targetId&quot;:&quot;1321217032&quot;}">
-                    <div class="spread">
+                    <div class="spread icon icon-after ' . ($this->explicit ? 'icon-explicit' : '') . ' table__row__explicit">
                         <span id="ember995" class="table__row__headline targeted-link__target we-truncate we-truncate--single-line ember-view">' . $this->getTrackName() . '</span>
                     </div>
                 </a>
