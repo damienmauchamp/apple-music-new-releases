@@ -227,7 +227,7 @@ class DB
 		$id = $artist->getId();
 		$name = addslashes($artist->getName());
 
-		file_put_contents(__DIR__ . '/../log.log', "\n\n-------\nADD ARTIST:\n".print_r($artist, true), FILE_APPEND);
+		file_put_contents(__DIR__ . '/../log.log', "\n\n-------\nADD ARTIST:\n".print_r($artist, true)/*, FILE_APPEND*/);
 
 		$sqlArtist = "
 			INSERT INTO artists (id, name)
@@ -239,10 +239,10 @@ class DB
 			VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
 			ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
 
-		file_put_contents(__DIR__ . '/../log.log', "\nSQL ARTIST:\n{sqlArtist}", FILE_APPEND);
+		file_put_contents(__DIR__ . '/../log.log', "\nSQL ARTIST:\n{$sqlArtist}", FILE_APPEND);
 		file_put_contents(__DIR__ . '/../log.log', "\nPARAMS:\n".print_r(['id' => $id, 'name' => $name], true)."\n\n", FILE_APPEND);
 
-		file_put_contents(__DIR__ . '/../log.log', "\nSQL USSR/ARTIST:\n{sqlUserArtist}", FILE_APPEND);
+		file_put_contents(__DIR__ . '/../log.log', "\nSQL USSR/ARTIST:\n{$sqlUserArtist}", FILE_APPEND);
 		file_put_contents(__DIR__ . '/../log.log', "\nPARAMS:\n".print_r(['id' => $id, 'id_user' => $idUser], true)."\n\n", FILE_APPEND);
 
 		$this->connect();
