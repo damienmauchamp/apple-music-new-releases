@@ -7,6 +7,9 @@ use AppleMusic\Artist as Artist;
 $artists = isset($_GET["artists"]) ? $_GET["artists"] : null;
 
 foreach ($artists as $id) {
+
+	echo "{$id}//";
+
     $artist = new Artist($id);
     $artist->fetchArtistInfo();
     $artist->addArtist();
