@@ -8,9 +8,6 @@ $artists = isset($_GET["artists"]) ? $_GET["artists"] : null;
 
 $result = [];
 foreach ($artists as $id) {
-
-	echo "{$id}//";
-
     $artist = new Artist($id);
     $artist->fetchArtistInfo();
 
