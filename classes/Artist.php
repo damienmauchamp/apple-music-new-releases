@@ -75,7 +75,7 @@ class Artist
     public function addArtist()
     {
         $db = new db;
-        $db->addArtist($this);
+        return $db->addArtist($this);
     }
 
     public function update($date = false)
