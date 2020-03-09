@@ -228,6 +228,22 @@ function getAllNewReleases()
     return $releases;
 }
 
+function getAllNewScrappedReleases()
+{
+    $db = new db;
+    $releases = array();
+    /*$removal =*/
+    $artists = $db->getUsersArtists();
+    if (!$artists) {
+        return $releases;
+    }
+    foreach (json_decode($artists) as $artist) {
+        $releases[] = getArtistScrappedRelease($artist);
+//        break;
+    }
+    return $releases;
+}
+
 function removeOldAlbums($days = 180)
 {
     $db = new db;
@@ -287,6 +303,23 @@ function getArtistRelease($objArtist, $display = false)
         }
     }
     return array("albums" => $albums, "songs" => $songs);
+}
+
+function getArtistScrappedRelease($objArtist, $display = false) {
+//    $db = new db;
+    global $nodisplay;
+    // Artiste
+    $artist = new Artist($objArtist->id);
+    $artist->setName($objArtist->name);
+    $artist->setLastUpdate($objArtist->lastUpdate);
+
+    //https://itunes.apple.com/search?term=Dinos&entity=songs&limit=200&sort=recent&country=fr
+    //file_put_contents(LOG_FILE, "\n\n\nFetching artist {$objArtist->name}, id {$objArtist->id}\n", FILE_APPEND);
+
+    // Recupération des albums sur l'API
+    $api = new api($artist->getId());
+    $newEntities = $api->update($artist->getLastUpdate(), true);
+
 }
 
 function editLastUpdated($days = 7, $id_user = 0) {

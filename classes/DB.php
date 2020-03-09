@@ -226,9 +226,6 @@ class DB
 		global $idUser;
 		$id = $artist->getId();
 		$name = addslashes($artist->getName());
-
-		//file_put_contents(__DIR__ . '/../log.log', "\n\n-------\nADD ARTIST:\n".print_r($artist, true)/*, FILE_APPEND*/);
-
 		$sqlArtist = "
 			INSERT INTO artists (id, name)
 			VALUES (:id, :name)
@@ -239,11 +236,6 @@ class DB
 			VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
 			ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
 
-		//file_put_contents(__DIR__ . '/../log.log', "\nSQL ARTIST:\n{$sqlArtist}", FILE_APPEND);
-		//file_put_contents(__DIR__ . '/../log.log', "\nPARAMS:\n".print_r(['id' => $id, 'name' => $name], true)."\n\n", FILE_APPEND);
-
-		//file_put_contents(__DIR__ . '/../log.log', "\nSQL USSR/ARTIST:\n{$sqlUserArtist}", FILE_APPEND);
-		//file_put_contents(__DIR__ . '/../log.log', "\nPARAMS:\n".print_r(['id' => $id, 'id_user' => $idUser], true)."\n\n", FILE_APPEND);
 
 		$this->connect();
 		$stmt = $this->dbh->prepare($sqlArtist);
@@ -687,16 +679,6 @@ class DB
 		return $res;
 	}
 
-	public function getArtistsWithoutUser() {
-		$this->connect();
-		$stmt = $this->dbh->query("SELECT * FROM artists a WHERE a.id NOT IN (SELECT ua.idArtist FROM users_artists ua)");
-		$this->disconnect();
-		
-		$res = $stmt->fetchAll();
-		return $res ? $this->setResults($res[0]) : null;
-		//
-	}
-
 
 //	public function example()
 //	{
@@ -708,4 +690,3 @@ class DB
 //		return $res ? $this->setResults($res[0]) : null;
 //	}
 }
-

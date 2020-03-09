@@ -3,6 +3,7 @@
 namespace AppleMusic;
 
 use AppleMusic\Album as Album;
+use Sunra\PhpSimple\HtmlDomParser;
 
 class API
 {
@@ -34,15 +35,19 @@ class API
         return $this->fetch($results, "artist");
     }
 
-    public function fetchAlbums()
+    public function fetchAlbums($scrapped = false)
     {
-        $results = json_decode($this->curlRequest(), true);
+        $results = json_decode($this->curlRequest($scrapped), true);
         //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
         return $this->fetch($results, "albums");
     }
 
-    public function fetchSongs()
+    public function fetchSongs($scrapped)
     {
+        if ($scrapped) {
+            return [];
+        }
+
         $this->entity = 'song';
         //$this->limit = 200;
         $results = json_decode($this->curlRequest(), true);
@@ -193,12 +198,15 @@ class API
         }
     }
 
-    private function setAlbumsUrl()
+    private function setAlbumsUrl($scrapped = false)
     {
 //        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
         /*if ($this->id == "331066376") {
             file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
         }*/
+        if ($scrapped) {
+            return "https://music.apple.com/artist/aaa/{$this->id}";
+        }
         return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
@@ -208,15 +216,75 @@ class API
         return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
-    private function curlRequest()
+    private function curlRequest($scrapped = false)
     {
+        if ($scrapped) {
+            return $this->curlScrappedRequest();
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl());
+        echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
         $header = array("Cache-Control: no-cache");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         return curl_exec($ch);
+    }
+
+    private function curlScrappedRequest() {
+        $user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
+
+        $options = array(
+
+           // CURLOPT_CUSTOMREQUEST => 'GET',        //set request type post or get
+            CURLOPT_POST => false,        //set to GET
+            CURLOPT_USERAGENT => $user_agent, //set user agent
+            CURLOPT_COOKIEFILE => "cookie.txt", //set cookie file
+            CURLOPT_COOKIEJAR => "cookie.txt", //set cookie jar
+            CURLOPT_RETURNTRANSFER => true,     // return web page
+            CURLOPT_HEADER => false,    // don't return headers
+            CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+            CURLOPT_ENCODING => "",       // handle all encodings
+            CURLOPT_AUTOREFERER => true,     // set referer on redirect
+            CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+            CURLOPT_TIMEOUT => 120,      // timeout on response
+            CURLOPT_MAXREDIRS => 10,       // stop after 10 redirects
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0
+        );
+
+        $url = $this->setAlbumsUrl(true);
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, $options);
+        $content = curl_exec($ch);
+        $err = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        $header = curl_getinfo($ch);
+        curl_close($ch);
+
+        $header['errno'] = $err;
+        $header['errmsg'] = $errmsg;
+        $header['content'] = trim($content);
+
+        $dom = HtmlDomParser::str_get_html($header["content"]);
+        $elems = $dom->find('script#shoebox-ember-data-store');
+        $data = [];
+        foreach ($elems as $e) {
+            $data = json_decode($e->innertext, true);
+            break;
+        }
+
+        $albums = [];
+        foreach ($data['included'] as $include) {
+            if (!$include['type'] !== 'lockup/album') {
+                continue;
+            }
+            $albums[] = $include['attributes'];
+        }
+
+        return json_encode($albums);
     }
 
     private function curlSearch($search)
@@ -230,12 +298,12 @@ class API
         return curl_exec($ch);
     }
 
-    public function update($lastUpdate)
+    public function update($lastUpdate, $scrapped = false)
     {
         //file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
-        $albums = $this->fetchAlbums();
+        $albums = $this->fetchAlbums($scrapped);
         //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
-        $songs = $this->fetchSongs();
+        $songs = $this->fetchSongs($scrapped);
         $new = array(
             "albums" => array(),
             "songs" => array()
@@ -278,5 +346,7 @@ class API
 
         array_multisort($sort_col, $dir, $arr);
     }
+
+
 
 }
