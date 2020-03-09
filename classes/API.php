@@ -39,7 +39,7 @@ class API
     {
         $results = json_decode($this->curlRequest($scrapped), true);
         //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
-        return $this->fetch($results, "albums");
+        return $this->fetch($results, "albums", $scrapped);
     }
 
     public function fetchSongs($scrapped)
@@ -51,9 +51,9 @@ class API
         $this->entity = 'song';
         //$this->limit = 200;
         $results = json_decode($this->curlRequest(), true);
-        if ($this->id == "331066376") {
-            file_put_contents(LOG_FILE, "Songs found: " . json_encode($results) . "\n", FILE_APPEND);
-        }
+        // if ($this->id == "331066376") {
+        //     file_put_contents(LOG_FILE, "Songs found: " . json_encode($results) . "\n", FILE_APPEND);
+        // }
         return $this->fetch($results, "songs");
     }
 
@@ -62,7 +62,7 @@ class API
      * @param $type
      * @return Artist|Album|array|null
      */
-    protected function fetch($results, $type)
+    protected function fetch($results, $type, $scrapped = false)
     {
         switch ($type) {
             case "songs":
@@ -125,24 +125,80 @@ class API
                 return $artist;
             case "albums":
                 $albums = array();
-                if (isset($results["results"])) {
-                    foreach ($results["results"] as $collection) {
-                        if ($collection["wrapperType"] === "collection") {
-                            $album = Album::withArray(
-                                array(
-//                        "_id" => null,
-                                    "id" => $collection["collectionId"],
-                                    "name" => $collection["collectionName"],
-                                    "artistName" => $collection["artistName"],
-                                    "date" => $collection["releaseDate"],
-                                    "artwork" => $collection["artworkUrl100"],
-                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
-//                        "link" => $collection["collectionViewUrl"],
-                                )
-                            );
-                            $albums[] = $album;
+
+                if (!$scrapped) {
+                    if (isset($results["results"])) {
+                        foreach ($results["results"] as $collection) {
+                            if ($collection["wrapperType"] === "collection") {
+                                $album = Album::withArray(
+                                    array(
+    //                        "_id" => null,
+                                        "id" => $collection["collectionId"],
+                                        "name" => $collection["collectionName"],
+                                        "artistName" => $collection["artistName"],
+                                        "date" => $collection["releaseDate"],
+                                        "artwork" => $collection["artworkUrl100"],
+                                        "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+    //                        "link" => $collection["collectionViewUrl"],
+                                    )
+                                );
+                                $albums[] = $album;
+                            }
                         }
                     }
+                }
+                else {
+                    if (!$results['albums']) {
+                        return $albums;
+                    }
+
+                    foreach ($results['albums'] as $collection) {
+
+                        // check if the album is already in the db
+                        $db = new db;
+                        $verification_existence = $db->selectPerso("SELECT * FROM albums WHERE id = '{$collection['id']}'");
+
+                        if ($verification_existence) {
+                            //print_r($verification_existence);
+                            continue;
+                        }
+
+                        // 
+                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) && 
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) && 
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) && 
+                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" || 
+                                $collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
+
+                        $artworkId = $collection['relationships']['artwork']['data']['id'];
+                        $artworkAttributesMatches = array_filter($results['images'], function($relationship) use($artworkId) {
+                            return $relationship['type'] === 'image' && $relationship['id'] === $artworkId;
+                        });
+                        $artworkAttributes = array_shift($artworkAttributesMatches);
+                        $artworkUrl100 = str_replace('{w}x{h}bb.{f}', '100x100bb.jpg', $artworkAttributes['attributes']['url']);
+
+                        $releaseDate = $collection["attributes"]["releaseDate"];
+                        if (preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
+                            $releaseDate = "{$collection["attributes"]["releaseDate"]}-01-01";
+                        } /*else if (preg_match('/^\d{4}\-\d{2}\-\d{2}/', $collection["attributes"]["releaseDate"])) {
+                            $releaseDate = $collection["attributes"]["releaseDate"];
+                        }*/
+                        
+                        $album = Album::withArray(
+                            array(
+//                        "_id" => null,
+                                "id" => $collection["id"],
+                                "name" => $collection["attributes"]["name"],
+                                "artistName" => $collection["attributes"]["artistName"],
+                                "date" => $releaseDate,
+                                "artwork" => $artworkUrl100,
+                                "explicit" => $explicit,
+//                        "link" => $collection["collectionViewUrl"],
+                            )
+                        );
+                        $albums[] = $album;
+                    }
+
                 }
                 return $albums;
             case "artistsSearch":
@@ -269,6 +325,13 @@ class API
         $header['content'] = trim($content);
 
         $dom = HtmlDomParser::str_get_html($header["content"]);
+        if (!$dom) {
+            return json_encode([
+                'albums' => [],
+                'images' => [],
+            ]);
+        }
+
         $elems = $dom->find('script#shoebox-ember-data-store');
         $data = [];
         foreach ($elems as $e) {
@@ -276,15 +339,33 @@ class API
             break;
         }
 
-        $albums = [];
-        foreach ($data['included'] as $include) {
-            if (!$include['type'] !== 'lockup/album') {
-                continue;
+        //exit(json_encode($data));
+
+        $albums =  $images = [];
+
+        if (isset($data['included'])) {
+            foreach ($data['included'] as $include) {
+                //echo "{$include['type']} - " . ($include['type'] === "lockup/album" ? "OUI" : "NON") . "\n";
+                if ($include['type'] === 'lockup/album') {
+
+                    $releaseDate = new \DateTime($include['attributes']['releaseDate']);
+                    $today = new \DateTime();
+                    $interval = $releaseDate->diff($today);
+                    $day = $interval->format('%r%a');
+                    if ($day < 7) {
+                        $albums[] = $include;
+                    }
+                }
+                else if ($include['type'] === 'image') {
+                    $images[] = $include;
+                }
             }
-            $albums[] = $include['attributes'];
         }
 
-        return json_encode($albums);
+        return json_encode([
+            'albums' => $albums,
+            'images' => $images,
+        ]);
     }
 
     private function curlSearch($search)
@@ -304,6 +385,9 @@ class API
         $albums = $this->fetchAlbums($scrapped);
         //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
         $songs = $this->fetchSongs($scrapped);
+
+        //print_r([$albums, $songs]);
+
         $new = array(
             "albums" => array(),
             "songs" => array()
