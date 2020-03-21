@@ -261,7 +261,7 @@ class API
             file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
         }*/
         if ($scrapped) {
-            return "https://music.apple.com/artist/aaa/{$this->id}";
+            return "https://music.apple.com/{$this->country}/artist/aaa/{$this->id}";
         }
         return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
