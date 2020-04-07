@@ -12,8 +12,11 @@ $root = "";
 global $news;
 
 if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
+
+	$filtrer_albums = isset($_POST["filtrer"]) && $_POST["filtrer"];
+
 	header("Content-type:text/html");
-	displaySongs(getAllSongs());
+	displaySongs(getAllSongs($filtrer_albums));
 	exit;
 }
 
@@ -204,7 +207,10 @@ if ($news && $nodisplay) {
 			$.ajax({
 				url: "index.php",
 				method: "POST",
-				data: {load_songs: true},
+				data: {
+					load_songs: true,
+					filtrer: true
+				},
 				success: function(data) {
 					console.log('songs loaded.')
 					$("#song-table-tbody").append(data);

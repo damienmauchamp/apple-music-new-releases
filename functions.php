@@ -26,7 +26,7 @@ function displaySongs($songs)
     }
 }
 
-function getThisWeekReleases() {
+function getThisWeekReleases($allow_duplicates = false) {
     $db = new db;
     $releases = $db->getUserWeekReleases();
 
@@ -46,7 +46,7 @@ function getThisWeekReleases() {
     foreach (json_decode($releases) as $r) {
         // avoiding duplicates + removing non explicits
         $str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '', "{$r->name} {$r->artistName}"));
-        if (!empty($array_releases[$str])) {
+        if (!$allow_duplicates && !empty($array_releases[$str])) {
             continue;
         }
         $array_releases[$str] = true;
@@ -177,17 +177,31 @@ function getAllAlbums($display = "artists")
     return json_decode($releases);
 }
 
-function getAllSongs()
+function getAllSongs($filtrer_albums = false)
 {
     global $daysInterval;
     $db = new db;
     $releases = $db->getUserSongs($daysInterval);
     $artists = array();
 
+    if ($filtrer_albums) {
+        $albums = array_map(static function($album) {
+            return $album['id'];
+        }, json_decode($db->getUserWeekReleases(), true));
+    }
+
+    $releases_array = [];
     if ($releases) {
-        foreach (json_decode($releases) as $r) {
+        $releases_array = json_decode($releases);
+        foreach ($releases_array as $i => $r) {
             $artistId = $r->idArtist;
             $song = Song::withArray(Song::objectToArray($r));
+
+            if ($filtrer_albums && in_array($r->collectionId, $albums)) {
+                unset($releases_array[$i]);
+                continue;
+            }
+
             if (!isset($artists[$artistId])) {
                 $artists[$artistId] = array(
                     "id" => $artistId,
@@ -205,7 +219,7 @@ function getAllSongs()
 //        }
     }
 
-    return json_decode($releases);
+    return $releases_array;
 }
 
 
