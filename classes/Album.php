@@ -134,7 +134,7 @@ class Album
         <a href="' . $this->getLink() . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" target="_blank"
            id="album-' . $this->id . '"
            data-am-kind="album" data-am-album-id="' . $this->id . '" ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
-           class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . ($display == "row" ? "2" : "6") . ' medium-3 large-2 ember-view"
+           class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . (in_array($display, ["row", "grid-2-row"]) ? "2" : "6") . ' medium-3 large-2 ember-view"
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">

@@ -541,7 +541,9 @@ class DB
 	public function getLastRefresh($userId = null)
 	{
 		global $idUser;
-		if ($userId) $idUser = $userId;
+		if ($userId) {
+			$idUser = $userId;
+		}
 		$this->connect();
 		$stmt = $this->dbh->prepare("
 			SELECT MAX(date)

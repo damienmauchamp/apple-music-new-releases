@@ -432,3 +432,34 @@ span.artist-search-count {
 .custom-menu li:hover {
     background-color: #DEF;
 }
+
+/* SECTIONS */
+.l-row--flex {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    width: auto;
+    min-width: 100%;
+    white-space: nowrap;
+    display: block;
+}
+
+section.l-multi-rows .section-body.l-row--flex {
+    display:none;
+}
+
+@media only screen and (max-width: 735px) {
+
+    .l-row--peek .l-sub-row .l-column.album:last-child {
+        margin-right: 6vw;
+    }
+
+    section.l-multi-rows .section-body:not(.l-row--flex) {
+        display:none;
+    }
+
+    section.l-multi-rows .section-body.l-row--flex {
+        display: block;
+    }
+}
