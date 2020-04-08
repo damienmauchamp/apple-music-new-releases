@@ -1,7 +1,15 @@
 vendor
+tests
+
+# file extensions
 .idea
 .git
-.env
-autolog.php
-*desktop.ini
 *.log
+*.txt
+
+# files
+autolog.php
+.env
+
+# google drive
+*desktop.ini
