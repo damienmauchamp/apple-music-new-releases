@@ -64,16 +64,14 @@ if ($news && $nodisplay) {
 
 		<section class="main-header l-content-width section" style="border-top:none">
 			<h1 class="section__headline--hero"><?= $news ? "Mise à jour" : "Nouvelles Sorties" ?></h1>
-
-			<div id="maj-cont">Dernière MAJ : <?= getLastRefresh(); ?></div>
-			<div id="mail-alert-cont">
+			<i class="fa fa-cog" id="settings" style="position: relative;top: -30px;"></i>
+			<!-- <div id="maj-cont">Dernière MAJ : <?= getLastRefresh(); ?></div> -->
+		<!-- 	<div id="mail-alert-cont">
 				<label for="mail-alert">
 					<input type="checkbox"
 						   id="mail-alert" <?= getNotificationsStatus() ? "checked=\"checked\"" : "" ?>/>
 					Notifications par mail</label>
-
-				<i class="fa fa-cog" id="settings"></i>
-			</div>
+			</div> -->
 		</section>
 
 		<? if ($news) : ?>
