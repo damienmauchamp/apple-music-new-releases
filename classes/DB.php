@@ -33,7 +33,7 @@ class DB
 			$dotenv->load();
 		}
 
-		$DB_serveur = "localhost";
+		$DB_serveur = !empty($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : "localhost";
 		$DB_nom = $_ENV['DB_NAME'];
 		$DB_login = $_ENV['DB_USERNAME'];
 		$DB_psw = $_ENV['DB_PWD'];
