@@ -169,9 +169,11 @@ class Song
         return '
         <tr data-date="' . $this->date . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" id="ember988" class="song table__row  we-selectable-item ' . ($this->isStreamable() ? 'is-available we-selectable-item--allows-interaction' : 'on-preorder') . ' ember-view" title="' . (!$this->isStreamable() ? intval(date("d", strtotime($this->date) - strtotime("now"))) . " jours" : null) . '">
             <td class="table__row__artwork">
-                <picture id="ember989" class="we-artwork--less-round we-artwork ember-view">
-                    <img class="we-artwork__image ember989" src="' . $this->getArtwork(44) . '" loading="lazy" style="background-color: #251637;" alt="" height="44" width="44">
-                </picture>
+                <a href="' . $this->link . '" target="_blank">
+                    <picture id="ember989" class="we-artwork--less-round we-artwork ember-view">
+                        <img class="we-artwork__image ember989" src="' . $this->getArtwork(44) . '" loading="lazy" style="background-color: #251637;" alt="" height="44" width="44">
+                    </picture>
+                </a>
             </td>
             <td class="table__row__name">
                 <a href="' . $this->link . '" target="_blank" class="table__row__link targeted-link targeted-link--no-monochrome-underline" data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;card&quot;,&quot;targetId&quot;:&quot;1321217032&quot;}">

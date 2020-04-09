@@ -445,6 +445,24 @@ span.artist-search-count {
     display: block;
 }
 
+section .l-row::-webkit-scrollbar {
+    height: 10px;
+}
+
+section .l-row:hover::-webkit-scrollbar-thumb {
+    background-color: #A6A6A6;
+}
+
+section .l-row::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 7px;
+    transition: background-color .2s;
+}
+
+section .l-row::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
 section.l-multi-rows .section-body.l-row--flex {
     display:none;
 }

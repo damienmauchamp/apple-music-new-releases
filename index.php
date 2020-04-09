@@ -122,7 +122,7 @@ if ($news && $nodisplay) {
 				<div class="l-row">
 					<div class="l-column small-12">
 						<h2 class="section__headline">
-							Toutes les chansons
+							Chansons récentes
 						</h2>
 						<table class="table table--see-all" id="song-table-table">
 							<thead class="table__head">

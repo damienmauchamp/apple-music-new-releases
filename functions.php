@@ -202,7 +202,7 @@ function getAllAlbums($display = "artists")
 	return json_decode($releases);
 }
 
-function getAllSongs($filtrer_albums = false)
+function getAllSongs($filtrer_albums = false, $only_explicit = true)
 {
 	global $daysInterval;
 	$db = new db;
@@ -217,15 +217,38 @@ function getAllSongs($filtrer_albums = false)
 
 	$releases_array = [];
 	if ($releases) {
-		$releases_array = json_decode($releases);
-		foreach ($releases_array as $i => $r) {
+		$released_data = json_decode($releases);
+		foreach ($released_data as $i => $r) {
 			$artistId = $r->idArtist;
 			$song = Song::withArray(Song::objectToArray($r));
 
 			if ($filtrer_albums && in_array($r->collectionId, $albums)) {
-				unset($releases_array[$i]);
+				// unset($releases_array[$i]);
 				continue;
 			}
+
+			if ($only_explicit) {
+				$correspondances = array_keys(array_filter($releases_array, function($element) use($r) { 
+					return $element->trackName === $r->trackName
+						&& $element->collectionName === $r->collectionName
+						&& $element->artistName === $r->artistName;
+				}));
+
+				if ($correspondances) {
+					$index_correspondance = $correspondances[0];
+
+					// if the explicit version is already in the array, then cool !
+					if ($releases_array[$index_correspondance]->explicit) {
+						continue;
+					}
+					// if the new one is the explicit one, then we remove the clean one
+					else if ($r->explicit) {
+						unset($releases_array[$index_correspondance]);
+					}
+				}
+			}
+
+			$releases_array[] = $r;
 
 			if (!isset($artists[$artistId])) {
 				$artists[$artistId] = array(
@@ -237,6 +260,15 @@ function getAllSongs($filtrer_albums = false)
 				);
 			}
 			$artists[$artistId]["songs"][] = $song;
+		}
+
+		if ($only_explicit) {
+			// find duplicates
+
+
+
+			// $indexes = array_keys(array_filter($res, function($element) use($item){ return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}))[0];
+			// $return[] = $res[$indexes];
 		}
 
 //		foreach ($artists as $artist) {
