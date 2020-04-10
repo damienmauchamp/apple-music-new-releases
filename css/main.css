@@ -480,4 +480,16 @@ section.l-multi-rows .section-body.l-row--flex {
     section.l-multi-rows .section-body.l-row--flex {
         display: block;
     }
+
+    /* SCROLL SNAP */
+    .l-row--peek {
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 6.25vw;
+        overscroll-behavior-x: none;
+    }
+
+    .l-row--peek .l-column {
+        grid-auto-flow: column;
+        scroll-snap-align: start;
+    }
 }
