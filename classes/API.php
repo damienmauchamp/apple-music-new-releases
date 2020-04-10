@@ -44,17 +44,19 @@ class API
 
     public function fetchSongs($scrapped)
     {
-        if ($scrapped) {
-            return [];
-        }
+        // if ($scrapped) {
+        //     return [];
+        // }
 
         $this->entity = 'song';
         //$this->limit = 200;
-        $results = json_decode($this->curlRequest(), true);
+        $results = json_decode($this->curlRequest($scrapped), true);
+        // print_r(['fetchSongs' => $results]);
+        // print_r($results);
         // if ($this->id == "331066376") {
         //     file_put_contents(LOG_FILE, "Songs found: " . json_encode($results) . "\n", FILE_APPEND);
         // }
-        return $this->fetch($results, "songs");
+        return $this->fetch($results, "songs", $scrapped);
     }
 
     /**
@@ -67,49 +69,131 @@ class API
         switch ($type) {
             case "songs":
                 $songs = array();
-                if (isset($results["results"])) {
-                    foreach ($results["results"] as $collection) {
-                        if ($collection["wrapperType"] === "track") {
 
-                            /*if (strstr($collection["artistName"], 'Dinos')) {
-                                file_put_contents(LOG_FILE, "\nCREATING SONG: " . json_encode(array(
-                                    "id" => $collection["trackId"],
-                                    "collectionId" => $collection["collectionId"],
-                                    "collectionName" => $collection["collectionName"],
-                                    "trackName" => $collection["trackName"],
-                                    "name" => $collection["collectionName"],
-                                    "artistName" => $collection["artistName"],
-                                    "date" => $collection["releaseDate"],
-                                    "artwork" => $collection["artworkUrl100"],
-                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
-                                    "isStreamable" => $collection["isStreamable"]
-                                )) . "\n", FILE_APPEND);
-                            }*/
+                if (!$scrapped) {
+                    if (isset($results["results"])) {
+                        foreach ($results["results"] as $collection) {
+                            if ($collection["wrapperType"] === "track") {
 
-                            $song = Song::withArray(
-                                array(
-                                    "id" => $collection["trackId"],
-                                    "collectionId" => $collection["collectionId"],
-                                    "collectionName" => $collection["collectionName"],
-                                    "trackName" => $collection["trackName"],
-                                    "name" => $collection["collectionName"],
-                                    "artistName" => $collection["artistName"],
-                                    "date" => $collection["releaseDate"],
-                                    "artwork" => $collection["artworkUrl100"],
-                                    "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
-                                    "isStreamable" => $collection["isStreamable"]
-                                )
-                            );
+                                /*if (strstr($collection["artistName"], 'Dinos')) {
+                                    file_put_contents(LOG_FILE, "\nCREATING SONG: " . json_encode(array(
+                                        "id" => $collection["trackId"],
+                                        "collectionId" => $collection["collectionId"],
+                                        "collectionName" => $collection["collectionName"],
+                                        "trackName" => $collection["trackName"],
+                                        "name" => $collection["collectionName"],
+                                        "artistName" => $collection["artistName"],
+                                        "date" => $collection["releaseDate"],
+                                        "artwork" => $collection["artworkUrl100"],
+                                        "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+                                        "isStreamable" => $collection["isStreamable"]
+                                    )) . "\n", FILE_APPEND);
+                                }*/
 
-                            /*if (strstr($collection["artistName"], 'Dinos')) {
-                                file_put_contents(LOG_FILE, "\nADDING CREATED SONG: " . $song->getId() . "\n", FILE_APPEND);
-                            }*/
-                            $songs[] = $song;
-                            //$songs = new Artist($collection["artistId"]);
-                            //$songs->setName($collection["artistName"]);
-                            //break;
+                                $song = Song::withArray(
+                                    array(
+                                        "id" => $collection["trackId"],
+                                        "collectionId" => $collection["collectionId"],
+                                        "collectionName" => $collection["collectionName"],
+                                        "trackName" => $collection["trackName"],
+                                        "name" => $collection["collectionName"],
+                                        "artistName" => $collection["artistName"],
+                                        "date" => $collection["releaseDate"],
+                                        "artwork" => $collection["artworkUrl100"],
+                                        "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+                                        "isStreamable" => $collection["isStreamable"]
+                                    )
+                                );
+
+                                /*if (strstr($collection["artistName"], 'Dinos')) {
+                                    file_put_contents(LOG_FILE, "\nADDING CREATED SONG: " . $song->getId() . "\n", FILE_APPEND);
+                                }*/
+                                $songs[] = $song;
+                                //$songs = new Artist($collection["artistId"]);
+                                //$songs->setName($collection["artistName"]);
+                                //break;
+                            }
                         }
                     }
+                }
+                else {
+                    // print_r($results);
+                    if (!$results['songs']) {
+                        return $songs;
+                    }
+
+                    foreach ($results['songs'] as $collection) {
+
+                        // check if the album is already in the db
+                        $db = new db;
+                        $verification_existence = $db->selectPerso("SELECT * FROM songs WHERE id = '{$collection['id']}'");
+
+                        // print_r(['collection' => $collection]);
+                        if ($verification_existence) {
+                            // print_r(['verification_existence' => $verification_existence]);
+                            continue;
+                        }
+
+
+                        // 
+                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) && 
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) && 
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) && 
+                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" || 
+                                $collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
+
+                        $artworkId = $collection['relationships']['artwork']['data']['id'];
+                        $artworkAttributesMatches = array_filter($results['images'], function($relationship) use($artworkId) {
+                            return $relationship['type'] === 'image' && $relationship['id'] === $artworkId;
+                        });
+                        $artworkAttributes = array_shift($artworkAttributesMatches);
+                        $artworkUrl100 = str_replace('{w}x{h}bb.{f}', '100x100bb.jpg', $artworkAttributes['attributes']['url']);
+
+
+                    // if (empty($collection['attributes']['releaseDate'])) {
+                    //     print_r($collection);
+                    // }
+                        $releaseDate = $collection["attributes"]["releaseDate"];
+                        if (preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
+                            $releaseDate = "{$collection["attributes"]["releaseDate"]}-01-01";
+                        } /*else if (preg_match('/^\d{4}\-\d{2}\-\d{2}/', $collection["attributes"]["releaseDate"])) {
+                            $releaseDate = $collection["attributes"]["releaseDate"];
+                        }*/
+
+                        $today = new \DateTime();
+                        $releaseDateTime = new \DateTime($releaseDate);
+                        // $day = $interval->format('%r%a');
+                        $isStreamable = $releaseDateTime < $today;
+                        
+                        $song = Song::withArray(
+                            array(
+
+                                // id
+                                "id" => $collection["id"],
+                                // collectionId
+                                "collectionId" => preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $collection["attributes"]["url"]),
+                                // collectionName
+                                "collectionName" => $collection["attributes"]["collectionName"],
+                                // trackName
+                                "trackName" => $collection["attributes"]["name"],
+                                // artistName
+                                "artistName" => $collection["attributes"]["artistName"],
+                                // date
+                                "date" => $releaseDate,
+                                // artwork
+                                "artwork" => $artworkUrl100,
+                                // explicit
+                                "explicit" => $explicit,
+                                // isStreamable
+                                "isStreamable" => $isStreamable,
+
+//                        "_id" => null,
+//                        "link" => $collection["collectionViewUrl"],
+                            )
+                        );
+                        $songs[] = $song;
+                    }
+
                 }
                 return $songs;
                 break;
@@ -328,6 +412,7 @@ class API
         if (!$dom) {
             return json_encode([
                 'albums' => [],
+                'songs' => [],
                 'images' => [],
             ]);
         }
@@ -341,7 +426,10 @@ class API
 
         //exit(json_encode($data));
 
-        $albums =  $images = [];
+        $albums = $songs = $images = [];
+
+        // echo '<pre>' . print_r($data, true) . '</pre>';
+        // echo '<pre>' . print_r($data, true) . '</pre>';exit();
 
         if (isset($data['included'])) {
             foreach ($data['included'] as $include) {
@@ -355,6 +443,54 @@ class API
                     if ($day < 7) {
                         $albums[] = $include;
                     }
+
+                }
+                if ($include['type'] === 'lockup/song') {
+
+                    // if (empty($include['attributes']['releaseDate'])) {
+                    //     print_r($include);
+                    // }
+
+                    // "collectionId" => preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $collection["attributes"]["url"]),
+
+                    if (!isset($include['attributes']['releaseDate']) && !preg_match('/\- Single$/', $include['attributes']['collectionName'])) {
+                        $collectionId = preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $include["attributes"]["url"]);
+
+                        $collections = array_filter($data['included'], static function($entity) use ($collectionId) {
+                            return $entity['type'] === 'lockup/album' && $entity['id'] === $collectionId;
+                        });
+                        if (!$collections) {
+                            continue;
+                        }
+
+                        $collection = array_shift($collections);
+                        if (!isset($collection['attributes']['releaseDate'])) {
+                            continue;
+                        }
+
+                        $include['attributes']['releaseDate'] = $collection['attributes']['releaseDate'];
+                    }
+
+                    $releaseDate = new \DateTime($include['attributes']['releaseDate']);
+                    $today = new \DateTime();
+                    $interval = $releaseDate->diff($today);
+                    $day = (int) $interval->format('%r%a');
+                    // print_r([
+                    //     $releaseDate,
+                    //     $today,
+                    //     $interval,
+                    // ]);
+
+                    // var_dump([
+                    //     $releaseDate,
+                    //     $today,
+                    //     $interval,
+                    //     $day,
+                    // ]);
+                    if ($day < 7) {
+                        $songs[] = $include;
+                    }
+
                 }
                 else if ($include['type'] === 'image') {
                     $images[] = $include;
@@ -364,6 +500,7 @@ class API
 
         return json_encode([
             'albums' => $albums,
+            'songs' => $songs,
             'images' => $images,
         ]);
     }
@@ -385,8 +522,6 @@ class API
         $albums = $this->fetchAlbums($scrapped);
         //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
         $songs = $this->fetchSongs($scrapped);
-
-        //print_r([$albums, $songs]);
 
         $new = array(
             "albums" => array(),
@@ -418,6 +553,8 @@ class API
                 }*/
             }
         }
+
+        // print_r($new);
         return $new;
     }
 

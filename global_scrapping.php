@@ -1,5 +1,5 @@
 <?php
-//5 0 * * 5 php global_scrapped.php refresh= nodisplay= >/dev/null 2>&1
+//5 0 * * 5 php global_scrapping.php refresh= nodisplay= >/dev/null 2>&1
 // delay=7
 
 require __DIR__ . '/vendor/autoload.php';

@@ -49,7 +49,8 @@ function getThisWeekReleases($allow_duplicates = false) {
 	$i = 0;
 	foreach (json_decode($releases) as $r) {
 		// avoiding duplicates + removing non explicits
-		$str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '', "{$r->name} {$r->artistName}"));
+		$tmp_name = trim(preg_replace('/(?:\(|\[)(?:e|E)(?:xplicit|XPLICIT)(?:\)|\]) */m', '', $r->name));
+		$str = trim(preg_replace('/([^A-Za-z0-9]|(\s))*/', '', "{$tmp_name} {$r->artistName}"));
 		if (!$allow_duplicates && !empty($array_releases[$str])) {
 			continue;
 		}
@@ -390,7 +391,7 @@ function getArtistScrappedRelease($objArtist, $display = false) {
 	// Recupération des albums sur l'API
 	$api = new api($artist->getId());
 	$newEntities = $api->update($artist->getLastUpdate(), true);
-
+	return $newEntities;
 }
 
 function editLastUpdated($days = 7, $id_user = 0) {
