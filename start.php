@@ -74,6 +74,7 @@ if (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark', '
 
 $daysInterval = 7;
 $news = isset($_GET["refresh"]);
+$scrapped = isset($_GET["scrapped"]);
 $full = isset($_GET["full"]);
 $delay = !empty($_GET['delay']) ? intval($_GET['delay']) : 0;
 //$news = isset($_GET["refresh"]) && $_GET["refresh"] ? $_GET["refresh"] : false;

@@ -343,7 +343,7 @@ transition: background-color .5s ease .7s;
 
 }
 
-var getNewReleases = function () {
+var getNewReleases = function (scrapped) {
 
     function getArtists() {
         return $.ajax({
@@ -365,6 +365,7 @@ var getNewReleases = function () {
                 method: "POST",
                 data: {
                     f: 4,
+                    scrapped: scrapped || false,
                     artist: artist
                 }, success: function (data) {
                     // $("#new-albums").append(data);

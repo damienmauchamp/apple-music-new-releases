@@ -3,6 +3,7 @@ $menu = isConnected() ? array(
     array("Accueil", "index.php", "normal"),
     array("Mes artistes", "artists.php", "normal"),
     array("MAJ", "index.php?refresh", "compact"),
+    // array("Hard MAJ", "index.php?refresh&scrapped=1", "compact"),
     array("Déconnexion", "logout.php", "normal")
 ) : array(array("Accueil", "index.php", "normal"));
 

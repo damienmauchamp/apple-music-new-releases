@@ -13,6 +13,7 @@ use AppleMusic\Artist;
 use AppleMusic\DB as db;
 
 $function = isset($_VARS["f"]) ? intval($_VARS["f"]) : null;
+$scrapped = isset($_VARS["scrapped"]) ? $_VARS["scrapped"] === 'true' || (int) $_VARS["scrapped"] === '1' : false;
 $idArtist = isset($_VARS["id"]) ? $_VARS["id"] : null;
 
 // 1 : artistNewReleases(idArtist)
@@ -35,7 +36,12 @@ if ($function === 1) {
         "name" => $infos["name"],
         "lastUpdate" => $infos["lastUpdate"]
     );
-    getArtistRelease($artist, "albums");
+
+    if ($scrapped) {
+        getArtistScrappedRelease($artist, "albums");
+    } else {
+        getArtistRelease($artist, "albums");
+    }
 } else if ($function === 5) { // notification update
     $notif = isset($_VARS["notif"]) ? ($_VARS["notif"] === "true" ? true : false) : null;
     header("Content-type:application/json");

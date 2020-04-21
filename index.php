@@ -85,14 +85,14 @@ if ($news && $nodisplay) {
 
 					<? if (!$full) :
 						logRefresh(); ?>
-						<script>getNewReleases();</script>
+						<script>getNewReleases(<?= $scrapped ? 'true' : '' ?>);</script>
 						<div class="spinner-cont">
 							<div id="loading-spinner"
 								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
 						</div>
 					<? else :
 						logRefresh("full");
-						$res = getAllNewReleases();
+						$res = $scrapped ? getAllNewScrappedReleases() : getAllNewReleases();
 						$albums = $res["albums"];
 						$songs = $res["songs"];
 					endif ?>

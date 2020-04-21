@@ -364,7 +364,7 @@ class API
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl());
-        echo $this->setAlbumsUrl($scrapped);
+        // echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
         $header = array("Cache-Control: no-cache");
