@@ -3,6 +3,8 @@ require __DIR__ . '/vendor/autoload.php';
 require_once(__DIR__ . "/start.php");
 $root = "";
 
+checkConnexion();
+
 use AppleMusic\DB as db;
 
 $db = new db;
