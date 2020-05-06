@@ -63,7 +63,8 @@ function getThisWeekReleases($allow_duplicates = false) {
 				"id" => $artistId,
 				"name" => $r->artistName,
 				"albums" => array(),
-				"lastUpdate" => $r->lastUpdate
+				"lastUpdate" => $r->lastUpdate,
+				"added" => $r->added,
 			);
 		}
 		$display = 'grid';

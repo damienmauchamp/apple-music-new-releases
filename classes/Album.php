@@ -13,6 +13,7 @@ class Album
     private $artwork;
     private $link;
     private $explicit;
+    private $added;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ class Album
         $this->artwork = $array["artwork"];
         $this->link = "https://music.apple.com/fr/album/" . preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($array["name"])), "-")) . "/" . $array["id"];
         $this->explicit = $array["explicit"];
+        $this->added = $array["added"];
     }
 
     public function addAlbum($idArtist)
@@ -51,7 +53,8 @@ class Album
             "artistName" => $obj->artistName,
             "date" => $obj->date,
             "artwork" => $obj->artwork,
-            "explicit" => $obj->explicit
+            "explicit" => $obj->explicit,
+            "added" => $obj->added,
         );
     }
 
@@ -133,7 +136,10 @@ class Album
         return '
         <a href="' . $this->getLink() . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" target="_blank"
            id="album-' . $this->id . '"
-           data-am-kind="album" data-am-album-id="' . $this->id . '" ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
+           data-am-kind="album"
+           data-am-album-id="' . $this->id . '"
+           ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
+           data-added="'.$this->added.'"
            class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . (in_array($display, ["row", "grid-2-row"]) ? "2" : "6") . ' medium-3 large-2 ember-view"
            title="' . $this->name . ' by ' . $this->artistName . '">
             <picture

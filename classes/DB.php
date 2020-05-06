@@ -73,7 +73,7 @@ class DB
 		$sql = "
 			SELECT
 			  al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
-			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
+			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.added AS added
 			FROM albums al
 			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
@@ -102,7 +102,7 @@ class DB
 		$sql = "
 			SELECT
 			  al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
-			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
+			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.added AS added
 			FROM albums al
 			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
@@ -132,7 +132,7 @@ class DB
 		$sql = "
 			SELECT
 			  al.id AS id, al.name AS name, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
-			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit
+			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.added AS added
 			FROM albums al
 			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
