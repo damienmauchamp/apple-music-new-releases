@@ -286,7 +286,7 @@ $(function () {
 
 	$(document).on('click', '#settings', function() {
 		$('.notification-mask').remove();
-		console.log('test');
+		// console.log('test');
 		open_theme_settings();
 	})
 
@@ -386,6 +386,9 @@ var getNewReleases = function (scrapped) {
 
 };
 
+//////////////////////////////
+// COOKIES
+
 function setCookie(cname, cvalue, exdays) {
 	exdays = exdays || 99999;
 	var d = new Date();
@@ -398,7 +401,7 @@ function getCookie(cname) {
 	var name = cname + "=";
 	var decodedCookie = decodeURIComponent(document.cookie);
 	var ca = decodedCookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
+	for(var i = 0; i < ca.length; i++) {
 		var c = ca[i];
 		while (c.charAt(0) == ' ') {
 			c = c.substring(1);
@@ -410,8 +413,164 @@ function getCookie(cname) {
 	return "";
 }
 
-// tmp
+//////////////////////////////
+// ARRAY
+
+//
+Array.prototype.getMaxDate = function() {
+	return new Date(Math.max.apply(null, this.map(e => {
+		return new Date(e);
+	})));
+}
+
+Array.prototype.uniqueKey = function(key) {
+	return this.filter((value, index, self) => self.map(x => x[key]).indexOf(value[key]) == index);
+}
+
+///////////////////////////////
+// NEW RELEASES CHECK
+
+//
+function getLatestAddedDate(section_element) {
+	section_element = section_element || 'section#weekly-releases';
+	var dates = $(`${section_element} a.album`).map((i, e) => $(e).data('added')).toArray();
+	return dates.getMaxDate();
+}
+
+function getRecentlyAdded(cookie_latest_date, section_element) {
+	section_element = section_element || 'section#weekly-releases';
+	var $releases = $(`${section_element} a.album`).filter((i, e) => new Date($(e).data('added')) > new Date(cookie_latest_date));
+	return $releases.map((i, e) => {
+
+		var album = $($(e).get(0)).find('h3.album-title').text().trim();
+		var type = 'album';
+
+		if (/\- Single$/.test(album)) {
+			type = 'single';
+		} else if (/\- EP$/.test(album)) {
+			type = 'EP';
+		} else {
+			// type = 'album';
+		}
+
+		return {
+			link: $(e).data('link'),
+			id: $(e).attr('id'),
+			am_id: $(e).data('am-album-id'),
+			type: type,
+			album: album,
+			artist: $($(e).get(0)).find('h4.album-subtitle').text().trim(),
+			artwork: $($(e).get(0)).find('picture img').attr('src'),
+		};
+	}).toArray().uniqueKey('id');
+}
+//checkNewAddedReleases
+function checkNewAddedReleases(section_element) {
+	section_element = section_element || 'section#weekly-releases';
+	var cookie = `${section_element}_latest_added`;
+	var latest_date = getLatestAddedDate(section_element);
+	var cookie_latest_date = getCookie(cookie);
+
+	if (cookie_latest_date && new Date(cookie_latest_date) < latest_date) {
+		// getting new releases
+		var newReleases = getRecentlyAdded(cookie_latest_date, section_element);
+
+		// send notifications
+		newReleases.forEach((r) => {
+				var notification_title = `New ${r.type} by ${r.artist}`;
+				var notification_options = {
+					lang: 'EN', //'FR',
+					icon: "./favicon.png",
+					tag:  `amu-${r.id}`,
+					body: r.album,	
+					image: r.artwork,
+					data: {
+						suppr-link: r.link
+					},
+					link: r.link
+				};
+				sendNotification(notification_title, notification_options);
+				// console.log('sendNotification', notification_title, notification_options)
+		});
+	}
+	setCookie(cookie, latest_date);
+}
+
+function reinitCheckNewAddedReleases(section_element) {
+	section_element = section_element || 'section#weekly-releases';
+	var cookie = `${section_element}_latest_added`;
+	setCookie(cookie, '2020-05-06 01:37:06');
+	// console.log('reinit');
+}
+
+////////////////////////////////
+// NOTIFICATIONS
+
 var enable_notifications = true;
+
+function notificationRequestPermission() {
+	if (window.Notification && Notification.permission !== "granted") {
+		Notification.requestPermission(function (status) {
+			if (Notification.permission !== status) {
+				Notification.permission = status;
+			}
+		});
+	}
+}
+
+function sendNotification(title, options) {
+	// https://developer.mozilla.org/fr/docs/Web/API/notification/Notification
+
+	// if granted
+	if (window.Notification && Notification.permission === "granted") {
+		// send
+		var notification = new Notification(title, options);
+		notification.onclick = function(event) {
+			event.preventDefault(); // no focus
+			window.open(this.data.link, '_blank');
+		}
+	}
+	// if not granted yet
+	else if (window.Notification && Notification.permission !== "denied") {
+		Notification.requestPermission(function (status) {
+			// If the user said okay
+			if (status === "granted") {
+				// send
+				var notification = new Notification(title, options);
+				notification.onclick = function(event) {
+					event.preventDefault(); // no focus
+					window.open(this.data.link, '_blank');
+				}
+			} else {
+				// not granted
+				console.warn('notifications not granted (2)');
+			}
+	  });
+	}
+	// not granted
+	else {
+		// not granted
+		console.warn('notifications not granted (1)');
+	}
+}
+
+$(function() {
+	if (enable_notifications) {
+		// reinitCheckNewAddedReleases();
+		checkNewAddedReleases();
+	}
+});
+
+
+////////////////////
+
+
+// reinitCheckNewAddedReleases();
+// checkNewAddedReleases();
+// auto-refresh
+// on AR : get lastAdded, compare to previous cookie
+// if newer : notifications for every new releases (or group ?)
+// set latest "last added" as the cookie
 
 
 // Notifications
