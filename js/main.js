@@ -387,6 +387,7 @@ var getNewReleases = function (scrapped) {
 };
 
 function setCookie(cname, cvalue, exdays) {
+	exdays = exdays || 99999;
 	var d = new Date();
 	d.setTime(d.getTime() + (exdays*24*60*60*1000));
 	var expires = "expires="+ d.toUTCString();
