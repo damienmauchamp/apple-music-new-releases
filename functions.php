@@ -38,7 +38,8 @@ function getThisWeekReleases($allow_duplicates = false) {
 	$html_multi_row = $html_row_1 = $html_row_2 = '';
 
 	$html = '
-		<section class="main-header l-content-width section section--bordered '.($week_display === 'grid-2-row' ? 'l-multi-rows' : '').'">
+		<section class="main-header l-content-width section section--bordered '.($week_display === 'grid-2-row' ? 'l-multi-rows' : '').'"
+				 id="weekly-releases">
 			<div class="section-header section__nav clearfix">
 				<h2 class="section-title section__headline">Sorties de la semaine</h2>
 			</div>
