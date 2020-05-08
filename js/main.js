@@ -485,7 +485,7 @@ function checkNewAddedReleases(section_element) {
 					body: r.album,	
 					image: r.artwork,
 					data: {
-						suppr-link: r.link
+						link: r.link
 					},
 					link: r.link
 				};
