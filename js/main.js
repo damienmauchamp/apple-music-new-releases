@@ -464,7 +464,7 @@ function getRecentlyAdded(cookie_latest_date, section_element) {
 		};
 	}).toArray().uniqueKey('id');
 }
-//checkNewAddedReleases
+
 function checkNewAddedReleases(section_element) {
 	section_element = section_element || 'section#weekly-releases';
 	var cookie = `${section_element}_latest_added`;
@@ -483,9 +483,9 @@ function checkNewAddedReleases(section_element) {
 					icon: "./favicon.png",
 					tag:  `amu-${r.id}`,
 					body: r.album,	
-					image: r.artwork,
+					image: 'https:' + r.artwork.replace(/^https?\:?/, ''),
 					data: {
-						link: r.link
+						link: 'https:' + r.link.replace(/^https?\:?/, '')
 					},
 					link: r.link
 				};
@@ -545,7 +545,7 @@ function sendNotification(title, options) {
 				// not granted
 				console.warn('notifications not granted (2)');
 			}
-	  });
+		});
 	}
 	// not granted
 	else {
