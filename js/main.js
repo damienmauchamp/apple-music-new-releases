@@ -477,13 +477,14 @@ function checkNewAddedReleases(section_element) {
 
 		// send notifications
 		newReleases.forEach((r) => {
+				var notification_image = 'https:' + r.artwork.replace(/^https?\:?/, '');
 				var notification_title = `New ${r.type} by ${r.artist}`;
 				var notification_options = {
 					lang: 'EN', //'FR',
-					icon: "./favicon.png",
+					icon: "favicon.png",
 					tag:  `amu-${r.id}`,
 					body: r.album,	
-					image: 'https:' + r.artwork.replace(/^https?\:?/, ''),
+					image: notification_image,
 					data: {
 						link: 'https:' + r.link.replace(/^https?\:?/, '')
 					},
@@ -519,6 +520,7 @@ function notificationRequestPermission() {
 }
 
 function sendNotification(title, options) {
+	// console.log(options.image);
 	// https://developer.mozilla.org/fr/docs/Web/API/notification/Notification
 
 	// if granted
