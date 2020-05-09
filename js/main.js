@@ -481,7 +481,7 @@ function checkNewAddedReleases(section_element) {
 				var notification_title = `New ${r.type} by ${r.artist}`;
 				var notification_options = {
 					lang: 'EN', //'FR',
-					icon: "favicon.png",
+					icon: notification_image, // "favicon.png",
 					tag:  `amu-${r.id}`,
 					body: r.album,	
 					image: notification_image,
