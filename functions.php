@@ -16,7 +16,7 @@ function displayAlbums($albums)
 	}
 }
 
-function displaySongs($songs)
+function displaySongs($songs, $upcoming = true)
 {
 	if ($songs) {
 		/** @var Song $songs */
@@ -205,7 +205,7 @@ function getAllAlbums($display = "artists")
 	return json_decode($releases);
 }
 
-function getAllSongs($filtrer_albums = false, $only_explicit = true)
+function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = null)
 {
 	global $daysInterval;
 	$db = new db;
@@ -213,9 +213,10 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true)
 	$artists = array();
 
 	if ($filtrer_albums) {
-		$albums = array_map(static function($album) {
+		$week_releases = $db->getUserWeekReleases();
+		$albums = $week_releases ? array_map(static function($album) {
 			return $album['id'];
-		}, json_decode($db->getUserWeekReleases(), true));
+		}, json_decode($db->getUserWeekReleases(), true)) : [];
 	}
 
 	$releases_array = [];
@@ -224,6 +225,15 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true)
 		foreach ($released_data as $i => $r) {
 			$artistId = $r->idArtist;
 			$song = Song::withArray(Song::objectToArray($r));
+
+			// type 1 : only streamable
+			if ($type === 1 && !$song->isStreamable()) {
+				continue;
+			}
+			// type 2 : only not streamable/upcoming
+			if ($type === 2 && $song->isStreamable()) {
+				continue;
+			}
 
 			if ($filtrer_albums && in_array($r->collectionId, $albums)) {
 				// unset($releases_array[$i]);

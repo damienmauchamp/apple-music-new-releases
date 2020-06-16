@@ -13,10 +13,14 @@ global $news;
 
 if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
 
+	$explicit_only = true;
 	$filtrer_albums = isset($_POST["filtrer"]) && $_POST["filtrer"];
+	// type === 1 : only streamable
+	// type === 2 : only not streamable/upcoming
+	$type = isset($_POST["type"]) ? (int) $_POST["type"] : null;
 
 	header("Content-type:text/html");
-	displaySongs(getAllSongs($filtrer_albums));
+	displaySongs(getAllSongs($filtrer_albums, $explicit_only, $type));
 	exit;
 }
 
@@ -118,6 +122,7 @@ if ($news && $nodisplay) {
 			$songs = []; //false;//getAllSongs();
 			//var_dump($songs);
 			?>
+			<!-- RECENT SONGS -->
 			<section class="l-content-width section section--bordered">
 				<div class="l-row">
 					<div class="l-column small-12">
@@ -138,18 +143,56 @@ if ($news && $nodisplay) {
 								<th class="table__head__heading table__head__heading--duration">SORTIE</th>
 							</tr>
 							</thead>
-							<tbody id="song-table-tbody">
+							<tbody id="recent-songs-table-tbody">
 							<? //displaySongs($songs)
 							?>
 							</tbody>
 						</table>
 						<div class="spinner-cont">
-							<div id="loading-spinner"
+							<div id="loading-spinner_recent-songs"
 								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
 						</div>
 					</div>
 				</div>
 			</section>
+
+			<!-- UPCOMING SONGS -->
+			<section class="l-content-width section section--bordered">
+				<div class="l-row">
+					<div class="l-column small-12">
+						<h2 class="section__headline">
+							Chansons à venir
+						</h2>
+						<table class="table table--see-all" id="song-table-table">
+							<thead class="table__head">
+							<tr>
+								<th class="table__head__heading--artwork"></th>
+								<th class="table__head__heading table__head__heading--song">TITRE</th>
+								<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+									ARTISTE
+								</th>
+								<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+									ALBUM
+								</th>
+								<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+							</tr>
+							</thead>
+							<tbody id="upcoming-songs-table-tbody">
+							<? //displaySongs($songs)
+							?>
+							</tbody>
+						</table>
+						<div class="spinner-cont">
+							<div id="loading-spinner_upcoming-songs"
+								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<?
+			// Chansons à venir
+			?>
 
 			<? // songs start
 			if ($songs) : ?>
@@ -207,12 +250,38 @@ if ($news && $nodisplay) {
 				method: "POST",
 				data: {
 					load_songs: true,
-					filtrer: true
+					filtrer: true,
+					type: 1
 				},
 				success: function(data) {
 					console.log('songs loaded.')
-					$("#song-table-tbody").append(data);
-					$("#loading-spinner").hide();
+					if (!data) {
+						$("#recent-songs-table-tbody").hide();
+					} else {
+						$("#recent-songs-table-tbody").append(data);
+					}
+					$("#loading-spinner_recent-songs").hide();
+				}
+			});
+		}();
+		var load_upcoming_songs = function () {
+			console.log('loading upcoming songs...')
+			$.ajax({
+				url: "index.php",
+				method: "POST",
+				data: {
+					load_songs: true,
+					filtrer: true,
+					type: 2
+				},
+				success: function(data) {
+					console.log('songs loaded.')
+					if (!data) {
+						$("#upcoming-songs-table-tbody").hide();
+					} else {
+						$("#upcoming-songs-table-tbody").append(data);
+					}
+					$("#loading-spinner_upcoming-songs").hide();
 				}
 			});
 		}();
