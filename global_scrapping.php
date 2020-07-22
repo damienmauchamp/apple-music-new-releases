@@ -14,7 +14,7 @@ $db = new db;
 
 foreach ($db->getUsersIDs() as $user) {
     $idUser = $user["id"];
-    logRefresh("scrapping - no display --- $idUser");
+    logRefresh("scrapping --- $idUser");
     $_SESSION["id_user"] = $idUser;
 
     // reduce lastUpdated by a week
