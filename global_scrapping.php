@@ -14,6 +14,7 @@ $db = new db;
 
 foreach ($db->getUsersIDs() as $user) {
     $idUser = $user["id"];
+    logRefresh("scrapping - no display --- $idUser");
     $_SESSION["id_user"] = $idUser;
 
     // reduce lastUpdated by a week
@@ -24,7 +25,6 @@ foreach ($db->getUsersIDs() as $user) {
     $res = getAllNewScrappedReleases();
     $albums = $res && isset($res["albums"]) ? $res['albums'] : null;
     $songs = $res && isset($res["songs"]) ? $res['songs'] : null;
-    logRefresh("no display --- $idUser");
     echo json_encode(true);
     //exit;
 }
