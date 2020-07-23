@@ -507,7 +507,7 @@ function reinitCheckNewAddedReleases(section_element) {
 ////////////////////////////////
 // NOTIFICATIONS
 
-var enable_notifications = true;
+var enable_notifications = false;
 
 function notificationRequestPermission() {
 	if (window.Notification && Notification.permission !== "granted") {
