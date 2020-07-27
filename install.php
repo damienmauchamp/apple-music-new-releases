@@ -71,6 +71,7 @@ CREATE TABLE `logs` (
 CREATE TABLE `logs_curl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idArtist` varchar(20) NOT NULL,
+  `entity` varchar(20) NOT NULL,
   `url` varchar(255) NOT NULL,
   `data` text NOT NULL,
   `scrapped` tinyint(4) NOT NULL DEFAULT 0,
@@ -137,7 +138,7 @@ ALTER TABLE `logs`
 
 ALTER TABLE `logs_curl`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idArtist` (`idArtist`,`url`,`scrapped`);
+  ADD UNIQUE KEY `idArtist` (`idArtist`,`entity`,`scrapped`);
 
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`id`);
