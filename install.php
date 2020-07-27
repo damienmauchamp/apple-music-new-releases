@@ -73,7 +73,7 @@ CREATE TABLE `logs_curl` (
   `idArtist` varchar(20) NOT NULL,
   `entity` varchar(20) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `data` text NOT NULL,
+  `data` longtext NOT NULL,
   `scrapped` tinyint(4) NOT NULL DEFAULT 0,
   `lastCall` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
