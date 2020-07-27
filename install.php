@@ -62,10 +62,19 @@ CREATE TABLE `artists_songs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `logs` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
   `id_user` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `logs_curl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idArtist` varchar(20) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `data` text NOT NULL,
+  `scrapped` tinyint(4) NOT NULL DEFAULT 0,
+  `lastCall` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `songs` (
@@ -126,6 +135,10 @@ ALTER TABLE `logs`
   ADD UNIQUE KEY `logs_id_uindex` (`id`),
   ADD KEY `logs_users_id_fk` (`id_user`);
 
+ALTER TABLE `logs_curl`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idArtist` (`idArtist`,`url`,`scrapped`);
+
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`id`);
 
@@ -139,6 +152,9 @@ ALTER TABLE `artists_songs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users_artists`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `logs_curl`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

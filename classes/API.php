@@ -37,20 +37,26 @@ class API
 
     public function fetchAlbums($scrapped = false)
     {
-        $results = json_decode($this->curlRequest($scrapped), true);
+        $json = $this->curlRequest($scrapped);
+        
+        $db = new db;
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped), $json, $scrapped ? '1' : '0');
+
+        $results = json_decode($json, true);
         //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
         return $this->fetch($results, "albums", $scrapped);
     }
 
     public function fetchSongs($scrapped)
     {
-        // if ($scrapped) {
-        //     return [];
-        // }
-
         $this->entity = 'song';
         //$this->limit = 200;
-        $results = json_decode($this->curlRequest($scrapped), true);
+        $json = $this->curlRequest($scrapped);
+
+        $db = new db;
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped), $json, $scrapped ? '1' : '0');
+
+        $results = json_decode($json, true);
         // print_r(['fetchSongs' => $results]);
         // print_r($results);
         // if ($this->id == "331066376") {
