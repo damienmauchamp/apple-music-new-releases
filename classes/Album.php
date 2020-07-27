@@ -36,7 +36,7 @@ class Album
         $this->artwork = $array["artwork"];
         $this->link = "https://music.apple.com/fr/album/" . preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($array["name"])), "-")) . "/" . $array["id"];
         $this->explicit = $array["explicit"];
-        $this->added = $array["added"];
+        $this->added = isset($array["added"]) ? $array["added"] : '';
     }
 
     public function addAlbum($idArtist)

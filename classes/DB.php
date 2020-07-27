@@ -663,66 +663,41 @@ class DB
 	}
 
 	public function logCurlRequest($idArtist, $entity, $url, $data, $scrapped) {
-		// id
-		// idArtist
-		// url
-		// data
-		// scrapped
-		// lastCall
-
+		$date = new \DateTime();
+		$datetime = $date->format('Y-m-d H:i:s');
 		$sqlLog = "
-			INSERT INTO logs_curl (idArtist, entity, url, data, scrapped)
-			VALUES (:idArtist, :entity, :url, :data, :scrapped)
+			INSERT INTO logs_curl (idArtist, entity, url, data, scrapped, lastCall)
+			VALUES (:idArtist, :entity, :url, :data, :scrapped, :lastCall)
 			ON DUPLICATE KEY UPDATE
-				idArtist = :idArtist
-				entity = :entity
-				url = :url
-				data = :data
-				scrapped = :scrapped";
-				// lastCall = NOW()";
+				idArtist = :idArtist,
+				entity = :entity,
+				url = :url,
+				data = :data,
+				scrapped = :scrapped,
+				lastCall = :lastCall";
 
 		$this->connect();
+		$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		$stmt = $this->dbh->prepare($sqlLog);
 		$resLog = $stmt->execute(array(
 			'idArtist' => $idArtist,
 			'entity' => $entity,
 			'url' => $url,
-			'data' => $data,
+			'data' => str_replace("'", "\'", $data),
 			'scrapped' => $scrapped,
-			// 'lastCall' => $lastCall,
+			'lastCall' => $datetime,
 		));
+		$this->reinitAutoIncrement('logs_curl');
 		$this->disconnect();
 		return $resLog;
+	}
 
-
-// 		$sqlArtist = "
-// 			INSERT INTO artists (id, name)
-// 			VALUES (:id, :name)
-// 			ON DUPLICATE KEY UPDATE id = :id, name = :name";
-
-// 		$sqlUserArtist = "
-// 			INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
-// 			VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
-// 			ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
-
-
-// 		$this->connect();
-// 		$stmt = $this->dbh->prepare($sqlArtist);
-// 		$resArtist = $stmt->execute(array(
-// 			'id' => $id,
-// 			'name' => $name
-// 		));
-// 		$stmt = $this->dbh->prepare($sqlUserArtist);
-// 		$resUserArtist = $stmt->execute(array(
-// 			'id_user' => $idUser,
-// 			'id' => $id
-// 		));
-// 		$this->disconnect();
-// //		var_dump($sqlArtist, $sqlUserArtist);exit;
-// //		echo json_encode($sqlUserArtist);
-// 		return $resArtist && $resUserArtist;
-
-
+	private function reinitAutoIncrement($table) {
+		$this->connect();
+		$stmt = $this->dbh->prepare("ALTER TABLE {$table} AUTO_INCREMENT = 0");
+		$res = $stmt->execute();
+		$this->disconnect();
+		return $res;
 	}
 
 	private function enableForeignKeysCheck() {
