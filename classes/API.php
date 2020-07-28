@@ -35,26 +35,26 @@ class API
         return $this->fetch($results, "artist");
     }
 
-    public function fetchAlbums($scrapped = false)
+    public function fetchAlbums($scrapped = false, $artistName = '')
     {
-        $json = $this->curlRequest($scrapped);
+        $json = $this->curlRequest($scrapped, $artistName);
         
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
         //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
         return $this->fetch($results, "albums", $scrapped);
     }
 
-    public function fetchSongs($scrapped)
+    public function fetchSongs($scrapped = false, $artistName = '')
     {
         $this->entity = 'song';
         //$this->limit = 200;
-        $json = $this->curlRequest($scrapped);
+        $json = $this->curlRequest($scrapped, $artistName);
 
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
         // print_r(['fetchSongs' => $results]);
@@ -344,14 +344,17 @@ class API
         }
     }
 
-    private function setAlbumsUrl($scrapped = false)
+    private function setAlbumsUrl($scrapped = false, $artistName = '')
     {
 //        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
         /*if ($this->id == "331066376") {
             file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
         }*/
         if ($scrapped) {
-            return "https://music.apple.com/{$this->country}/artist/aaa/{$this->id}";
+            // return "https://music.apple.com/{$this->country}/artist/aaa/{$this->id}";
+            $artistUrlName = $artistName ? strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $artistName), '-')) : 'xxx';
+            // echo "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}\n";
+            return "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}";
         }
         return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
@@ -362,14 +365,14 @@ class API
         return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
-    private function curlRequest($scrapped = false)
+    private function curlRequest($scrapped = false, $artistName = '')
     {
         if ($scrapped) {
-            return $this->curlScrappedRequest();
+            return $this->curlScrappedRequest($artistName);
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl());
+        curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
         // echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
@@ -378,7 +381,7 @@ class API
         return curl_exec($ch);
     }
 
-    private function curlScrappedRequest() {
+    private function curlScrappedRequest($artistName = '') {
         $user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
 
         $options = array(
@@ -400,7 +403,7 @@ class API
             CURLOPT_SSL_VERIFYPEER => 0
         );
 
-        $url = $this->setAlbumsUrl(true);
+        $url = $this->setAlbumsUrl(true, $artistName);
 
         $ch = curl_init($url);
         curl_setopt_array($ch, $options);
@@ -522,12 +525,12 @@ class API
         return curl_exec($ch);
     }
 
-    public function update($lastUpdate, $scrapped = false)
+    public function update($lastUpdate, $scrapped = false, $artistName = '')
     {
         //file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
-        $albums = $this->fetchAlbums($scrapped);
+        $albums = $this->fetchAlbums($scrapped, $artistName);
         //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
-        $songs = $this->fetchSongs($scrapped);
+        $songs = $this->fetchSongs($scrapped, $artistName);
 
         $new = array(
             "albums" => array(),

@@ -405,7 +405,7 @@ function getArtistScrappedRelease($objArtist, $display = false) {
 
 	// Recupération des albums sur l'API
 	$api = new api($artist->getId());
-	$newEntities = $api->update($artist->getLastUpdate(), true);
+	$newEntities = $api->update($artist->getLastUpdate(), true, $objArtist->name);
 	return $newEntities;
 }
 
