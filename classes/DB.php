@@ -272,7 +272,12 @@ class DB
 		$sqlAlbum = "
 			INSERT INTO albums (id, name, artistName, date, artwork, explicit, added)
 			VALUES (:id, :name, :artist_name, :date, :artwork, :explicit, :added)
-			ON DUPLICATE KEY UPDATE name = :name, artistName = :artist_name, date = :date, artwork = :artwork, explicit = :explicit";
+			ON DUPLICATE KEY UPDATE
+				name = :name,
+				artistName = :artist_name,
+				date = IF(!custom, :date, date),
+				artwork = :artwork,
+				explicit = :explicit";
 
 		$sqlArtistAlbum = "
 			INSERT INTO artists_albums (idArtist, idAlbum)
@@ -321,7 +326,15 @@ class DB
 		$sqlAlbum = "
 			INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable, added)
 			VALUES (:id, :collection_id, :collection_name, :track_name, :artist_name, :date, :artwork, :explicit, :isStreamable, :added)
-			ON DUPLICATE KEY UPDATE id = :id, collectionName = :collection_name, trackName = :track_name, artistName = :artist_name, date = :date, artwork = :artwork, explicit = :explicit, isStreamable = :isStreamable";
+			ON DUPLICATE KEY UPDATE
+				id = :id,
+				collectionName = :collection_name,
+				trackName = :track_name,
+				artistName = :artist_name,
+				date = IF(!custom, :date, date),
+				artwork = :artwork,
+				explicit = :explicit,
+				isStreamable = :isStreamable";
 
 		$sqlArtistAlbum = "
 			INSERT INTO artists_songs (idArtist, idAlbum)
