@@ -1,7 +1,11 @@
 <? if (!isset($root)) {
     $root = '../';
-} ?>
-    <title><?= isset($pageTitle) ? $pageTitle : "Apple Music Update" ?></title>
+}
+
+$title_prefix = is_localhost() ? "[DEV] " : '';
+$page_title = isset($pageTitle) ? $pageTitle : "Apple Music Update";
+?>
+    <title><?= $title_prefix . $page_title ?></title>
     <script src="<?= $root ?>libs/jquery/jquery-1.12.1.js"></script>
     <script src="<?= $root ?>libs/jquery/jquery-migrate-1.2.1.min.js"></script>
     <link href="<?= $root ?>libs/select2/select2.min.css" rel="stylesheet"/>
