@@ -275,7 +275,7 @@ class DB
 			ON DUPLICATE KEY UPDATE
 				name = :name,
 				artistName = :artist_name,
-				date = IF(!custom, :date, date),
+				date = IF(custom = 0, :date, date),
 				artwork = :artwork,
 				explicit = :explicit";
 
@@ -331,7 +331,7 @@ class DB
 				collectionName = :collection_name,
 				trackName = :track_name,
 				artistName = :artist_name,
-				date = IF(!custom, :date, date),
+				date = IF(custom = 0, :date, date),
 				artwork = :artwork,
 				explicit = :explicit,
 				isStreamable = :isStreamable";
