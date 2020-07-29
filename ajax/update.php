@@ -52,6 +52,15 @@ if ($function === 1) {
     $db = new db;
     echo json_encode($db->setNotificationsStatus($notif));
 }
+// get one artist
+else if ($function === 6) {
+    $idArtist = isset($_VARS["idArtist"]) ? $_VARS["idArtist"] : 0;
+    $db = new db;
+    $artist = $db->getUserArtist($idArtist);
+    header("Content-type:application/json");
+    echo json_encode($artist);
+}
+
 
 
 /**

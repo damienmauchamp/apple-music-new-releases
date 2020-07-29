@@ -42,6 +42,7 @@ class DB
 			$this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3306;dbname=' . $DB_nom, $DB_login, $DB_psw);
 			$this->dbh->exec('SET CHARACTER SET utf8');
 			$this->dbh->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+			$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			echo "Erreur ! : " . $e->getMessage() . "<br/>";
 			die("Connexion impossible à la base de données." .  $e->getMessage());
@@ -212,6 +213,35 @@ class DB
 		$this->disconnect();
 
 		$res = $stmt->fetchAll();
+		return $res ? json_encode($res) : null;
+	}
+
+	public function getUserArtist($idArtist, $userId = 0)
+	{
+		global $idUser;
+
+		if ($userId)
+			$idUser = $userId;
+
+		$sql = "
+			SELECT ar.id, ar.name, ua.lastUpdate
+			FROM artists ar
+			INNER JOIN users_artists ua
+				ON ua.idUser = :id_user
+				AND ua.idArtist = :id_artist
+			WHERE ar.id = :id_artist;";
+
+		$this->connect();
+		$stmt = $this->dbh->prepare($sql);
+		// $stmt->bindValue("id_artist", $idArtist);
+		$stmt->execute(array(
+			'id_artist' => $idArtist,
+			'id_user' => $idUser
+		));
+		// echo print_r($this->dbh->errorInfo(), true);
+		$this->disconnect();
+
+		$res = $stmt->fetch();
 		return $res ? json_encode($res) : null;
 	}
 

@@ -19,8 +19,12 @@ $artists = json_decode($db->getUsersArtists());
             width: 44px;
         }
 
-        .remove-artist {
+        .edit-artist {
             color: #da0f47;
+        }
+
+        button.update-artist {
+            margin-right: 1vw;
         }
 
         .table__row__artwork {
@@ -87,8 +91,9 @@ $artists = json_decode($db->getUsersArtists());
                                 <div>
                             </td>
 
-                            <td class="table__row__duration remove-artist">
-                                <button class="rm-artist" data-artist-id="<?= $artist->id ?>">SUPPRIMER</button>
+                            <td class="table__row__duration edit-artist">
+                                <button class="update-artist" data-artist-id="<?= $artist->id ?>" onclick="updateArtist('<?= $artist->id ?>');">UPDATE</button>
+                                <button class="rm-artist" data-artist-id="<?= $artist->id ?>">✕</button>
                             </td>
                         </tr>
                     <? endforeach; ?>

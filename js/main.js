@@ -386,6 +386,48 @@ var getNewReleases = function (scrapped) {
 
 };
 
+
+/**
+ * Update an artist
+ *
+ * @param {integer} id_artist
+ * @param {boolean} scrapped
+ */
+var updateArtist = function(id_artist, scrapped) {
+	scrapped = scrapped || false;
+
+	function getArtist(id_artist) {
+		return $.ajax({
+			url: "./ajax/update.php",
+			method: "POST",
+			dataType: 'json',
+			data: {f: 6, idArtist: id_artist}
+		});
+	}
+
+	$.when(getArtist(id_artist)).done(function (str) {
+		var artist = JSON.parse(str);
+		$.ajax({
+			url: "./ajax/update.php",
+			method: "POST",
+			data: {
+				f: 4,
+				scrapped: scrapped,
+				artist: artist
+			}, success: function (data) {
+				// console.log(data);
+				// spinner.show();
+			}, complete: function () {
+				// console.log('ok');
+				// if (!--count) {
+				// 	spinner.hide();
+				// }
+			}
+		});
+	});
+
+}
+
 //////////////////////////////
 // COOKIES
 
