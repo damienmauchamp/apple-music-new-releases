@@ -508,6 +508,11 @@ class API
         }
 
         return json_encode([
+            'results' => [
+                'albumsCount' => count($albums),
+                'songsCount' => count($songs),
+                'imagesCount' => count($images),
+            ],
             'albums' => $albums,
             'songs' => $songs,
             'images' => $images,
