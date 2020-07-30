@@ -40,9 +40,16 @@ class API
         $json = $this->curlRequest($scrapped, $artistName);
         
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
+
+        if ($scrapped) {
+            return [
+                'albums' => $this->fetch($results, "albums", $scrapped),
+                'songs' => $this->fetch($results, "songs", $scrapped),
+            ];
+        }
         //file_put_contents(LOG_FILE, "Albums found: " . json_encode($results) . "\n", FILE_APPEND);
         return $this->fetch($results, "albums", $scrapped);
     }
@@ -54,9 +61,16 @@ class API
         $json = $this->curlRequest($scrapped, $artistName);
 
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
+
+        if ($scrapped) {
+            return [
+                'albums' => $this->fetch($results, "albums", $scrapped),
+                'songs' => $this->fetch($results, "songs", $scrapped),
+            ];
+        }
         // print_r(['fetchSongs' => $results]);
         // print_r($results);
         // if ($this->id == "331066376") {
@@ -344,17 +358,24 @@ class API
         }
     }
 
-    private function setAlbumsUrl($scrapped = false, $artistName = '')
+    private function setAlbumsUrl($scrapped = false, $artistName = '', $display = true)
     {
 //        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
         /*if ($this->id == "331066376") {
             file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
         }*/
         if ($scrapped) {
+            $this->entity = 'all';
             // return "https://music.apple.com/{$this->country}/artist/aaa/{$this->id}";
             $artistUrlName = $artistName ? strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $artistName), '-')) : 'xxx';
             // echo "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}\n";
-            return "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}";
+
+            $scrapped_url = "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}";
+            if ($display && ((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"]))) {
+                echo "Scrapping : {$scrapped_url}\n";
+            }
+
+            return $scrapped_url;
         }
         return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
@@ -420,6 +441,11 @@ class API
         $dom = HtmlDomParser::str_get_html($header["content"]);
         if (!$dom) {
             return json_encode([
+                'results' => [
+                    'albumsCount' => 0,
+                    'songsCount' => 0,
+                    'imagesCount' => 0,
+                ],
                 'albums' => [],
                 'songs' => [],
                 'images' => [],
@@ -445,7 +471,13 @@ class API
                 //echo "{$include['type']} - " . ($include['type'] === "lockup/album" ? "OUI" : "NON") . "\n";
                 if ($include['type'] === 'lockup/album') {
 
-                    $releaseDate = new \DateTime($include['attributes']['releaseDate']);
+                    // If the release date is the only the year
+                    $attribute_releaseDate = $include['attributes']['releaseDate'];
+                    if (preg_match('/^\d{4}$/', $attribute_releaseDate)) {
+                        $attribute_releaseDate = "01-01-{$attribute_releaseDate}";
+                    }
+
+                    $releaseDate = new \DateTime($attribute_releaseDate);
                     $today = new \DateTime();
                     $interval = $releaseDate->diff($today);
                     $day = $interval->format('%r%a');
@@ -532,10 +564,22 @@ class API
 
     public function update($lastUpdate, $scrapped = false, $artistName = '')
     {
-        //file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
-        $albums = $this->fetchAlbums($scrapped, $artistName);
-        //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
-        $songs = $this->fetchSongs($scrapped, $artistName);
+        $albums = $songs = [];
+
+        if (!$scrapped) {
+            //file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
+            $albums = $this->fetchAlbums($scrapped, $artistName);
+            //file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
+            $songs = $this->fetchSongs($scrapped, $artistName);
+        } else {
+            $entities = $this->fetchAlbums($scrapped, $artistName);
+            $albums = $entities['albums'];
+            $songs = $entities['songs'];
+
+            if ((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"])) {
+                echo "Albums : " . count($albums) . ", songs : " . count($songs) . "\n\n";
+            }
+        }
 
         $new = array(
             "albums" => array(),
