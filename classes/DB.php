@@ -756,9 +756,11 @@ class DB
 	private function foreignKeysCheck($mode = true)
 	{
 		$this->connect();
-		$stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = :mode");
+		$mode_str = $mode ? '1' : '0';
+		// $stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = :mode");
+		$stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = {$mode_str}");
 		// $res = $stmt->execute(array("mode" => ($mode ? '1' : '0')));
-		$res = $stmt->execute(array("mode" => $mode));
+		$res = $stmt->execute(/*array("mode" => $mode)*/);
 		$this->disconnect();
 		return $res;
 	}
