@@ -315,22 +315,35 @@ class DB
 			ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id_album";
 
 		$this->connect();
-		$stmt = $this->dbh->prepare($sqlAlbum);
-		$resAlbum = $stmt->execute(array(
-			'id' => $id,
-			'name' => $name,
-			'artist_name' => $artistName,
-			'date' => $date,
-			'artwork' => $artwork,
-			'explicit' => $explicit,
-			// 'added' => $added->format('Y-m-d H:i:s')
-		));
+		try {
+			$stmt = $this->dbh->prepare($sqlAlbum);
+			$resAlbum = $stmt->execute(array(
+				'id' => $id,
+				'name' => $name,
+				'artist_name' => $artistName,
+				'date' => $date,
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				// 'added' => $added->format('Y-m-d H:i:s')
+			));
 
-		$stmt = $this->dbh->prepare($sqlArtistAlbum);
-		$resArtistAlbum = $stmt->execute(array(
-			'id_artist' => $idArtist,
-			'id_album' => $id
-		));
+			$stmt = $this->dbh->prepare($sqlArtistAlbum);
+			$resArtistAlbum = $stmt->execute(array(
+				'id_artist' => $idArtist,
+				'id_album' => $id
+			));
+		} catch(PDOException $e) {
+			echo "\nALBUM ERROR: " . json_encode(array(
+				'erreur' => $e->getMessage(),
+				'id' => $id,
+				'name' => $name,
+				'artist_name' => $artistName,
+				'date' => $date,
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				// 'added' => $added->format('Y-m-d H:i:s')
+			)) . "\n";
+		}
 		$this->disconnect();
 		return $resAlbum && $resArtistAlbum;
 	}
