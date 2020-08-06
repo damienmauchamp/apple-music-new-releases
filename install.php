@@ -40,7 +40,7 @@ CREATE TABLE `albums` (
   `date` datetime DEFAULT NULL,
   `artwork` varchar(255) DEFAULT NULL,
   `explicit` tinyint(1) NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL,
+  `added` datetime NOT NULL DEFAULT current_timestamp(),
   `custom` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -89,7 +89,7 @@ CREATE TABLE `songs` (
   `artwork` varchar(255) DEFAULT NULL,
   `explicit` tinyint(1) DEFAULT 0,
   `isStreamable` tinyint(1) DEFAULT NULL,
-  `added` datetime NOT NULL,
+  `added` datetime NOT NULL DEFAULT current_timestamp(),
   `custom` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

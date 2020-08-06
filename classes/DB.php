@@ -297,11 +297,11 @@ class DB
 		$date = fixTZDate($album->getDate());
 		$artwork = $album->getArtwork();
 		$explicit = $album->isExplicit() ? 1 : 0;
-		$added = new \DateTime();
+		// $added = new \DateTime();
 
 		$sqlAlbum = "
-			INSERT INTO albums (id, name, artistName, date, artwork, explicit, added)
-			VALUES (:id, :name, :artist_name, :date, :artwork, :explicit, :added)
+			INSERT INTO albums (id, name, artistName, date, artwork, explicit)
+			VALUES (:id, :name, :artist_name, :date, :artwork, :explicit)
 			ON DUPLICATE KEY UPDATE
 				name = :name,
 				artistName = :artist_name,
@@ -323,7 +323,7 @@ class DB
 			'date' => $date,
 			'artwork' => $artwork,
 			'explicit' => $explicit,
-			'added' => $added->format('Y-m-d H:i:s')
+			// 'added' => $added->format('Y-m-d H:i:s')
 		));
 
 		$stmt = $this->dbh->prepare($sqlArtistAlbum);
@@ -351,11 +351,11 @@ class DB
 		$artwork = $song->getArtwork();
 		$explicit = $song->isExplicit() ? 1 : 0;
 		$isStreamable = $song->isStreamable() ? 1 : 0;
-		$added = new \DateTime();
+		// $added = new \DateTime();
 
 		$sqlAlbum = "
-			INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable, added)
-			VALUES (:id, :collection_id, :collection_name, :track_name, :artist_name, :date, :artwork, :explicit, :isStreamable, :added)
+			INSERT INTO songs (id, collectionId, collectionName, trackName, artistName, date, artwork, explicit, isStreamable)
+			VALUES (:id, :collection_id, :collection_name, :track_name, :artist_name, :date, :artwork, :explicit, :isStreamable)
 			ON DUPLICATE KEY UPDATE
 				id = :id,
 				collectionName = :collection_name,
@@ -383,7 +383,7 @@ class DB
 			'artwork' => $artwork,
 			'explicit' => $explicit,
 			'isStreamable' => $isStreamable,
-			'added' => $added->format('Y-m-d H:i:s')
+			// 'added' => $added->format('Y-m-d H:i:s')
 		));
 		$stmt = $this->dbh->prepare($sqlArtistAlbum);
 		$resArtistAlbum = $stmt->execute(array(
