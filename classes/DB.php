@@ -371,6 +371,25 @@ class DB
 			VALUES (:id_artist, :id)
 			ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id";
 
+		if (strstr($artistName, 'Denzel')) {
+			// file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
+			echo "\nSONG ADDED: " . json_encode(array(
+				'id' => $id,
+				'collection_id' => $collectionId,
+				'collection_name' => $collectionName,
+				'track_name' => $trackName,
+				'artist_name' => $artistName,
+				'$song->getDate()' => $song->getDate(),
+				'date' => $date,
+				'datetime' => new DateTime($song->getDate()),
+				'datetime2' => new DateTime($date),
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				'isStreamable' => $isStreamable,
+				'added' => $added->format('Y-m-d H:i:s')
+			)) . "\n";
+		}
+
 		$this->connect();
 		$stmt = $this->dbh->prepare($sqlAlbum);
 		$resAlbum = $stmt->execute(array(
@@ -391,22 +410,6 @@ class DB
 			'id_artist' => $idArtist
 		));
 		$this->disconnect();
-
-		/*if (strstr($id, '631440154')) {
-			file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
-			// echo "\nSONG ADDED: " . json_encode(array(
-				'id' => $id,
-				'collection_id' => $collectionId,
-				'collection_name' => $collectionName,
-				'track_name' => $trackName,
-				'artist_name' => $artistName,
-				'date' => $date,
-				'artwork' => $artwork,
-				'explicit' => $explicit,
-				'isStreamable' => $isStreamable,
-				'added' => $added->format('Y-m-d H:i:s')
-			)) . "\n";
-		}*/
 
 		return $resAlbum && $resArtistAlbum;
 	}
