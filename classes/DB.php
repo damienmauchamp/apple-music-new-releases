@@ -371,7 +371,7 @@ class DB
 			VALUES (:id_artist, :id)
 			ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id";
 
-		if (strstr($artistName, 'Denzel')) {
+		/*if (strstr($artistName, 'Denzel')) {
 			// file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
 			echo "\nSONG ADDED: " . json_encode(array(
 				'id' => $id,
@@ -388,27 +388,46 @@ class DB
 				'isStreamable' => $isStreamable,
 				// 'added' => $added->format('Y-m-d H:i:s')
 			)) . "\n";
-		}
+		}*/
 
 		$this->connect();
-		$stmt = $this->dbh->prepare($sqlAlbum);
-		$resAlbum = $stmt->execute(array(
-			'id' => $id,
-			'collection_id' => $collectionId,
-			'collection_name' => $collectionName,
-			'track_name' => utf8_encode($trackName),
-			'artist_name' => $artistName,
-			'date' => $date,
-			'artwork' => $artwork,
-			'explicit' => $explicit,
-			'isStreamable' => $isStreamable,
-			// 'added' => $added->format('Y-m-d H:i:s')
-		));
-		$stmt = $this->dbh->prepare($sqlArtistAlbum);
-		$resArtistAlbum = $stmt->execute(array(
-			'id' => $id,
-			'id_artist' => $idArtist
-		));
+		try  {
+			$stmt = $this->dbh->prepare($sqlAlbum);
+			$resAlbum = $stmt->execute(array(
+				'id' => $id,
+				'collection_id' => $collectionId,
+				'collection_name' => $collectionName,
+				'track_name' => $trackName,
+				'artist_name' => $artistName,
+				'date' => $date,
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				'isStreamable' => $isStreamable,
+				// 'added' => $added->format('Y-m-d H:i:s')
+			));
+			$stmt = $this->dbh->prepare($sqlArtistAlbum);
+			$resArtistAlbum = $stmt->execute(array(
+				'id' => $id,
+				'id_artist' => $idArtist
+			));
+		} catch(PDOException $e) {
+			echo "\nSONG ERROR: " . json_encode(array(
+				'erreur' => $e->getMessage(),
+				'id' => $id,
+				'collection_id' => $collectionId,
+				'collection_name' => $collectionName,
+				'track_name' => $trackName,
+				'artist_name' => $artistName,
+				'$song->getDate()' => $song->getDate(),
+				'date' => $date,
+				'datetime' => new \DateTime($song->getDate()),
+				'datetime2' => new \DateTime($date),
+				'artwork' => $artwork,
+				'explicit' => $explicit,
+				'isStreamable' => $isStreamable,
+				// 'added' => $added->format('Y-m-d H:i:s')
+			)) . "\n";
+		}
 		$this->disconnect();
 
 		return $resAlbum && $resArtistAlbum;
