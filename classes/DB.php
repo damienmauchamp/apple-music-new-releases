@@ -343,6 +343,8 @@ class DB
 				'explicit' => $explicit,
 				// 'added' => $added->format('Y-m-d H:i:s')
 			)) . "\n";
+
+			$resAlbum = $resArtistAlbum = false;
 		}
 		$this->disconnect();
 		return $resAlbum && $resArtistAlbum;
@@ -440,6 +442,8 @@ class DB
 				'isStreamable' => $isStreamable,
 				// 'added' => $added->format('Y-m-d H:i:s')
 			)) . "\n";
+			
+			$resAlbum = $resArtistAlbum = false;
 		}
 		$this->disconnect();
 
