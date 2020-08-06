@@ -757,7 +757,8 @@ class DB
 	{
 		$this->connect();
 		$stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = :mode");
-		$res = $stmt->execute(array("mode" => ($mode ? '1' : '0')));
+		// $res = $stmt->execute(array("mode" => ($mode ? '1' : '0')));
+		$res = $stmt->execute(array("mode" => $mode));
 		$this->disconnect();
 		return $res;
 	}
