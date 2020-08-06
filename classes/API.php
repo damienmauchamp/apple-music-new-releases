@@ -3,6 +3,7 @@
 namespace AppleMusic;
 
 use AppleMusic\Album as Album;
+use AppleMusic\DB as db;
 use Sunra\PhpSimple\HtmlDomParser;
 
 class API
