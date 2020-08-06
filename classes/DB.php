@@ -34,9 +34,9 @@ class DB
 		}
 
 		$DB_serveur = !empty($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : "localhost";
-		$DB_nom = $_ENV['DB_NAME'];
-		$DB_login = $_ENV['DB_USERNAME'];
-		$DB_psw = $_ENV['DB_PWD'];
+		$DB_nom = !empty($_ENV['DB_NAME']) ? $_ENV['DB_NAME'] : 'applemusic-update';
+		$DB_login = !empty($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : 'root';
+		$DB_psw = !empty($_ENV['DB_PWD']) ? $_ENV['DB_PWD'] : '';
 
 		try {
 			$this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3306;dbname=' . $DB_nom, $DB_login, $DB_psw);
@@ -392,8 +392,9 @@ class DB
 		));
 		$this->disconnect();
 
-		/*if (strstr($artistName, 'Dinos')) {
+		/*if (strstr($id, '631440154')) {
 			file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
+			// echo "\nSONG ADDED: " . json_encode(array(
 				'id' => $id,
 				'collection_id' => $collectionId,
 				'collection_name' => $collectionName,
@@ -404,7 +405,7 @@ class DB
 				'explicit' => $explicit,
 				'isStreamable' => $isStreamable,
 				'added' => $added->format('Y-m-d H:i:s')
-			)) . "\n", FILE_APPEND);
+			)) . "\n";
 		}*/
 
 		return $resAlbum && $resArtistAlbum;
