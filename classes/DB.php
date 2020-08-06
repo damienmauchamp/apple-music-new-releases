@@ -386,7 +386,7 @@ class DB
 				'artwork' => $artwork,
 				'explicit' => $explicit,
 				'isStreamable' => $isStreamable,
-				'added' => $added->format('Y-m-d H:i:s')
+				// 'added' => $added->format('Y-m-d H:i:s')
 			)) . "\n";
 		}
 
