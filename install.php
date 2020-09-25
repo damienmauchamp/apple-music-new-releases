@@ -159,6 +159,10 @@ ALTER TABLE `users_artists`
 
 ALTER TABLE `logs_curl`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`);
 COMMIT;
 
 INSERT INTO `users` (username, password, mail, notifications, token)
