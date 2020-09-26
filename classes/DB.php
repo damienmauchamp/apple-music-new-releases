@@ -80,6 +80,7 @@ class DB
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1
+				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			ORDER BY ar.name ASC, al.date DESC";
 
 		$this->connect();
@@ -109,6 +110,7 @@ class DB
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1 AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date AND al.date <= NOW()
+				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			GROUP BY al.id
 			ORDER BY al.date DESC, al.added DESC, ar.name ASC, al.explicit DESC";
 
@@ -143,6 +145,7 @@ class DB
 				AND ua.active = 1
 				-- AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date
 				AND al.date > NOW()
+				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			GROUP BY al.id
 			ORDER BY al.date ASC, al.added DESC, ar.name ASC, al.explicit DESC";
 
@@ -173,6 +176,7 @@ class DB
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user AND ua.active = 1
 			WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) 
+				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			GROUP BY id
 			ORDER BY al.isStreamable ASC, al.date ASC, al.collectionName, al.collectionId, ar.name ASC";
 
