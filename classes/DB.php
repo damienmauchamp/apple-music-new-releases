@@ -117,7 +117,7 @@ class DB
 		$this->connect();
 //		$stmt = $this->dbh->query($sql);
 		$stmt = $this->dbh->prepare($sql);
-		$stmt->bindValue("id_user", $idUser);
+		$stmt->bindValue("id_user", $idUser ?? 1);
 		$stmt->execute();
 		$this->disconnect();
 
