@@ -293,14 +293,14 @@ $(function () {
 	// Notifications
 	// initNotifications();
 
-	// clicks on songs <tr>
-	$(document).on('tap', 'table#song-table-table tr[data-link] *', function(e) {
-	    var $tr = $(e.target).closest('tr[data-link]'),
-	    	$img = $tr.length ? $tr.find('td.table__row__artwork a') : null;
-    	if ($img !== null) {
-    		$img[0].click();
-    	}
-	})
+	// // clicks on songs <tr>
+	// $(document).on('tap', 'table#song-table-table tr[data-link] *', function(e) {
+	//     var $tr = $(e.target).closest('tr[data-link]'),
+	//     	$img = $tr.length ? $tr.find('td.table__row__artwork a') : null;
+ //    	if ($img !== null) {
+ //    		$img[0].click();
+ //    	}
+	// })
 });
 
 var display_notification = function(options) {
