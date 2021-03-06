@@ -467,6 +467,10 @@ section.l-multi-rows .section-body.l-row--flex {
 	display:none;
 }
 
+section.l-multi-rows .section-body.l-row--flex div.l-sub-row {
+	display: list-item; /* iOS fix */
+}
+
 @media only screen and (max-width: 735px) {
 
 	.l-row--peek .l-sub-row .l-column.album:last-child {
