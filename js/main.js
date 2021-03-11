@@ -294,6 +294,27 @@ $(function () {
 	// initNotifications();
 
 	// // clicks on songs <tr>
+	var open_new_tab = function(url) {
+		var win = window.open(url, '_blank');
+		if (win) {
+	        //Browser has allowed it to be opened
+	        win.focus();
+	        return true;
+	    }
+	    //Browser has blocked it
+	    console.warn('Please allow popups for this website');
+	}
+
+	$(document).on('click', 'table#song-table-table tr.song *', (e) => {
+		var $target = $(e.target),
+			$tr = $target.prop("tagName") === 'TR' ? $target : $target.closest('tr.song'),
+			link = $tr.data('link');
+		if (!link) {
+			return false;
+		}
+		console.log('opening:', link);
+		return open_new_tab(link);
+	});
 	// $(document).on('tap', 'table#song-table-table tr[data-link] *', function(e) {
 	//     var $tr = $(e.target).closest('tr[data-link]'),
 	//     	$img = $tr.length ? $tr.find('td.table__row__artwork a') : null;

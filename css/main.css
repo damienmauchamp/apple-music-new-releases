@@ -230,6 +230,10 @@ span.artist-search-count {
 	display: none;
 }
 
+.table--see-all .table__row {
+	cursor: pointer !important;
+}
+
 .table--see-all .table__row.on-preorder .ember-view,
 .table--see-all .table__row.on-preorder a:hover {
 	color: #8e8e93 !important;
