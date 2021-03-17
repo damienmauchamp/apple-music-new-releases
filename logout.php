@@ -11,5 +11,9 @@ session_unset ();
 // On détruit notre session
 session_destroy ();
 
+// Suppression des cookies
+clearAuthCookie();
+
 // On redirige le visiteur vers la page d'accueil
 header ('location: login.php');
+?>

@@ -9,19 +9,63 @@ use AppleMusic\DB as db;
 require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
 
+//
+$isLoggedIn = false;
+require_once "login_auth.php";
+if ($isLoggedIn) {
+    header("location: index.php");
+}
+
+
 $username = isset($_POST["username"]) ? addslashes($_POST["username"]) : null;
 $password = isset($_POST["password"]) ? addslashes($_POST["password"]) : null;
+$remember = $_POST["remember"] ?? false;
 $submit = isset($_POST["submit"]) ? $_POST["submit"] : null;
 
-if (file_exists(__DIR__ . '/autolog.php'))
+if (file_exists(__DIR__ . '/autolog.php')) {
     include __DIR__ . '/autolog.php';
+}
 
 if ($username && $password && $submit) {
+    $isAuthenticated = false;
+
     $db = new db;
     if ($res = $db->connexion($username, $password)) {
+        $isAuthenticated = true;
+
+        // Logged
         $_SESSION["id_user"] = $res["id"];
         $_SESSION["username"] = $res["username"];
         $_SESSION["prenom"] = $res["prenom"];
+
+        // Cookies
+        if ($remember) {
+            // USER
+            setcookie("user_login", $res["username"], $cookie_expiration_time);
+            
+            // Password
+            $random_password = getToken(16);
+            setcookie("random_password", $random_password, $cookie_expiration_time);
+            
+            $random_selector = getToken(32);
+            setcookie("random_selector", $random_selector, $cookie_expiration_time);
+            
+            $random_password_hash = password_hash($random_password, PASSWORD_DEFAULT);
+            $random_selector_hash = password_hash($random_selector, PASSWORD_DEFAULT);
+            
+            $expiry_date = date("Y-m-d H:i:s", $cookie_expiration_time);
+
+            // mark existing token as expired
+            $userToken = $db->getTokenByUsername($username);
+            if ($userToken) {
+                $db->setTokenAsExpired($userToken['id']);
+            }
+            $db->insertToken($username, $random_password_hash, $random_selector_hash, $expiry_date);
+
+        } else {
+            // clear cookies
+            clearAuthCookie();
+        }
 
         header("location: index.php");
     }
@@ -96,6 +140,10 @@ $root = './';
         padding-bottom: 4px;
         text-align: center;
         white-space: nowrap;
+
+        /*  */
+        display: block;
+        margin: auto;
     }
     #submit:hover {
         background-color: #147bcd;
@@ -111,15 +159,24 @@ $root = './';
         border-color: #006dbc;
         outline: none;
     }
+
+    label.for-checkbox {
+        display: inline-block;
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
 </style>
 </head>
 <body>
     <form id="login" method="post" action="login.php">
         <label class="si-container-title tk-intro" for="username">Nom d'utilisateur</label>
-        <input type="text"  class="form-textbox form-textbox-text" name="username" id="username">
+        <input type="text"  class="form-textbox form-textbox-text" name="username" id="username" value="<?= $_COOKIE["user_login"] ?? '' ?>">
 
         <label class="si-container-title tk-intro" for="password">Mot de passe</label>
-        <input type="password" class="form-textbox form-textbox-text" name="password" id="password">
+        <input type="password" class="form-textbox form-textbox-text" name="password" id="password" value="<?= $_COOKIE["user_pwd"] ?? '' ?>">
+
+        <input type="checkbox" name="remember" id="remember" class="form-checkbox" control-id="ControlID-4">
+        <label class="si-container-title tk-intro for-checkbox" for="remember" <?= isset($_COOKIE["user_login"]) ? 'checked="checked"' : '' ?>>Remember</label>
 
         <input type="submit" id="submit" name="submit" value="Se connecter">
     </form>

@@ -809,6 +809,47 @@ class DB
 		return $res;
 	}
 
+	public function getTokenByUsername($username) {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT *
+			FROM user_auth
+			WHERE username = :username"
+		);
+		$stmt->execute(array("username" => $username));
+		$res = $stmt->fetch();
+		$this->disconnect();
+		return $res ?: false;
+	}
+
+	public function setTokenAsExpired($id)
+	{
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			UPDATE user_auth SET is_expired = 1 WHERE id = :id"
+		);
+		$stmt->execute(array("id" => $id));
+		$this->disconnect();
+		return $res;
+	}
+
+	public function insertToken($username, $random_password_hash, $random_selector_hash, $expiry_date)
+	{
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			INSERT INTO user_auth (username, password_hash, selector_hash, expiry_date)
+			VALUES (:username, :password_hash, :selector_hash, :expiry_date)"
+		);
+		$stmt->execute(array(
+			"username" => $username,
+			"password_hash" => $random_password_hash,
+			"selector_hash" => $random_selector_hash,
+			"expiry_date" => $expiry_date,
+		));
+		$this->disconnect();
+		return $res;
+	}
+
 
 //	public function example()
 //	{
