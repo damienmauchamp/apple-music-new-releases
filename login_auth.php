@@ -1,5 +1,4 @@
 <?php
-
 /* COOKIES */
 // Get Current date, time
 $current_time = time();
@@ -14,13 +13,16 @@ if (! empty($_SESSION["id_user"])) {
 }
 // Check if loggedin session exists
 else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) && !empty($_COOKIE["random_selector"])) {
+
+    $db = new db;
+
     // Initiate auth token verification diirective to false
     $isPasswordVerified = false;
     $isSelectorVerified = false;
     $isExpiryDateVerified = false;
     
     // Get token for username
-        $userToken = $db->getTokenByUsername($_COOKIE["user_login"]);
+    $userToken = $db->getTokenByUsername($_COOKIE["user_login"]);
     
     // Validate random password cookie with database
     if (password_verify($_COOKIE["random_password"], $userToken["password_hash"])) {
