@@ -11,7 +11,7 @@ require_once "start.php";
 
 //
 $isLoggedIn = false;
-require_once "login_auth.php";
+require "login_auth.php";
 if ($isLoggedIn) {
     header("location: index.php");
 }

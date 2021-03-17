@@ -1,4 +1,7 @@
 <?php
+
+use AppleMusic\DB as db;
+
 /* COOKIES */
 // Get Current date, time
 $current_time = time();
