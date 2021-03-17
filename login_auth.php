@@ -11,7 +11,7 @@ $current_date = date("Y-m-d H:i:s", $current_time);
 $cookie_days = 30;
 $cookie_expiration_time = $current_time + ($cookie_days * 24 * 60 * 60);
 
-if (! empty($_SESSION["id_user"])) {
+if (!empty($_SESSION["id_user"])) {
     $isLoggedIn = true;
 }
 // Check if loggedin session exists
@@ -45,8 +45,14 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
     // Redirect if all cookie based validation retuens true
     // Else, mark the token as expired and clear cookies
     if (!empty($userToken["id"]) && $isPasswordVerified && $isSelectorVerified && $isExpiryDareVerified) {
-        $isLoggedIn = true;
-    } else {
+        $userInfo = $db->getUserFromTokenId($userToken['id']);
+        if ($userInfo) {
+            $isLoggedIn = true;
+            $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
+        }
+    }
+
+    if (!$isLoggedIn) {
 
 	    // mark existing token as expired
 	    if ($userToken['id']) {

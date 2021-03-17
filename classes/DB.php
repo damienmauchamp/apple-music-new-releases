@@ -850,6 +850,20 @@ class DB
 		return $res;
 	}
 
+	public function getUserFromTokenId($token_id) {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT u.*
+			FROM user_auth ua
+			INNER JOIN users u ON u.username = ua.username
+			WHERE ua.id = :token_id"
+		);
+		$stmt->execute(array("token_id" => $token_id));
+		$res = $stmt->fetch();
+		$this->disconnect();
+		return $res ?: false;
+	}
+
 
 //	public function example()
 //	{
