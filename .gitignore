@@ -8,7 +8,7 @@ tests
 *.txt
 
 # files
-autolog.php
+*autolog.php
 .env
 
 # google drive
