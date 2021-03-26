@@ -175,8 +175,8 @@ $root = './';
         <label class="si-container-title tk-intro" for="password">Mot de passe</label>
         <input type="password" class="form-textbox form-textbox-text" name="password" id="password" value="<?= $_COOKIE["user_pwd"] ?? '' ?>">
 
-        <input type="checkbox" name="remember" id="remember" class="form-checkbox" control-id="ControlID-4">
-        <label class="si-container-title tk-intro for-checkbox" for="remember" <?= isset($_COOKIE["user_login"]) ? 'checked="checked"' : '' ?>>Remember</label>
+        <input type="checkbox" name="remember" id="remember" class="form-checkbox"  <?= (isset($_COOKIE["user_login"]) || true) ? 'checked="checked"' : '' ?> control-id="ControlID-4">
+        <label class="si-container-title tk-intro for-checkbox" for="remember">Remember</label>
 
         <input type="submit" id="submit" name="submit" value="Se connecter">
     </form>
