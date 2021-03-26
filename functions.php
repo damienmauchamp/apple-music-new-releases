@@ -512,6 +512,7 @@ function checkConnexion()
 			$_COOKIE["redirect"] = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			setcookie("redirect", "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 		}
+		clearAuthCookie();
 		header("location: login.php");
 		exit;
 	}
@@ -523,7 +524,10 @@ function checkConnexion()
  */
 function isConnected()
 {
-	return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));
+	$isLoggedIn = false;
+	require "login_auth.php";
+	return $isLoggedIn;
+	// return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));
 }
 
 

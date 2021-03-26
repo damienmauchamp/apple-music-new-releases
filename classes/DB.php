@@ -828,7 +828,7 @@ class DB
 		$stmt = $this->dbh->prepare("
 			UPDATE user_auth SET is_expired = 1 WHERE id = :id"
 		);
-		$stmt->execute(array("id" => $id));
+		$res = $stmt->execute(array("id" => $id));
 		$this->disconnect();
 		return $res;
 	}
@@ -840,7 +840,7 @@ class DB
 			INSERT INTO user_auth (username, password_hash, selector_hash, expiry_date)
 			VALUES (:username, :password_hash, :selector_hash, :expiry_date)"
 		);
-		$stmt->execute(array(
+		$res = $stmt->execute(array(
 			"username" => $username,
 			"password_hash" => $random_password_hash,
 			"selector_hash" => $random_selector_hash,

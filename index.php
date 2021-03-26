@@ -292,6 +292,26 @@ if ($news && $nodisplay) {
 		<li data-action="open-browser"><a href="#" target="_blank">Afficher dans le navigateur</a></li>
 	</ul>
 
+
+	<script>
+		// console.log('yo');
+
+		// console.log('user_login:', getCookie('user_login'));
+		// console.log('random_password:', getCookie('random_password'));
+		// console.log('random_selector:', getCookie('random_selector'));
+		
+		// setCookie('user_login', getCookie('user_login'))
+		// setCookie('random_password', getCookie('random_password'))
+		// setCookie('random_selector', getCookie('random_selector'))
+		// console.log(getCookie())
+            // [redirect] => http://damien.local/applemusic-update/index.php
+            // [user_login] => damien
+            // [random_password] => m48QqO6tCEsq1Xn8
+            // [random_selector] => wkgKbcBfWgvqxJ3F4TdBcLVam0F8tZbv
+            // [theme] => variant
+            // [PHPSESSID] => 6jpknrf6qmerogbq4d41fgdmb6
+
+	</script>
 	</body>
 	</html>
 <?
