@@ -94,12 +94,23 @@ class DB
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserWeekReleases($userId = false)
+	public function getUserWeekReleases($type = null, $userId = false)
 	{
 		global $idUser;
 
-		if ($userId)
+		if ($userId) {
 			$idUser = $userId;
+		}
+
+		$complement_sql = '';
+		switch ($type) {
+			case 'albums':
+				$complement_sql = "AND al.name NOT REGEXP '- Single'";
+				break;
+			case 'singles':
+				$complement_sql = "AND al.name REGEXP '- Single\s*$'";
+				break;
+		}
 
 		$sql = "
 			SELECT
@@ -111,6 +122,7 @@ class DB
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1 AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date AND al.date <= NOW()
 				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
+				{$complement_sql}
 			GROUP BY al.id
 			ORDER BY al.date DESC, al.added DESC, ar.name ASC, al.explicit DESC";
 

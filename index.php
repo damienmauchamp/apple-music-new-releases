@@ -108,7 +108,8 @@ if ($news && $nodisplay) {
 		<? else :
 			// Weekly releases : Sorties de la semaine
 			$display = 'grid';
-			echo getThisWeekReleases();
+			echo getThisWeekReleases('albums');
+			echo getThisWeekReleases('singles');
 
 			// Upcoming Releases
 			$display = 'row';

@@ -26,9 +26,9 @@ function displaySongs($songs, $upcoming = true)
 	}
 }
 
-function getThisWeekReleases($allow_duplicates = false) {
+function getThisWeekReleases($type = null, $allow_duplicates = false) {
 	$db = new db;
-	$releases = $db->getUserWeekReleases();
+	$releases = $db->getUserWeekReleases($type);
 
 	if (!$releases) {
 		return '';
@@ -37,11 +37,21 @@ function getThisWeekReleases($allow_duplicates = false) {
 	$week_display = 'grid-2-row'; // 'grid'
 	$html_multi_row = $html_row_1 = $html_row_2 = '';
 
+	$title = 'Sorties de la semaine';
+	switch ($type) {
+		case 'albums':
+			$title = 'Nouveaux projets';
+			break;
+		case 'singles':
+			$title = 'Nouveaux singles';
+			break;
+	}
+
 	$html = '
 		<section class="main-header l-content-width section section--bordered '.($week_display === 'grid-2-row' ? 'l-multi-rows' : '').'"
 				 id="weekly-releases">
 			<div class="section-header section__nav clearfix">
-				<h2 class="section-title section__headline">Sorties de la semaine</h2>
+				<h2 class="section-title section__headline">'.$title.'</h2>
 			</div>
 
 			<div class="section-body l-row l-row--grid">';
