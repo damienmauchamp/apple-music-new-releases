@@ -18,9 +18,10 @@ if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
 	// type === 1 : only streamable
 	// type === 2 : only not streamable/upcoming
 	$type = isset($_POST["type"]) ? (int) $_POST["type"] : null;
+	$available = isset($_POST["available"]) && $_POST["available"];
 
 	header("Content-type:text/html");
-	displaySongs(getAllSongs($filtrer_albums, $explicit_only, $type));
+	displaySongs(getAllSongs($filtrer_albums, $explicit_only, $type, $available));
 	exit;
 }
 
@@ -157,6 +158,40 @@ if ($news && $nodisplay) {
 				</div>
 			</section>
 
+			<!-- UPCOMING SONGS BUT AVAILABLE -->
+			<section class="l-content-width section section--bordered">
+				<div class="l-row">
+					<div class="l-column small-12">
+						<h2 class="section__headline">
+							Chansons disponibles à venir
+						</h2>
+						<table class="table table--see-all" id="song-table-table">
+							<thead class="table__head">
+							<tr>
+								<th class="table__head__heading--artwork"></th>
+								<th class="table__head__heading table__head__heading--song">TITRE</th>
+								<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+									ARTISTE
+								</th>
+								<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+									ALBUM
+								</th>
+								<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+							</tr>
+							</thead>
+							<tbody id="upcoming-streamable-songs-table-tbody">
+							<? //displaySongs($songs)
+							?>
+							</tbody>
+						</table>
+						<div class="spinner-cont">
+							<div id="loading-spinner_upcoming-streamable-songs"
+								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			<!-- UPCOMING SONGS -->
 			<section class="l-content-width section section--bordered">
 				<div class="l-row">
@@ -265,6 +300,28 @@ if ($news && $nodisplay) {
 				}
 			});
 		}();
+		var load_upcoming_available_songs = function () {
+			console.log('loading upcoming but available songs...')
+			$.ajax({
+				url: "index.php",
+				method: "POST",
+				data: {
+					load_songs: true,
+					filtrer: true,
+					type: 2,
+					available: 1
+				},
+				success: function(data) {
+					console.log('songs loaded.')
+					if (!data) {
+						$("#upcoming-streamable-songs-table-tbody").hide();
+					} else {
+						$("#upcoming-streamable-songs-table-tbody").append(data);
+					}
+					$("#loading-spinner_upcoming-streamable-songs").hide();
+				}
+			});
+		}();
 		var load_upcoming_songs = function () {
 			console.log('loading upcoming songs...')
 			$.ajax({
@@ -273,7 +330,8 @@ if ($news && $nodisplay) {
 				data: {
 					load_songs: true,
 					filtrer: true,
-					type: 2
+					type: 2,
+					available: 0
 				},
 				success: function(data) {
 					console.log('songs loaded.')
