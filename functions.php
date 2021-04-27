@@ -237,7 +237,8 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 			$song = Song::withArray(Song::objectToArray($r));
 
 			$streamable = $song->isStreamable();
-			$upcoming = (new DateTime()) < (new DateTime($song->getDate()));
+			// $upcoming = (new DateTime()) < (new DateTime($song->getDate()));
+			$upcoming = (new DateTime()) < ((new DateTime($song->getDate()))->setTime(0,0));
 
 			// type 1 : only streamable
 			if ($type === 1 && (!$streamable || $upcoming)) {
