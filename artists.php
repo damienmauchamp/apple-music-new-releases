@@ -33,7 +33,7 @@ $artists = json_decode($db->getUsersArtists());
     </style>
 </head>
 <body class="<?= $theme ?>">
-<div class="main">
+<div class="main main-artists">
     <? include "inc/nav.php"; ?>
 
     <section class="main-header l-content-width section" style="border-top:none">

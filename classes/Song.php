@@ -171,7 +171,7 @@ class Song
             <td class="table__row__artwork">
                 <a href="' . $this->link . '" target="_blank">
                     <picture id="ember989" class="we-artwork--less-round we-artwork ember-view">
-                        <img class="we-artwork__image ember989" src="' . $this->getArtwork(44) . '" loading="lazy" style="background-color: #251637;" alt="" height="44" width="44">
+                        <img class="we-artwork__image ember989" src="' . $this->getArtwork(144) . '" loading="lazy" style="background-color: #251637;" alt="">
                     </picture>
                 </a>
             </td>

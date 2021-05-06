@@ -501,38 +501,3 @@ section.l-multi-rows .section-body.l-row--flex div.l-sub-row {
 		scroll-snap-align: start;
 	}
 }
-
-/*******/
-.section {
-	/* padding-top: 71h => 48h // 19px => 12.85px */
-	padding-top: 13px;
-}
-.section:first-of-type {
-	/* Contenant le h1 */
-    display: flex !important;
-}
-
-h1,
-h1.section__headline--hero {
-	font-size: 34px;
-}
-h1.section__headline--hero {
-    margin-bottom: 6px;
-    -webkit-margin-end: 25px;
-    margin-inline-end: 25px;
-}
-
-#settings {
-    cursor: pointer;
-    font-size: 20px;
-    float: unset;
-    align-self: center;
-    margin-left: auto;
-    margin-bottom: 6px;
-}
-
-h2,
-h2.section__headline--hero {
-	/* font-size: 44h => 49h // 20px => 22.27px */
-	font-size: 22px;
-}

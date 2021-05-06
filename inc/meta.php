@@ -26,3 +26,5 @@ $page_title = isset($pageTitle) ? $pageTitle : "Apple Music Update";
 
     <script src="<?= $root ?>libs/fontawesome/fontawesome-5.11.2.js"></script>
     <link rel="stylesheet" href="<?= $root ?>libs/fontawesome/css/fontawesome-5.11.2.css">
+    
+    <link rel="stylesheet" href="<?= $root ?>css/new.css">

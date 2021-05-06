@@ -1,0 +1,226 @@
+
+
+/*******/
+.section {
+	/* padding-top: 71h => 48h // 19px => 12.85px */
+    padding-top: 12px;
+    padding-top: 11.75px;
+    padding-bottom: 18px;
+}
+.main:not(.main-artists) .section:first-of-type {
+	/* Contenant le h1 */
+    display: flex !important;
+    padding-bottom: 0;
+}
+section.section--bordered, .table--see-all .table__head, .table__head, .table__row, .table--artwork .table__row:last-child, .table--see-all .table__row:last-child {
+    border-width: 1px;
+    border-color: var(--main-border-color) !important;
+    border-top: 1px solid var(--main-border-color);
+}
+
+h1,
+h1.section__headline--hero {
+	font-size: 34px;
+}
+h1.section__headline--hero {
+    margin-bottom: 6px;
+    margin-bottom: 6.4px;
+    -webkit-margin-end: 25px;
+    margin-inline-end: 25px;
+}
+
+#settings {
+    cursor: pointer;
+    font-size: 20px;
+    float: unset;
+    align-self: center;
+    margin-left: auto;
+    margin-bottom: 6px;
+}
+
+h2,
+h2.section__headline {
+/*.section__headline--hero {*/
+	/* font-size: 44h => 49h // 20px => 22.27px */
+	font-size: 22px;
+    margin-bottom: 11px;
+}
+
+div.section-body:not(.l-row--grid) a.album {
+    /* padding-bottom: 0 !important; */
+/*    margin-bottom: 0 !important;
+*/}
+
+@media only screen and (max-width: 735px) {
+    /*div.section-body.l-row--peek a.album {*/
+    div.section-body:not(.l-row--grid) a.album {
+        /* padding-bottom: 0 !important; */
+        margin-bottom: 0 !important;
+    }
+}
+
+tr.song td.table__row__artwork picture::before,
+a.album picture::before {
+/*a.album:not(.preorder) picture::before {*/
+    display: block;
+    content: "";
+    width: 100%;
+    height: 0;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(128 128 128 / 10%);
+    border: none;
+    border-radius: 6px;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 2;
+}
+
+
+table#song-table-table,
+table#song-table-table thead,
+table#song-table-table tbody {
+    border: none;
+}
+
+table.table--see-all#song-table-table {
+    display: block;
+    /*width: 100%;*/
+}
+table.table--see-all#song-table-table thead {
+    display: none;
+}
+table.table--see-all#song-table-table tbody {
+    width: 100%;
+    display: block;
+}
+
+tr.song {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    justify-content: start;
+    /*align-items: center;*/
+    align-items: stretch;
+    border: none !important;
+}
+tr.song:hover td.table__row__artwork {
+    border: none !important;
+}
+.song.table__row td {
+    height: unset;
+    display: block;
+    padding: 10px 0;
+}
+.song.table__row td:not(.table__row__artwork) {
+    border-width: 1px;
+    border-color: var(--main-border-color) !important;
+    border-top: 1px solid var(--main-border-color);
+}
+.song .table__row__artwork picture.we-artwork {
+    margin: 0;
+}
+.song .table__row__artwork picture.we-artwork img.we-artwork__image {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+}
+
+td.table__row__name {
+    /*max-width: 50%;*/
+}
+td.table__row__name .table__row__link, .tracklist-item__text__link {
+    width: 100%;
+}
+.table--artwork .table__head__heading--duration,
+.table--artwork .table__row__duration,
+.table--see-all .table__head__heading--duration,
+.table--see-all .table__row__duration {
+    width: unset;
+    min-width: unset;
+    max-width: unset;
+    /*margin-left: auto;*/
+}
+
+
+.song.table__row td.table__row__artwork {
+    padding-right: 15px;
+}
+.song.table__row td:not(.table__row__artwork) {
+    /*background: #0000ff2b;*/
+}
+.song.table__row td.table__row__artwork {
+    /*background: #ff00002b;*/
+}
+
+.song.table__row td.table__row__name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 95%;
+    min-width: 150px;
+    width: 75%;
+}
+
+/*.song.table__row td.small-hide {
+    display: none;
+}*/
+.song.table__row td.table__row__artist,
+.song.table__row td.table__row__album {
+    display: none;
+}
+
+.song td.table__row__duration {
+    margin-left: auto;
+    padding-left: 20px;
+    flex: auto;
+}
+
+.song td a.table__row__link:active,
+.song td .table__row__link:active *,
+.song td a.table__row__link:hover,
+.song td .table__row__link:hover *,
+.song td a.table__row__link,
+.song td .table__row__link * {
+    text-decoration: none;
+}
+
+
+
+/* général */
+:focus {
+    outline: none;
+    outline-offset: 0;
+}
+
+@media only screen and (min-width: 1069px) {
+    .song.table__row td.table__row__artist,
+    .song.table__row td.table__row__album {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        /*max-width: 95%;*/
+    }
+    .song.table__row td.table__row__name {
+        width: 38%;
+        min-width: 38%;
+        padding-right: 20px;
+    }
+    .song.table__row td.table__row__artist,
+    .song.table__row td.table__row__album {
+        width: 20%;
+        max-width: 20%;
+    }
+    .song.table__row td.table__row__name,
+    .song.table__row td.table__row__artist,
+    .song.table__row td.table__row__album {
+        padding-right: 20px;
+    }
+
+}

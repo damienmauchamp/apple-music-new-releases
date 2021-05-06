@@ -166,7 +166,7 @@ $('body').append('<div class="notification-mask"><div class="notification"><div 
 	--night-title-color: #FFFFFF;
 	--night-subtitle-color: #8D8D92;
 	--night-hamburger-background-color: #FFFFFF;
-	--night-border-color: #2B2B2D;
+	--night-border-color: #323234;
 	--night-row-bg-hover: #1C1C1E; /*#0F0F10*/
 	--night-nav-bg-color: rgba(7,7,7,0.7);
 	--night-nav-border: rgba(51, 51, 51, .2);
