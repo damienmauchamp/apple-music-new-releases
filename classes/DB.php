@@ -267,20 +267,31 @@ class DB
 	 * @param Artist $artist
 	 * @return bool
 	 */
-	public function addArtist($artist)
+	public function addArtist($artist, $userId = null)
 	{
 		global $idUser;
+		if ((!$idUser || $idUser === null) && $userId !== null) {
+			$idUser = $userId;
+		}
+		if (!$idUser) {
+			return false;
+		}
+
 		$id = $artist->getId();
 		$name = addslashes($artist->getName());
 		$sqlArtist = "
 			INSERT INTO artists (id, name)
 			VALUES (:id, :name)
-			ON DUPLICATE KEY UPDATE id = :id, name = :name";
+			ON DUPLICATE KEY UPDATE 
+				id = :id, 
+				name = :name";
 
 		$sqlUserArtist = "
 			INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
 			VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
-			ON DUPLICATE KEY UPDATE idUser = :id_user, idArtist = :id";
+			ON DUPLICATE KEY UPDATE 
+				idUser = :id_user, 
+				idArtist = :id";
 
 
 		$this->connect();
@@ -871,6 +882,19 @@ class DB
 			WHERE ua.id = :token_id"
 		);
 		$stmt->execute(array("token_id" => $token_id));
+		$res = $stmt->fetch();
+		$this->disconnect();
+		return $res ?: false;
+	}
+
+	public function getUserFromUserToken($userToken = null) {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT u.*
+			FROM users u
+			WHERE u.token = :token"
+		);
+		$stmt->execute(["token" => $userToken]);
 		$res = $stmt->fetch();
 		$this->disconnect();
 		return $res ?: false;

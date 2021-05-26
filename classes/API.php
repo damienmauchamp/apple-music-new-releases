@@ -219,8 +219,8 @@ class API
                 return $songs;
                 break;
             case "artist":
-                $artist = array();
-                foreach ($results["results"] as $collection) {
+                $artist = null;
+                foreach ($results["results"] ?? [] as $collection) {
                     if ($collection["wrapperType"] === "artist") {
                         $artist = new Artist($collection["artistId"]);
                         $artist->setName($collection["artistName"]);

@@ -68,14 +68,18 @@ class Artist
         $api = new api($this->id);
         /** @var Artist $artist */
         $artist = $api->fetchArtist();
+        if ($artist === null) {
+            return false;
+        }
+
         $this->setName($artist->getName());
         $this->setLastUpdate($artist->getLastUpdate());
     }
 
-    public function addArtist()
+    public function addArtist($userId = null)
     {
         $db = new db;
-        $db->addArtist($this);
+        return $db->addArtist($this, $userId);
     }
 
     public function update($date = false)
