@@ -34,7 +34,7 @@ $results = [
         'userId' => $userId,
     ],
 ];
-foreach ($artists as $id) {
+foreach (($artists || []) as $id) {
     $artist = new Artist($id);
 
     //
