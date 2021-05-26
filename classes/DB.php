@@ -270,7 +270,7 @@ class DB
 	public function addArtist($artist, $userId = null)
 	{
 		global $idUser;
-		if ((!$idUser || $idUser === null) && $userId !== null) {
+		if ((!$idUser || $idUser === null || $idUser < 0) && $userId !== null) {
 			$idUser = $userId;
 		}
 		if (!$idUser) {
