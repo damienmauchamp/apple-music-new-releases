@@ -34,23 +34,14 @@ $results = [
         'userId' => $userId,
     ],
 ];
-foreach (($artists || []) as $id) {
+foreach (($artists ?? []) as $id) {
     $artist = new Artist($id);
-
-    //
-    if (!$artist->fetchArtistInfo()) {
-        $results['artists'][] = [
-            'id' => $id,
-            'added' => false,
-            'message' => "Couldn't fetch artist with ID {$id}",
-        ];
-        continue;
-    }
-
+    $fetchInfos = $artist->fetchArtistInfo();
     $added = $artist->addArtist($userId);
     $results['artists'][] = [
         'id' => $id,
         'added' => $added,
+        'fetch' => $fetchInfos,
         'message' => !$added ? 'Something went wrong' : '',
     ];
 }
