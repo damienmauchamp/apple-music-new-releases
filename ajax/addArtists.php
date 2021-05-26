@@ -40,6 +40,7 @@ foreach (($artists ?? []) as $id) {
     $added = $artist->addArtist($userId);
     $results['artists'][] = [
         'id' => $id,
+        'name' => $artist->getName() ?? '',
         'added' => $added,
         'fetch' => $fetchInfos,
         'message' => !$added ? 'Something went wrong' : '',
