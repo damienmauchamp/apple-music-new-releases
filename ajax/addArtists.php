@@ -15,7 +15,9 @@ if ($userId === null && $userToken !== null) {
 	$userInfos = (new db)->getUserFromUserToken($userToken);
 	if (!$userInfos) {
 		$userToken = null;
-	}
+	} else {
+        $userId = (int) $userInfos['id'];
+    }
 }
 
 
