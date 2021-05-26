@@ -35,11 +35,24 @@ $results = [
     ],
 ];
 foreach (($artists ?? []) as $id) {
-    $artist = new Artist($id);
+
+    $artistId = trim($id);
+    if (!preg_match('/^\d+$/', $artistId)) {
+        $results['artists'][] = [
+            'id' => $artistId,
+            'name' => null,
+            'added' => false,
+            'fetch' => null,
+            'message' => 'Not an ID',
+        ];
+        continue;
+    }
+
+    $artist = new Artist($artistId);
     $fetchInfos = $artist->fetchArtistInfo();
     $added = $artist->addArtist($userId);
     $results['artists'][] = [
-        'id' => $id,
+        'id' => $artistId,
         'name' => $artist->getName() ?? '',
         'added' => $added,
         'fetch' => $fetchInfos,
