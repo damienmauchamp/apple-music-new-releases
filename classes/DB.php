@@ -302,7 +302,7 @@ class DB
 		));
 		$stmt = $this->dbh->prepare($sqlUserArtist);
 		$resUserArtist = $stmt->execute(array(
-			'id_user' => $idUser,
+			'id_user' => (int) $idUser,
 			'id' => $id
 		));
 		$this->disconnect();
