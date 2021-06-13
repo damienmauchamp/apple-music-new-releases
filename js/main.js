@@ -293,7 +293,7 @@ $(function () {
 	// Notifications
 	// initNotifications();
 
-	// // clicks on songs <tr>
+	// clicks on songs <tr>
 	var open_new_tab = function(url) {
 		var win = window.open(url, '_blank');
 		if (win) {
@@ -305,14 +305,31 @@ $(function () {
 	    console.warn('Please allow popups for this website');
 	}
 
+	var $oldTarget = null;
 	$(document).on('click', 'table#song-table-table tr.song *', (e) => {
 		var $target = $(e.target),
 			$tr = $target.prop("tagName") === 'TR' ? $target : $target.closest('tr.song'),
 			link = $tr.data('link');
+
+		//
+		e.preventDefault()
+
 		if (!link) {
+			// No link, so we're skipping
 			return false;
 		}
+
+        if ($oldTarget && $target[0] === $oldTarget[0]) {
+			// If target's been clicked already, we're skipping
+            return false;
+        }
+        $oldTarget = $target;
+        setTimeout(() => {
+            $oldTarget = null;
+        }, 500);
+
 		console.log('opening:', link);
+
 		return open_new_tab(link);
 	});
 	// $(document).on('tap', 'table#song-table-table tr[data-link] *', function(e) {
