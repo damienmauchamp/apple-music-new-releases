@@ -181,13 +181,11 @@ class Song
                         <span id="ember995" class="table__row__headline targeted-link__target we-truncate we-truncate--single-line ember-view">' . $this->getTrackName() . '</span>
                     </div>
                 </a>
-                <div>
-                    <a href="' . $this->link . '" target="_blank" class="table__row__link table__row__link--secondary large-hide" data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;button&quot;,&quot;targetId&quot;:&quot;LinkToArtist&quot;}">
-                        <div class="spread">
-                            <span id="ember996" class="we-truncate we-truncate--single-line ember-view">' . $this->getArtistName() . '</span>
-                        </div>
-                    </a>
-                </div>
+                <a href="' . $this->link . '" target="_blank" class="table__row__link table__row__link--secondary large-hide" data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;button&quot;,&quot;targetId&quot;:&quot;LinkToArtist&quot;}">
+                    <div class="spread">
+                        <span id="ember996" class="we-truncate we-truncate--single-line ember-view">' . $this->getArtistName() . '</span>
+                    </div>
+                </a>
             </td>
             <td class="table__row__artist small-hide large-show-tablecell">
                 <a href="' . $this->artistLink . '" target="_blank" class="table__row__link table__row__link--secondary">
