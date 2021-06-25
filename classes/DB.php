@@ -190,7 +190,7 @@ class DB
 			WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) 
 				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			GROUP BY id
-			ORDER BY al.isStreamable ASC, al.date ASC, al.collectionName, al.collectionId, ar.name ASC";
+			ORDER BY al.isStreamable ASC, al.date DESC, al.date DESC, al.collectionName, al.collectionId, ar.name ASC";
 
 		$this->connect();
 //		$stmt = $this->dbh->query($sql);

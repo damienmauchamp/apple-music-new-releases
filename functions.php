@@ -305,7 +305,7 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 //		foreach ($artists as $artist) {
 //			Artist::withNewRelease($artist)->toString();
 //		}
-		if ($type === 1) {
+		if ($type !== 1) {
 			$releases_array = array_reverse($releases_array);
 		}
 	}
