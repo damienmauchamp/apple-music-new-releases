@@ -9,7 +9,7 @@
     "mobiledetect/mobiledetectlib": "^2.8",
     "ext-json": "^1.4",
     "ext-curl": "^7.0",
-    "phpmailer/phpmailer": "^6.1.6",
+    "phpmailer/phpmailer": "^6.5.0",
     "vlucas/phpdotenv": "^3.3",
     "sunra/php-simple-html-dom-parser": "^1.5"
   }
