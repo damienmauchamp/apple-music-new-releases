@@ -164,18 +164,20 @@ class Song
     }
 
 
-    public function toString($newDisplay = null)
+    public function toString($newDisplay = false)
     {
+        $tr = $newDisplay ? 'div' : 'tr';
+        $td = $newDisplay ? 'div' : 'td';
         return '
-        <tr data-date="' . $this->date . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" id="ember988" class="song table__row  we-selectable-item ' . ($this->isStreamable() ? 'is-available we-selectable-item--allows-interaction' : 'on-preorder') . ' ember-view" title="' . (!$this->isStreamable() ? intval(date("d", strtotime($this->date) - strtotime("now"))) . " jours" : null) . '">
-            <td class="table__row__artwork">
+        <'.$tr.' data-date="' . $this->date . '" data-link="' . $this->getLink() . '" data-itunes-link="' . $this->getLink(true) . '" id="ember988" class="song table__row  we-selectable-item ' . ($this->isStreamable() ? 'is-available we-selectable-item--allows-interaction' : 'on-preorder') . ' ember-view" title="' . (!$this->isStreamable() ? intval(date("d", strtotime($this->date) - strtotime("now"))) . " jours" : null) . '">
+            <'.$td.' class="table__row__artwork">
                 <a href="' . $this->link . '" target="_blank">
                     <picture id="ember989" class="we-artwork--less-round we-artwork ember-view">
                         <img class="we-artwork__image ember989" src="' . $this->getArtwork(144) . '" loading="lazy" style="background-color: #251637;" alt="">
                     </picture>
                 </a>
-            </td>
-            <td class="table__row__name">
+            </'.$td.'>
+            <'.$td.' class="table__row__name">
                 <a href="' . $this->link . '" target="_blank" class="table__row__link targeted-link targeted-link--no-monochrome-underline" data-metrics-click="{&quot;actionType&quot;:&quot;navigate&quot;,&quot;targetType&quot;:&quot;card&quot;,&quot;targetId&quot;:&quot;1321217032&quot;}">
                     <div class="spread icon icon-after ' . ($this->explicit ? 'icon-explicit' : '') . ' table__row__explicit">
                         <span id="ember995" class="table__row__headline targeted-link__target we-truncate we-truncate--single-line ember-view">' . $this->getTrackName() . '</span>
@@ -186,28 +188,28 @@ class Song
                         <span id="ember996" class="we-truncate we-truncate--single-line ember-view">' . $this->getArtistName() . '</span>
                     </div>
                 </a>
-            </td>
-            <td class="table__row__artist small-hide large-show-tablecell">
+            </'.$td.'>
+            <'.$td.' class="table__row__artist small-hide large-show-tablecell">
                 <a href="' . $this->artistLink . '" target="_blank" class="table__row__link table__row__link--secondary">
                     <div class="spread">
                         <span id="ember997" class="we-truncate we-truncate--single-line ember-view">' . $this->getArtistName() . '</span>
                     </div>
                 </a>
-            </td>
-            <td class="table__row__album small-hide medium-show-tablecell">
+            </'.$td.'>
+            <'.$td.' class="table__row__album small-hide medium-show-tablecell">
                 <a href="' . $this->albumLink . '" target="_blank" class="table__row__link table__row__link--secondary">
                     <div class="spread">
                         <span id="ember998" class="we-truncate we-truncate--single-line ember-view">' . $this->getCollectionName() . '</span>
                     </div>
                 </a>
-            </td>
+            </'.$td.'>
 
-            <td class="table__row__duration" data-duration-width="-0:00">
+            <'.$td.' class="table__row__duration" data-duration-width="-0:00">
                 <time data-test-we-duration="" datetime="PT3M37S" aria-label="DURÉE" class="table__row__duration-counter">
                     ' . date("d/m", strtotime($this->date)) . '
                 </time>
-            </td>
-        </tr>
+            </'.$td.'>
+        </'.$tr.'>
         ';
     }
 

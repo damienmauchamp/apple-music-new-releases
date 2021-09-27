@@ -21,7 +21,8 @@ if (isset($_POST["load_songs"]) && $_POST["load_songs"]) {
 	$available = isset($_POST["available"]) && $_POST["available"];
 
 	header("Content-type:text/html");
-	displaySongs(getAllSongs($filtrer_albums, $explicit_only, $type, $available));
+	// displaySongs(getAllSongs($filtrer_albums, $explicit_only, $type, $available));
+	displaySongsNew(getAllSongs($filtrer_albums, $explicit_only, $type, $available));
 	exit;
 }
 
@@ -131,8 +132,9 @@ if ($news && $nodisplay) {
 						<h2 class="section__headline">
 							Chansons récentes
 						</h2>
-						<table class="table table--see-all" id="song-table-table">
-							<thead class="table__head">
+						<!-- <table class="table table--see-all" id="song-table-table"> -->
+						<div class="table table--see-all" id="song-table-table">
+							<!-- <thead class="table__head">
 							<tr>
 								<th class="table__head__heading--artwork"></th>
 								<th class="table__head__heading table__head__heading--song">TITRE</th>
@@ -144,12 +146,15 @@ if ($news && $nodisplay) {
 								</th>
 								<th class="table__head__heading table__head__heading--duration">SORTIE</th>
 							</tr>
-							</thead>
-							<tbody id="recent-songs-table-tbody">
+							</thead> -->
+							<div id="recent-songs-table-tbody">
+							<!-- <tbody id="recent-songs-table-tbody"> -->
 							<? //displaySongs($songs)
 							?>
-							</tbody>
-						</table>
+							<!-- </tbody> -->
+							</div>
+						</div>
+						<!-- </table> -->
 						<div class="spinner-cont">
 							<div id="loading-spinner_recent-songs"
 								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
@@ -290,6 +295,7 @@ if ($news && $nodisplay) {
 					type: 1
 				},
 				success: function(data) {
+					$("#recent-songs-table-tbody").empty();
 					console.log('songs loaded.')
 					if (!data) {
 						$("#recent-songs-table-tbody").hide();

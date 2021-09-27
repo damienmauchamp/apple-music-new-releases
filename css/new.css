@@ -12,9 +12,20 @@
     display: flex !important;
     padding-bottom: 0;
 }
-section.section--bordered, .table--see-all .table__head, .table__head, .table__row, .table--artwork .table__row:last-child, .table--see-all .table__row:last-child {
+section.section--bordered,
+.table--see-all .table__head, .table__head,
+.table__row, .table--artwork .table__row:last-child,
+.table--see-all .table__row:last-child  {
     border-width: 1px;
     border-color: var(--main-border-color) !important;
+    border-top: 1px solid var(--main-border-color);
+}
+
+.table__row, .table--artwork .table__row:first-child:last-child,
+.table--see-all .table__row:first-child:last-child, {
+    border-width: 1px;
+    border-color: var(--main-border-color) !important;
+    border-bottom: 1px solid var(--main-border-color);
     border-top: 1px solid var(--main-border-color);
 }
 
@@ -60,6 +71,7 @@ div.section-body:not(.l-row--grid) a.album {
 }
 
 tr.song td.table__row__artwork picture::before,
+div.song div.table__row__artwork picture::before,
 a.album picture::before {
 /*a.album:not(.preorder) picture::before {*/
     display: block;
@@ -98,6 +110,7 @@ table.table--see-all#song-table-table tbody {
     display: block;
 }
 
+div.song,
 tr.song {
     display: flex;
     flex-direction: row;
@@ -108,18 +121,26 @@ tr.song {
     align-items: stretch;
     border: none !important;
 }
+
+div.song:hover div.table__row__artwork,
 tr.song:hover td.table__row__artwork {
-    border: none !important;
+    /*border: none !important;*/
 }
+.song.table__row div[class^="table__"],
 .song.table__row td {
     height: unset;
     display: block;
     padding: 10px 0;
 }
+.song.table__row div[class^="table__"]:not(.table__row__artwork),
 .song.table__row td:not(.table__row__artwork) {
     border-width: 1px;
     border-color: var(--main-border-color) !important;
     border-top: 1px solid var(--main-border-color);
+}
+.song:first-child:last-child.table__row div[class^="table__"],
+.song:first-child:last-child.table__row td[class^="table__"] {
+    border: none;
 }
 .song .table__row__artwork picture.we-artwork {
     margin: 0;
@@ -130,9 +151,11 @@ tr.song:hover td.table__row__artwork {
     border-radius: 6px;
 }
 
+div.table__row__name,
 td.table__row__name {
     /*max-width: 50%;*/
 }
+div.table__row__name .table__row__link, .tracklist-item__text__link,
 td.table__row__name .table__row__link, .tracklist-item__text__link {
     width: 100%;
 }
@@ -147,16 +170,20 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
 }
 
 
+.song.table__row div.table__row__artwork,
 .song.table__row td.table__row__artwork {
     padding-right: 15px;
 }
+.song.table__row div:not(.table__row__artwork),
 .song.table__row td:not(.table__row__artwork) {
     /*background: #0000ff2b;*/
 }
+.song.table__row div.table__row__artwork,
 .song.table__row td.table__row__artwork {
     /*background: #ff00002b;*/
 }
 
+.song.table__row div.table__row__name,
 .song.table__row td.table__row__name {
     display: flex;
     flex-direction: column;
@@ -167,25 +194,35 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
     width: 75%;
 }
 
+/*.song.table__row div.small-hide,
 /*.song.table__row td.small-hide {
     display: none;
 }*/
+.song.table__row div.table__row__artis,
 .song.table__row td.table__row__artist,
+.song.table__row div.table__row__album,
 .song.table__row td.table__row__album {
     display: none;
 }
 
+.song div.table__row__duration,
 .song td.table__row__duration {
     margin-left: auto;
     padding-left: 20px;
     flex: auto;
 }
 
+.song div a.table__row__link:active,
 .song td a.table__row__link:active,
+.song div .table__row__link:active *,
 .song td .table__row__link:active *,
+.song div a.table__row__link:hover,
 .song td a.table__row__link:hover,
+.song div .table__row__link:hover *,
 .song td .table__row__link:hover *,
+.song div a.table__row__link,
 .song td a.table__row__link,
+.song div .table__row__link *,
 .song td .table__row__link * {
     text-decoration: none;
 }
@@ -199,7 +236,9 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
 }
 
 @media only screen and (min-width: 1069px) {
+    .song.table__row div.table__row__artist,
     .song.table__row td.table__row__artist,
+    .song.table__row div.table__row__album,
     .song.table__row td.table__row__album {
         display: flex;
         flex-direction: column;
@@ -207,20 +246,105 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
         align-items: flex-start;
         /*max-width: 95%;*/
     }
+    .song.table__row div.table__row__name,
     .song.table__row td.table__row__name {
         width: 38%;
         min-width: 38%;
         padding-right: 20px;
     }
+    .song.table__row div.table__row__artist,
     .song.table__row td.table__row__artist,
+    .song.table__row div.table__row__album,
     .song.table__row td.table__row__album {
         width: 20%;
         max-width: 20%;
     }
+    .song.table__row div.table__row__name,
     .song.table__row td.table__row__name,
+    .song.table__row div.table__row__artist,
     .song.table__row td.table__row__artist,
+    .song.table__row div.table__row__album,
     .song.table__row td.table__row__album {
         padding-right: 20px;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.song {
+    transition: ease left 3s;
+
+}
+.stack {
+    position: relative;
+}
+.stack > .song {
+    position: absolute;
+    top: 0;
+}
+.group--song, .song {
+    transition: ease left 3s;
+}
+.group--song {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-shrink: initial;
+    transition: ease left .3s;
+}
+.group--song > .song {
+
+}
+.group--song.stacked {
+    position: relative;
+    height:  69px;
+}
+.group--song.stacked .song {
+    position: absolute;
+    top:  0;
+        float: left;
+
+}
+/*.group--song > .song:first-child {
+    
+}
+.group--song > .song:not(:first-child) {
+    display: none;
+}
+.group--song.unstack > .song:first-child {
+    
+}
+.group--song.unstack > .song:not(:first-child) {
+    display: flex;
+    
+}
+
+.group--song.stacked { margin-left: 0}
+.group--song.stacked .song {margin-left: 0}
+.group--song.stacked .song + .song {margin-left: 1em}
+.song + .song {margin-left: 1em}
+
+.group--song::before {
+  content: '';
+  float: left;
+  height: 1.5em; 
+  width: 1em;
+}*/

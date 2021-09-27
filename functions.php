@@ -26,6 +26,33 @@ function displaySongs($songs, $upcoming = true)
 	}
 }
 
+function displaySongsNew($collections, $upcoming = true)
+{
+	if ($collections) {
+		foreach ($collections as $collectionId => $songs) {
+			/** @var Song $songs */
+			foreach ($songs as $song) {
+
+				$unique = $song->first && $song->last;
+				// print_r($song);
+
+				// if (!$unique && $song->first || $unique) {
+				if (!$unique && $song->first) {
+					echo "<div class=\"group--song\" data-id-collection=\"{$collectionId}\">";
+				}
+				
+				echo Song::withArray(Song::objectToArray($song))->toString(true);
+
+				// if (!$unique && $song->last || $unique) {
+				if (!$unique && $song->last) {
+					echo "</div>";
+				}
+
+			}
+		}
+	}
+}
+
 function getThisWeekReleases($type = null, $allow_duplicates = false) {
 	$db = new db;
 	$releases = $db->getUserWeekReleases($type);
@@ -309,6 +336,37 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 			$releases_array = array_reverse($releases_array);
 		}
 	}
+
+	// ordering for groups
+	$final = [];
+	$rupture = null;
+	$collectionIndex = -1;
+	foreach ($releases_array as $index => $release) {
+		$collectionId = $release->collectionId;
+
+		$release->first = false;
+		$release->last = true;
+		if (!isset($final[$collectionId])) {
+			$release->first = true;
+		} else {
+			$final[$collectionId][count($final[$collectionId])-1]->last = false;
+		}
+		$final[$collectionId][] = $release;
+	}
+	return $final;
+
+	// print_r($final);
+    // [id] => 1587680893
+    // [collectionId] => 1587680887
+    // [collectionName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS] - Single
+    // [trackName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS]
+    // [artistName] => SK8
+    // [date] => 2021-09-27 00:00:00
+    // [artwork] => //is5-ssl.mzstatic.com/image/thumb/Music115/v4/5c/54/e2/5c54e293-4770-bf55-4749-b9289a7b2f47/source/100x100bb.jpg
+    // [idArtist] => 201714418
+    // [lastUpdate] => 2019-10-09 00:00:00
+    // [explicit] => 1
+    // [isStreamable] => 0
 
 	return $releases_array;
 }
