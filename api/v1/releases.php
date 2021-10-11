@@ -7,13 +7,14 @@ $min_release_date = array_key_exists('min_release_date', $_GET) ? $_GET['min_rel
 $only_explicit = array_key_exists('only_explicit', $_GET) ? boolval($_GET['only_explicit']) : true;
 
 // start_date
+$status_code = 400;
 try {
 	$start_date = new \DateTime($start_date);
 } catch(Exception $e) {
-    http_response_code(400);
+    http_response_code($status_code);
 	exit(json_encode(array(
 		'status' => $status_code,
-		'data' => ['error' => "'{$start_date}' is not a valid date."]
+		'data' => ['error' => "'{$start_date}' is not a valid date."],
 	)));
 	//exit($e);
 }
@@ -22,10 +23,10 @@ try {
 try {
 	$min_release_date = new \DateTime($min_release_date);
 } catch(Exception $e) {
-    http_response_code(400);
+    http_response_code($status_code);
 	exit(json_encode(array(
 		'status' => $status_code,
-		'data' => ['error' => "'{$min_release_date}' is not a valid date."]
+		'data' => ['error' => "'{$min_release_date}' is not a valid date."],
 	)));
 	//exit($e);
 }
@@ -37,6 +38,7 @@ $sql = "
 	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."' AND a.date >= '".$min_release_date->format('Y-m-d H:i:s')."'
 	ORDER BY a.added ASC, a.explicit DESC";
 $res = $db->selectPerso($sql);
+// $res[] = ['name' => 'test', 'artistName' => 'test', 'id' => 1, 'explicit' => true];
 
 $status_code = $res ? 200 : 204;
 
@@ -60,10 +62,11 @@ foreach ($res as $i => $item) {
 }
 
 http_response_code($status_code);
-exit(json_encode(array(
+echo json_encode(array(
 	'status' => $status_code,
 	'data' => array_values($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []))
-)));
+));
+exit();
 
 //$test = "Test::getUserAlbums();";
 //$x = eval($test);
