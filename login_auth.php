@@ -15,7 +15,9 @@ if (!empty($_SESSION["id_user"])) {
     $isLoggedIn = true;
 }
 // Check if loggedin session exists
-else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) && !empty($_COOKIE["random_selector"])) {
+else if (!empty($_COOKIE["user_login"]) && 
+    !empty($_COOKIE["random_password"]) && 
+    !empty($_COOKIE["random_selector"])) {
 
     $db = new db;
 
@@ -54,10 +56,10 @@ else if (!empty($_COOKIE["user_login"]) && !empty($_COOKIE["random_password"]) &
 
     if (!$isLoggedIn) {
 
-	    // mark existing token as expired
-	    if ($userToken['id']) {
-	        $db->setTokenAsExpired($userToken['id']);
-	    }
+        // mark existing token as expired
+        if ($userToken['id']) {
+            $db->setTokenAsExpired($userToken['id']);
+        }
 
         // clear cookies
         clearAuthCookie();

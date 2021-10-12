@@ -837,12 +837,15 @@ class DB
 		$stmt = $this->dbh->prepare("
 			SELECT *
 			FROM user_auth
-			WHERE username = :username"
+			WHERE username = :username
+			ORDER BY id DESC
+			LIMIT 1"
 		);
 		$stmt->execute(array("username" => $username));
-		$res = $stmt->fetch();
-		$this->disconnect();
-		return $res ?: false;
+		if (!$stmt->rowCount()) {
+			return false;
+		}
+		return $stmt->fetch();
 	}
 
 	public function setTokenAsExpired($id)
