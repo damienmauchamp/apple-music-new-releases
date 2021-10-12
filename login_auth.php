@@ -27,42 +27,47 @@ else if (!empty($_COOKIE["user_login"]) &&
     $isExpiryDateVerified = false;
     
     // Get token for username
-    $userToken = $db->getTokenByUsername($_COOKIE["user_login"]);
-    
-    // Validate random password cookie with database
-    if (password_verify($_COOKIE["random_password"], $userToken["password_hash"])) {
-        $isPasswordVerified = true;
-    }
-    
-    // Validate random selector cookie with database
-    if (password_verify($_COOKIE["random_selector"], $userToken["selector_hash"])) {
-        $isSelectorVerified = true;
-    }
-    
-    // check cookie expiration by date
-    if($userToken["expiry_date"] >= $current_date) {
-        $isExpiryDareVerified = true;
-    }
-    
-    // Redirect if all cookie based validation retuens true
-    // Else, mark the token as expired and clear cookies
-    if (!empty($userToken["id"]) && $isPasswordVerified && $isSelectorVerified && $isExpiryDareVerified) {
-        $userInfo = $db->getUserFromTokenId($userToken['id']);
-        if ($userInfo) {
-            $isLoggedIn = true;
-            $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
+    $userTokens = $db->getTokenByUsername($_COOKIE["user_login"]);
+
+    foreach ($userTokens as $userToken) {
+
+        // Validate random password cookie with database
+        if (password_verify($_COOKIE["random_password"], $userToken["password_hash"])) {
+            $isPasswordVerified = true;
+        }
+        
+        // Validate random selector cookie with database
+        if (password_verify($_COOKIE["random_selector"], $userToken["selector_hash"])) {
+            $isSelectorVerified = true;
+        }
+        
+        // check cookie expiration by date
+        if($userToken["expiry_date"] >= $current_date) {
+            $isExpiryDareVerified = true;
+        }
+        
+        // Redirect if all cookie based validation retuens true
+        // Else, mark the token as expired and clear cookies
+        if (!empty($userToken["id"]) && $isPasswordVerified && $isSelectorVerified && $isExpiryDareVerified) {
+            $userInfo = $db->getUserFromTokenId($userToken['id']);
+            if ($userInfo) {
+                $isLoggedIn = true;
+                $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
+            }
+        }
+
+        if (!$isLoggedIn) {
+            // mark existing token as expired
+            if ($userToken['id'] && !$isExpiryDareVerified) {
+                $db->setTokenAsExpired($userToken['id']);
+            }
+        } else {
+            break;
         }
     }
 
     if (!$isLoggedIn) {
-
-        // mark existing token as expired
-        if ($userToken['id']) {
-            $db->setTokenAsExpired($userToken['id']);
-        }
-
         // clear cookies
         clearAuthCookie();
     }
-
 }

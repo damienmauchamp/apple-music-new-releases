@@ -56,9 +56,11 @@ if ($username && $password && $submit) {
             $expiry_date = date("Y-m-d H:i:s", $cookie_expiration_time);
 
             // mark existing token as expired
-            $userToken = $db->getTokenByUsername($username);
-            if ($userToken) {
-                $db->setTokenAsExpired($userToken['id']);
+            $userTokens = $db->getTokenByUsername($username);
+            foreach ($userTokens ?? [] as $userToken) {
+                if ($userToken) {
+                    $db->setTokenAsExpired($userToken['id']);
+                }
             }
             $db->insertToken($username, $random_password_hash, $random_selector_hash, $expiry_date);
 

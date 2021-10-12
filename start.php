@@ -83,6 +83,9 @@ $nodisplay = isset($_GET["nodisplay"]);
 //echo date(DEFAULT_DATE_FORMAT_TIME);
 
 $idUser = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
+if (is_array($idUser) && isset($idUser['id'])) {
+    $idUser = $idUser['id'];
+}
 
 $navTitle = "Bonjour ";
 if (TIMESTAMP_MIDNIGHT <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_6AM)

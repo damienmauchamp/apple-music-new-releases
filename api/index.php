@@ -2,7 +2,10 @@
 
 header("Content-type: application/json");
 
-echo json_encode($api_request);
+http_response_code(404);
+echo json_encode($api_request ?? [
+	'status' => 404,
+]);
 exit();
 
 $routes = [

@@ -838,14 +838,12 @@ class DB
 			SELECT *
 			FROM user_auth
 			WHERE username = :username
-			ORDER BY id DESC
-			LIMIT 1"
-		);
+				AND is_expired = 0");
 		$stmt->execute(array("username" => $username));
 		if (!$stmt->rowCount()) {
 			return false;
 		}
-		return $stmt->fetch();
+		return $stmt->fetchAll();
 	}
 
 	public function setTokenAsExpired($id)
@@ -885,9 +883,13 @@ class DB
 			WHERE ua.id = :token_id"
 		);
 		$stmt->execute(array("token_id" => $token_id));
-		$res = $stmt->fetch();
-		$this->disconnect();
-		return $res ?: false;
+		if (!$stmt->rowCount()) {
+			return false;
+		}
+		return $stmt->fetchAll();
+		// $res = $stmt->fetch();
+		// $this->disconnect();
+		// return $res ?: false;
 	}
 
 	public function getUserFromUserToken($userToken = null) {
