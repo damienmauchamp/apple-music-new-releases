@@ -85,6 +85,10 @@ $nodisplay = isset($_GET["nodisplay"]);
 $idUser = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
 if (is_array($idUser) && isset($idUser['id'])) {
     $idUser = $idUser['id'];
+} else if (is_array($idUser) && 
+    isset($idUser[0]) && 
+    isset($idUser[0]['id'])) {
+    $idUser = $idUser[0]['id'];
 }
 
 $navTitle = "Bonjour ";

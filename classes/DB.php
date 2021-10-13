@@ -886,7 +886,7 @@ class DB
 		if (!$stmt->rowCount()) {
 			return false;
 		}
-		return $stmt->fetchAll();
+		return $stmt->fetch();
 		// $res = $stmt->fetch();
 		// $this->disconnect();
 		// return $res ?: false;
