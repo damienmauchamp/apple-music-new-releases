@@ -4,7 +4,7 @@ $(function () {
 	//var prefersColorScheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	//var theme = $('body').className();
 	//var bodyThemeClass = $('body')[0].className.replace(/\s*is\-music\-theme\s*/, '');
-	$('html').css('background', $('body').css('background-color'));
+	// $('html').css('background', $('body').css('background-color'));
 
 	//$(.maClasse).parents('li').css(propriété, valeur);
 	// :root, :root .light : --light
@@ -370,7 +370,7 @@ var open_theme_settings = function() {
 	});
 
 	$('.theme-input#'+theme).prop('checked', true);
-}
+};
 
 var change_theme = function(theme) {
 	var themes = ['light', 'dark', 'night', 'variant-dark'];
@@ -389,9 +389,9 @@ var change_theme = function(theme) {
 transition: background-color .5s ease .7s;
 	*/
 	// changing the html tag's background color to match the body's
-	$('html').css('background', $('body').css('background-color'));
+	// $('html').css('background', $('body').css('background-color'));
 
-}
+};
 
 var getNewReleases = function (scrapped) {
 
