@@ -63,7 +63,7 @@ if ($username && $password && $submit) {
             $userTokens = $db->getTokenByUsername($username);
             foreach ($userTokens ?? [] as $userToken) {
                 // check cookie expiration by date
-                if($userToken && $userToken["expiry_date"] >= $current_date) {
+                if($userToken && $userToken["expiry_date"] < $current_date) {
                     $db->setTokenAsExpired($userToken['id']);
                 }
             }
