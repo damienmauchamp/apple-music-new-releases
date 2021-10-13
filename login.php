@@ -16,6 +16,10 @@ if ($isLoggedIn) {
     header("location: index.php");
 }
 
+// Get Current date, time
+$current_time = time();
+$current_date = date("Y-m-d H:i:s", $current_time);
+
 
 $username = isset($_POST["username"]) ? addslashes($_POST["username"]) : null;
 $password = isset($_POST["password"]) ? addslashes($_POST["password"]) : null;
@@ -58,7 +62,8 @@ if ($username && $password && $submit) {
             // mark existing token as expired
             $userTokens = $db->getTokenByUsername($username);
             foreach ($userTokens ?? [] as $userToken) {
-                if ($userToken) {
+                // check cookie expiration by date
+                if($userToken && $userToken["expiry_date"] >= $current_date) {
                     $db->setTokenAsExpired($userToken['id']);
                 }
             }
