@@ -1,4 +1,4 @@
-<?
+<?php
 require __DIR__ . '/vendor/autoload.php';
 require_once(__DIR__ . "/start.php");
 $root = "";
@@ -13,7 +13,7 @@ $artists = json_decode($db->getUsersArtists());
 <!DOCTYPE html>
 <html>
 <head>
-    <? include "inc/meta.php"; ?>
+    <?php include "inc/meta.php"; ?>
     <style>
         .artist-artwork {
             width: 44px;
@@ -34,7 +34,7 @@ $artists = json_decode($db->getUsersArtists());
 </head>
 <body class="<?= $theme ?>">
 <div class="main main-artists">
-    <? include "inc/nav.php"; ?>
+    <?php include "inc/nav.php"; ?>
 
     <section class="main-header l-content-width section" style="border-top:none">
 
@@ -67,7 +67,7 @@ $artists = json_decode($db->getUsersArtists());
                     </tr>
                     </thead>
                     <tbody>
-                    <? foreach ($artists as $artist) : ?>
+                    <?php foreach ($artists as $artist) : ?>
                         <tr id="artist-<?= $artist->id ?>"
                             class="table__row  we-selectable-item is-available we-selectable-item--allows-interaction ember-view">
 
@@ -96,7 +96,7 @@ $artists = json_decode($db->getUsersArtists());
                                 <button class="rm-artist" data-artist-id="<?= $artist->id ?>">✕</button>
                             </td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

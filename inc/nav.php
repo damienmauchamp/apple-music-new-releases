@@ -1,4 +1,4 @@
-<?
+<?php
 $menu = isConnected() ? array(
     array("Accueil", "index.php", "normal"),
     array("Mes artistes", "artists.php", "normal"),
@@ -40,7 +40,7 @@ $option = array(
             <div class="localnav-menu we-localnav__menu we-localnav__menu--music">
                 <div class="localnav-actions we-localnav__actions">
 
-                    <? foreach ($menu as $item) {
+                    <?php foreach ($menu as $item) {
                         $name = $item[0];
                         $link = $item[1];
                         $type = $item[2];
@@ -51,7 +51,7 @@ $option = array(
                                 <?= $name ?>
                             </a>
                         </div>
-                    <? } ?>
+                    <?php } ?>
 
                 </div>
 
@@ -67,7 +67,7 @@ $option = array(
 
     <div class="" id="mobile-menu" style="display:none">
         <ul>
-            <? foreach ($menu as $item) {
+            <?php foreach ($menu as $item) {
                 $name = $item[0];
                 $link = $item[1];
                 $type = $item[2];
@@ -77,7 +77,7 @@ $option = array(
                         <?= $name ?>
                     </a>
                 </li>
-            <? } ?>
+            <?php } ?>
         </ul>
     </div>
 </nav>

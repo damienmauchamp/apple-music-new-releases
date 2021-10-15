@@ -62,11 +62,11 @@ if ($news && $nodisplay) {
 	<!DOCTYPE html>
 	<html>
 	<head>
-		<? include "inc/meta.php"; ?>
+		<?php include "inc/meta.php"; ?>
 	</head>
 	<body class="<?= $theme ?>">
 	<div class="main">
-		<? include "inc/nav.php"; ?>
+		<?php include "inc/nav.php"; ?>
 
 		<section class="main-header l-content-width section" style="border-top:none">
 			<h1 class="section__headline--hero"><?= $news ? "Mise à jour" : "Nouvelles Sorties" ?></h1>
@@ -80,7 +80,7 @@ if ($news && $nodisplay) {
 			</div> -->
 		</section>
 
-		<? if ($news) : ?>
+		<?php if ($news) : ?>
 
 			<section class="l-content-width section section--bordered">
 				<h2 class="section__headline">
@@ -89,14 +89,14 @@ if ($news && $nodisplay) {
 
 				<div class="l-row" id="new-albums">
 
-					<? if (!$full) :
+					<?php if (!$full) :
 						logRefresh(); ?>
 						<script>getNewReleases(<?= $scrapped ? 'true' : '' ?>);</script>
 						<div class="spinner-cont">
 							<div id="loading-spinner"
 								 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
 						</div>
-					<? else :
+					<?php else :
 						logRefresh("full");
 						$res = $scrapped ? getAllNewScrappedReleases() : getAllNewReleases();
 						$albums = $res["albums"];
@@ -107,7 +107,7 @@ if ($news && $nodisplay) {
 
 			</section>
 
-		<? else :
+		<?php else :
 			// Weekly releases : Sorties de la semaine
 			$display = 'grid';
 			echo getThisWeekReleases('albums');
@@ -149,7 +149,7 @@ if ($news && $nodisplay) {
 							</thead> -->
 							<div id="recent-songs-table-tbody">
 							<!-- <tbody id="recent-songs-table-tbody"> -->
-							<? //displaySongs($songs)
+							<?php //displaySongs($songs)
 							?>
 							<!-- </tbody> -->
 							</div>
@@ -185,7 +185,7 @@ if ($news && $nodisplay) {
 							</tr>
 							</thead>
 							<tbody id="upcoming-streamable-songs-table-tbody">
-							<? //displaySongs($songs)
+							<?php //displaySongs($songs)
 							?>
 							</tbody>
 						</table>
@@ -219,7 +219,7 @@ if ($news && $nodisplay) {
 							</tr>
 							</thead>
 							<tbody id="upcoming-songs-table-tbody">
-							<? //displaySongs($songs)
+							<?php //displaySongs($songs)
 							?>
 							</tbody>
 						</table>
@@ -231,11 +231,10 @@ if ($news && $nodisplay) {
 				</div>
 			</section>
 
-			<?
-			// Chansons à venir
+			<?php			// Chansons à venir
 			?>
 
-			<? // songs start
+			<?php // songs start
 			if ($songs) : ?>
 				<section class="l-content-width section section--bordered">
 					<div class="l-row">
@@ -258,29 +257,29 @@ if ($news && $nodisplay) {
 								</tr>
 								</thead>
 								<tbody>
-								<? displaySongs($songs) ?>
+								<?php displaySongs($songs) ?>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</section>
-			<? // songs end
+			<?php // songs end
 			endif; ?>
 
-			<? // albums start
+			<?php // albums start
 			if ($albums) : ?>
 				<section class="artist l-content-width section section--bordered">
 					<h2 class="section__headline">
 						Tous les albums
 					</h2>
 					<div class="l-row">
-						<? displayAlbums($albums) ?>
+						<?php displayAlbums($albums) ?>
 					</div>
 				</section>
-			<? // albums end
+			<?php // albums end
 			endif; ?>
 
-		<? endif; ?>
+		<?php endif; ?>
 	</div>
 
 	<script>
@@ -379,7 +378,7 @@ if ($news && $nodisplay) {
 	</script>
 	</body>
 	</html>
-<?
+<?php
 if ($debug) :
 	function rutime($ru, $rus, $index)
 	{

@@ -1,5 +1,9 @@
 <?php
 
+if (!session_status()) {
+	session_start();
+}
+
 use AppleMusic\DB as db;
 use AppleMusic\API as api;
 use AppleMusic\Artist as Artist;
