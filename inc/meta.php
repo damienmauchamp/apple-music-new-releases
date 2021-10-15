@@ -1,4 +1,4 @@
-<? if (!isset($root)) {
+<?php if (!isset($root)) {
     $root = '../';
 }
 
@@ -16,14 +16,14 @@ $page_title = isset($pageTitle) ? $pageTitle : "Apple Music Update";
     <link rel="stylesheet" href="<?= $root ?>css/dark.css">
     <link rel="stylesheet" href="<?= $root ?>css/fonts/sf-display.css">
     <link rel="stylesheet" href="<?= $root ?>css/fonts/sf-text.css">
-<? // if ($mobile) : ?>
+<?php // if ($mobile) : ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script src="<?= $root ?>js/hammer.min.js"></script>
     <script src="<?= $root ?>js/main.js"></script>
     <link rel="icon" type="image/png" href="<?= $root ?>favicon.png">
     <link rel="apple-touch-icon" href="<?= $root ?>favicon.png">
-<? // endif; ?>
+<?php // endif; ?>
 
     <script src="<?= $root ?>libs/fontawesome/fontawesome-5.11.2.js"></script>
     <link rel="stylesheet" href="<?= $root ?>libs/fontawesome/css/fontawesome-5.11.2.css">
