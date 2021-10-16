@@ -13,8 +13,10 @@ $cookie_expiration_time = $current_time + ($cookie_days * 24 * 60 * 60);
 
 
 $tmp_is_user = null;
-$tmp_is_user = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
-if (is_array($tmp_is_user) && isset($tmp_is_user['id'])) {
+if (isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0) {
+    $tmp_is_user = $_SESSION["id_user"];
+}
+if (is_array($tmp_is_user) && isset($tmp_is_user['id']) && $tmp_is_user['id'] > 0) {
     $tmp_is_user = $tmp_is_user['id'];
 } else if (is_array($tmp_is_user) && 
     isset($tmp_is_user[0]) && 
@@ -23,7 +25,7 @@ if (is_array($tmp_is_user) && isset($tmp_is_user['id'])) {
 }
 
 
-if (!empty($tmp_is_user)) {
+if (!empty($tmp_is_user) && $tmp_is_user > 0) {
     $isLoggedIn = true;
 }
 // Check if loggedin session exists

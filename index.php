@@ -7,7 +7,20 @@ if ($debug) :
 	$time_start = microtime(true);
 endif;
 
+// echo '<pre>' . print_r([
+// 	'_SESSION' => $_SESSION,
+// 	'_COOKIE' => $_COOKIE,
+// 	'idUser' => $idUser,
+// ], true) . '</pre>';
 checkConnexion();
+if ($idUser <= 0) {
+	checkConnexion();
+}
+// echo '<pre>' . print_r([
+// 	'_SESSION' => $_SESSION,
+// 	'_COOKIE' => $_COOKIE,
+// 	'idUser' => $idUser,
+// ], true) . '</pre>';
 $root = "";
 global $news;
 
