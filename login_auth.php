@@ -11,22 +11,20 @@ $current_date = date("Y-m-d H:i:s", $current_time);
 $cookie_days = 30;
 $cookie_expiration_time = $current_time + ($cookie_days * 24 * 60 * 60);
 
-
-$tmp_is_user = null;
-if (isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0) {
-    $tmp_is_user = $_SESSION["id_user"];
-}
-if (is_array($tmp_is_user) && isset($tmp_is_user['id']) && $tmp_is_user['id'] > 0) {
-    $tmp_is_user = $tmp_is_user['id'];
-} else if (is_array($tmp_is_user) && 
-    isset($tmp_is_user[0]) && 
-    isset($tmp_is_user[0]['id'])) {
-    $tmp_is_user = $tmp_is_user[0]['id'];
+//
+$tmp_id_user = isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0 ? $_SESSION["id_user"] : null;
+if (is_array($tmp_id_user) && isset($tmp_id_user['id']) && $tmp_id_user['id'] > 0) {
+    $tmp_id_user = $tmp_id_user['id'];
+} else if (is_array($tmp_id_user) && 
+    isset($tmp_id_user[0]) && 
+    isset($tmp_id_user[0]['id'])) {
+    $tmp_id_user = $tmp_id_user[0]['id'];
 }
 
-
-if (!empty($tmp_is_user) && $tmp_is_user > 0) {
+//
+if (!empty($tmp_id_user) && $tmp_id_user > 0) {
     $isLoggedIn = true;
+    $idUser = $tmp_id_user;
 }
 // Check if loggedin session exists
 else if (!empty($_COOKIE["user_login"]) && 

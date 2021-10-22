@@ -34,12 +34,13 @@ class DB
 		}
 
 		$DB_serveur = !empty($_ENV['DB_HOST']) ? $_ENV['DB_HOST'] : "localhost";
+		$DB_port = !empty($_ENV['DB_PORT']) ? $_ENV['DB_PORT'] : "3306";
 		$DB_nom = !empty($_ENV['DB_NAME']) ? $_ENV['DB_NAME'] : 'applemusic-update';
 		$DB_login = !empty($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : 'root';
 		$DB_psw = !empty($_ENV['DB_PWD']) ? $_ENV['DB_PWD'] : '';
 
 		try {
-			$this->dbh = new PDO('mysql:host=' . $DB_serveur . ';port=3306;dbname=' . $DB_nom, $DB_login, $DB_psw);
+			$this->dbh = new PDO("mysql:host={$DB_serveur};port={$DB_port};dbname={$DB_nom}", $DB_login, $DB_psw);
 			$this->dbh->exec('SET CHARACTER SET utf8');
 			$this->dbh->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
 			$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -723,8 +724,8 @@ class DB
 			FROM users
 			WHERE username = :username AND password = :password"
 		);
-		$found = $stmt->execute(array("username" => $username, "password" => md5($password)));
-		$res = $found ? $stmt->fetch() : null;
+		$stmt->execute(array("username" => $username, "password" => md5($password)));
+		$res = $stmt->rowCount() ? $stmt->fetch() : null;
 		$this->disconnect();
 		return $res;
 	}
