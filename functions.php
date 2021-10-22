@@ -604,7 +604,26 @@ function checkConnexion()
  */
 function isConnected()
 {
+	global $idUser;
 	$isLoggedIn = false;
+
+	//
+	if (empty($idUser) || $idUser <= 0) {
+
+		$idUser = isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0 ? $_SESSION["id_user"] : null;
+
+		if (is_array($idUser) && isset($idUser['id']) && $idUser['id'] > 0) {
+		    $idUser = $idUser['id'];
+		} else if (is_array($idUser) && 
+		    isset($idUser[0]) && 
+		    isset($idUser[0]['id'])) {
+		    $idUser = $idUser[0]['id'];
+		}
+	    $isLoggedIn = true;
+	}
+
+
+
 	require "login_auth.php";
 	return $isLoggedIn;
 	// return (isset($_SESSION) && !empty($_SESSION) && isset($_SESSION["id_user"]) && strlen(strval($_SESSION["id_user"])));

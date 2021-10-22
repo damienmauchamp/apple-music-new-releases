@@ -1,6 +1,7 @@
 <?php
 
 use AppleMusic\DB as db;
+global $idUser;
 
 /* COOKIES */
 // Get Current date, time
@@ -25,6 +26,8 @@ if (is_array($tmp_id_user) && isset($tmp_id_user['id']) && $tmp_id_user['id'] > 
 if (!empty($tmp_id_user) && $tmp_id_user > 0) {
     $isLoggedIn = true;
     $idUser = $tmp_id_user;
+} else if ($isLoggedIn && $idUser > 0) {
+    
 }
 // Check if loggedin session exists
 else if (!empty($_COOKIE["user_login"]) && 

@@ -90,6 +90,7 @@ if (is_array($idUser) && isset($idUser['id'])) {
     isset($idUser[0]['id'])) {
     $idUser = $idUser[0]['id'];
 }
+// $idUser = -1;
 
 $navTitle = "Bonjour ";
 if (TIMESTAMP_MIDNIGHT <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_6AM)
