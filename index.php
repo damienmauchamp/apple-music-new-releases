@@ -310,7 +310,7 @@ if ($news && $nodisplay) {
 					$("#recent-songs-table-tbody").empty();
 					console.log('songs loaded.')
 					if (!data) {
-						$("#recent-songs-table-tbody").hide();
+						$("#recent-songs-table-tbody").closest('section').hide();
 					} else {
 						$("#recent-songs-table-tbody").append(data);
 					}
@@ -332,7 +332,7 @@ if ($news && $nodisplay) {
 				success: function(data) {
 					console.log('songs loaded.')
 					if (!data) {
-						$("#upcoming-streamable-songs-table-tbody").hide();
+						$("#upcoming-streamable-songs-table-tbody").closest('section').hide();
 					} else {
 						$("#upcoming-streamable-songs-table-tbody").append(data);
 					}
@@ -354,7 +354,7 @@ if ($news && $nodisplay) {
 				success: function(data) {
 					console.log('songs loaded.')
 					if (!data) {
-						$("#upcoming-songs-table-tbody").hide();
+						$("#upcoming-songs-table-tbody").closest('section').hide();
 					} else {
 						$("#upcoming-songs-table-tbody").append(data);
 					}
