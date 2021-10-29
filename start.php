@@ -82,27 +82,12 @@ $display = $news ? "column" : "row";
 $nodisplay = isset($_GET["nodisplay"]);
 //echo date(DEFAULT_DATE_FORMAT_TIME);
 
-$idUser = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
-if (is_array($idUser) && isset($idUser['id'])) {
-    $idUser = $idUser['id'];
-} else if (is_array($idUser) && 
-    isset($idUser[0]) && 
-    isset($idUser[0]['id'])) {
-    $idUser = $idUser[0]['id'];
-}
-// $idUser = -1;
-
 $navTitle = "Bonjour ";
 if (TIMESTAMP_MIDNIGHT <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_6AM)
     $navTitle = "Bonne nuit ";
 else if (TIMESTAMP_6PM <= TIMESTAMP_NOW && TIMESTAMP_NOW < TIMESTAMP_MIDNIGHT)
     $navTitle = "Bonsoir ";
 $navTitle .= (isset($_SESSION["prenom"]) ? $_SESSION["prenom"] : null);
-
-//var_dump($_SESSION);
-//var_dump($idUser);
-//tmp
-//$idUser = 2;
 
 // run from command line :
 //  php -f index.php refresh=1 full=1

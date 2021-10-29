@@ -588,6 +588,7 @@ function getMonth($m, $short = false)
 function checkConnexion()
 {
 	if (!isConnected()) {
+
 		if ($_SERVER && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
 			$_COOKIE["redirect"] = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			setcookie("redirect", "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -598,31 +599,40 @@ function checkConnexion()
 	}
 }
 
+function int_greater_than_zero($var) {
+	return is_numeric($var) && intval($var) > 0;
+}
+
+function id_user() {
+	$idUser = $_SESSION["id_user"] ?? 0;
+	if (int_greater_than_zero($idUser)) {
+		return (int) $idUser;
+	}
+	if (is_array($idUser) && isset($idUser['id']) 
+		&& int_greater_than_zero($idUser['id'])) {
+	    return (int) $idUser['id'];
+	}
+	if (is_array($idUser) && isset($idUser[0]) 
+		&& int_greater_than_zero($idUser[0])) {
+	    return (int) $idUser[0];
+	}
+	return 0;
+}
+
 /**
  * Vérifie que l'utilisateur est connecté
  * @return bool
  */
 function isConnected()
 {
-	global $idUser;
 	$isLoggedIn = false;
 
 	//
-	if (empty($idUser) || $idUser <= 0) {
-
-		$idUser = isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0 ? $_SESSION["id_user"] : null;
-
-		if (is_array($idUser) && isset($idUser['id']) && $idUser['id'] > 0) {
-		    $idUser = $idUser['id'];
-		} else if (is_array($idUser) && 
-		    isset($idUser[0]) && 
-		    isset($idUser[0]['id'])) {
-		    $idUser = $idUser[0]['id'];
-		}
-	    $isLoggedIn = true;
+	$idUser = id_user();
+	if ($idUser > 0) {
+		$_SESSION['id_user'] = $idUser;
+		return true;
 	}
-
-
 
 	require "login_auth.php";
 	return $isLoggedIn;

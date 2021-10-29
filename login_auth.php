@@ -1,7 +1,6 @@
 <?php
 
 use AppleMusic\DB as db;
-global $idUser;
 
 /* COOKIES */
 // Get Current date, time
@@ -13,21 +12,9 @@ $cookie_days = 30;
 $cookie_expiration_time = $current_time + ($cookie_days * 24 * 60 * 60);
 
 //
-$tmp_id_user = isset($_SESSION["id_user"]) && $_SESSION["id_user"] > 0 ? $_SESSION["id_user"] : null;
-if (is_array($tmp_id_user) && isset($tmp_id_user['id']) && $tmp_id_user['id'] > 0) {
-    $tmp_id_user = $tmp_id_user['id'];
-} else if (is_array($tmp_id_user) && 
-    isset($tmp_id_user[0]) && 
-    isset($tmp_id_user[0]['id'])) {
-    $tmp_id_user = $tmp_id_user[0]['id'];
-}
-
-//
-if (!empty($tmp_id_user) && $tmp_id_user > 0) {
+if (id_user() > 0) {
     $isLoggedIn = true;
-    $idUser = $tmp_id_user;
-} else if ($isLoggedIn && $idUser > 0) {
-    
+    $_SESSION['id_user'] = id_user();
 }
 // Check if loggedin session exists
 else if (!empty($_COOKIE["user_login"]) && 
@@ -67,16 +54,8 @@ else if (!empty($_COOKIE["user_login"]) &&
             $userInfo = $db->getUserFromTokenId($userToken['id']);
             if ($userInfo) {
                 $isLoggedIn = true;
-                $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
-
-                $idUser = isset($_SESSION["id_user"]) ? $_SESSION["id_user"] : -1;
-                if (is_array($idUser) && isset($idUser['id'])) {
-                    $idUser = $idUser['id'];
-                } else if (is_array($idUser) && 
-                    isset($idUser[0]) && 
-                    isset($idUser[0]['id'])) {
-                    $idUser = $idUser[0]['id'];
-                }
+                $_SESSION["id_user"] = (int) $userInfo['id'];
+                // $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
             }
         }
 

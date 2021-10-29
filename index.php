@@ -10,16 +10,13 @@ endif;
 // echo '<pre>' . print_r([
 // 	'_SESSION' => $_SESSION,
 // 	'_COOKIE' => $_COOKIE,
-// 	'idUser' => $idUser,
+// 	'idUser' => $_SESSION['id_user'] ?? 0,
 // ], true) . '</pre>';
 checkConnexion();
-if ($idUser <= 0) {
-	checkConnexion();
-}
 // echo '<pre>' . print_r([
 // 	'_SESSION' => $_SESSION,
 // 	'_COOKIE' => $_COOKIE,
-// 	'idUser' => $idUser,
+// 	'idUser' => $_SESSION['id_user'] ?? 0,
 // ], true) . '</pre>';
 $root = "";
 global $news;
