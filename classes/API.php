@@ -184,7 +184,7 @@ class API
                         $releaseDateTime = new \DateTime($releaseDate);
                         // $day = $interval->format('%r%a');
                         $isStreamable = $releaseDateTime < $today;
-                        
+
                         $song = Song::withArray(
                             array(
 
@@ -207,13 +207,12 @@ class API
                                 // isStreamable
                                 "isStreamable" => $isStreamable,
 
-//                        "_id" => null,
-//                        "link" => $collection["collectionViewUrl"],
+                                //                        "_id" => null,
+                                //                        "link" => $collection["collectionViewUrl"],
                             )
                         );
                         $songs[] = $song;
                     }
-
                 }
                 return $songs;
                 break;
@@ -236,22 +235,21 @@ class API
                             if ($collection["wrapperType"] === "collection") {
                                 $album = Album::withArray(
                                     array(
-    //                        "_id" => null,
+                                        //                        "_id" => null,
                                         "id" => $collection["collectionId"],
                                         "name" => $collection["collectionName"],
                                         "artistName" => $collection["artistName"],
                                         "date" => $collection["releaseDate"],
                                         "artwork" => $collection["artworkUrl100"],
                                         "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
-    //                        "link" => $collection["collectionViewUrl"],
+                                        //                        "link" => $collection["collectionViewUrl"],
                                     )
                                 );
                                 $albums[] = $album;
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     if (!$results['albums']) {
                         return $albums;
                     }
@@ -268,14 +266,14 @@ class API
                         }
 
                         // 
-                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) && 
-                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) && 
-                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) && 
-                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" || 
+                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) &&
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
+                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" ||
                                 $collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
 
                         $artworkId = $collection['relationships']['artwork']['data']['id'];
-                        $artworkAttributesMatches = array_filter($results['images'], function($relationship) use($artworkId) {
+                        $artworkAttributesMatches = array_filter($results['images'], function ($relationship) use ($artworkId) {
                             return $relationship['type'] === 'image' && $relationship['id'] === $artworkId;
                         });
                         $artworkAttributes = array_shift($artworkAttributesMatches);
@@ -287,22 +285,21 @@ class API
                         } /*else if (preg_match('/^\d{4}\-\d{2}\-\d{2}/', $collection["attributes"]["releaseDate"])) {
                             $releaseDate = $collection["attributes"]["releaseDate"];
                         }*/
-                        
+
                         $album = Album::withArray(
                             array(
-//                        "_id" => null,
+                                //                        "_id" => null,
                                 "id" => $collection["id"],
                                 "name" => $collection["attributes"]["name"],
                                 "artistName" => $collection["attributes"]["artistName"],
                                 "date" => $releaseDate,
                                 "artwork" => $artworkUrl100,
                                 "explicit" => $explicit,
-//                        "link" => $collection["collectionViewUrl"],
+                                //                        "link" => $collection["collectionViewUrl"],
                             )
                         );
                         $albums[] = $album;
                     }
-
                 }
                 return $albums;
             case "artistsSearch":
@@ -321,14 +318,14 @@ class API
                         $n = isset($ids[$id]) ? ($ids[$id]["n"] + 1) : 1;
                         if ($n === 1) {
                             $ids[$id]["id"] = $id;
-//                        $ids[$id]["text"] = $collection["artistName"];
+                            //                        $ids[$id]["text"] = $collection["artistName"];
                         }
                         $ids[$id]["primaryGenreName"] = !empty($collection["primaryGenreName"]) ? $collection["primaryGenreName"] : '';
                         $ids[$id]["n"] = $n;
                         $ids[$id]["names"][$collection["artistName"]] = isset($ids[$id]["names"][$collection["artistName"]]) ? $ids[$id]["names"][$collection["artistName"]] + 1 : 1;
                     }
                 }
-//                $ids[$id]["text"] = $collection["artistName"];
+                //                $ids[$id]["text"] = $collection["artistName"];
 
                 foreach ($ids as $idA => $a) {
                     $max = 0;
@@ -342,7 +339,7 @@ class API
 
                     $genre = $ids[$idA]["primaryGenreName"] ? "({$ids[$idA]["primaryGenreName"]})" : '';
 
-//                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
+                    //                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
                     $ids[$idA]["text"] = "$index";
                     //$ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> " . "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
                     $ids[$idA]["html"] = "<span class=\"artist-search-name\">{$index}</span> " . "<span class=\"artist-search-count\">{$genre}</span>";
@@ -360,7 +357,7 @@ class API
 
     private function setAlbumsUrl($scrapped = false, $artistName = '', $display = true)
     {
-//        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
+        //        return $this->sort ? "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&sort=$this->sort&country=$this->country" : "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit&country=$this->country";
         /*if ($this->id == "331066376") {
             file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
         }*/
@@ -397,17 +394,23 @@ class API
         // echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
-        $header = array("Cache-Control: no-cache");
+        // $header = array("Cache-Control: no-cache");
+        $header = [
+            "Cache-Control: no-cache, no-store, must-revalidate",
+            "Pragma: no-cache",
+            "Expires: 0",
+        ];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         return curl_exec($ch);
     }
 
-    private function curlScrappedRequest($artistName = '') {
+    private function curlScrappedRequest($artistName = '')
+    {
         $user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
 
         $options = array(
 
-           // CURLOPT_CUSTOMREQUEST => 'GET',        //set request type post or get
+            // CURLOPT_CUSTOMREQUEST => 'GET',        //set request type post or get
             CURLOPT_POST => false,        //set to GET
             CURLOPT_USERAGENT => $user_agent, //set user agent
             CURLOPT_COOKIEFILE => "cookie.txt", //set cookie file
@@ -484,7 +487,6 @@ class API
                     if ($day < 7) {
                         $albums[] = $include;
                     }
-
                 }
                 if ($include['type'] === 'lockup/song') {
 
@@ -497,7 +499,7 @@ class API
                     if (!isset($include['attributes']['releaseDate']) && !preg_match('/\- Single$/', $include['attributes']['collectionName'])) {
                         $collectionId = preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $include["attributes"]["url"]);
 
-                        $collections = array_filter($data['included'], static function($entity) use ($collectionId) {
+                        $collections = array_filter($data['included'], static function ($entity) use ($collectionId) {
                             return $entity['type'] === 'lockup/album' && $entity['id'] === $collectionId;
                         });
                         if (!$collections) {
@@ -531,9 +533,7 @@ class API
                     if ($day < 7) {
                         $songs[] = $include;
                     }
-
-                }
-                else if ($include['type'] === 'image') {
+                } else if ($include['type'] === 'image') {
                     $images[] = $include;
                 }
             }
@@ -625,7 +625,4 @@ class API
 
         array_multisort($sort_col, $dir, $arr);
     }
-
-
-
 }
