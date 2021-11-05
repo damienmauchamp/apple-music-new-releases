@@ -1,9 +1,8 @@
-<?
+<?php
 require __DIR__ . '/vendor/autoload.php';
 require_once("start.php");
 
-global $idUser;
-$idUser = -1;
+$_SESSION['id_user'] = 0;
 
 // On détruit les variables de notre session
 session_unset ();

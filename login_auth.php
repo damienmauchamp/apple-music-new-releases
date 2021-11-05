@@ -11,8 +11,10 @@ $current_date = date("Y-m-d H:i:s", $current_time);
 $cookie_days = 30;
 $cookie_expiration_time = $current_time + ($cookie_days * 24 * 60 * 60);
 
-if (!empty($_SESSION["id_user"])) {
+//
+if (id_user() > 0) {
     $isLoggedIn = true;
+    $_SESSION['id_user'] = id_user();
 }
 // Check if loggedin session exists
 else if (!empty($_COOKIE["user_login"]) && 
@@ -52,7 +54,8 @@ else if (!empty($_COOKIE["user_login"]) &&
             $userInfo = $db->getUserFromTokenId($userToken['id']);
             if ($userInfo) {
                 $isLoggedIn = true;
-                $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
+                $_SESSION["id_user"] = (int) $userInfo['id'];
+                // $_SESSION["id_user"] = $db->getUserFromTokenId($userToken['id']);
             }
         }
 

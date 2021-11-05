@@ -84,7 +84,7 @@ $root = './';
 <!DOCTYPE html>
 <html>
 <head>
-    <? include "inc/meta.php"; ?>
+    <?php include "inc/meta.php"; ?>
     <style>
     #login {
         width: 100%;

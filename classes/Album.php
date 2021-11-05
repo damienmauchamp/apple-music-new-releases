@@ -141,7 +141,7 @@ class Album
            ' . ($idArtist ? 'data-am-artist-id="' . $idArtist . '"' : '') . '
            data-added="'.$this->added.'"
            class="album ' . ($preorder ? "preorder" : null) . ' we-lockup ' . ($display == "row" ? null : "l-column--grid") . ' targeted-link l-column small-' . (in_array($display, ["row", "grid-2-row"]) ? "2" : "6") . ' medium-3 large-2 ember-view"
-           title="' . $this->name . ' by ' . $this->artistName . '">
+           title="' . str_replace('"', '&quot;', $this->name) . ' by ' . str_replace('"', '&quot;', $this->artistName) . '">
             <picture
                     class="artwork we-lockup__artwork we-artwork--lockup we-artwork--fullwidth we-artwork ember-view">
                 <img src="' . $this->getArtwork(500) . '" loading="lazy"
