@@ -12,5 +12,9 @@
     "phpmailer/phpmailer": "^6.5.0",
     "vlucas/phpdotenv": "^3.3",
     "sunra/php-simple-html-dom-parser": "^1.5"
+  },
+  "scripts": {
+    "fetch": "php global.php refresh= nodisplay=",
+    "scrap": "php global_scrapping.php refresh= nodisplay="
   }
 }
