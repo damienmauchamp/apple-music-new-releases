@@ -12,6 +12,11 @@ use AppleMusic\DB as db;
 
 $db = new db;
 
+$idArtist = $_GET['idArtist'] ?? $argv[3] ?? null;
+if (!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
+    $idArtist = null;
+}
+
 foreach ($db->getUsersIDs() as $user) {
     $idUser = $user["id"];
     logRefresh("scrapping --- $idUser");
@@ -22,7 +27,7 @@ foreach ($db->getUsersIDs() as $user) {
         $db->editLastUpdated($delay, $idUser);
     }
 
-    $res = getAllNewScrappedReleases();
+    $res = getAllNewScrappedReleases($idArtist);
     $albums = $res && isset($res["albums"]) ? $res['albums'] : null;
     $songs = $res && isset($res["songs"]) ? $res['songs'] : null;
     echo json_encode(true);

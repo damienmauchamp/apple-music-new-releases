@@ -391,7 +391,8 @@ class API
 
         $ch = curl_init();
         // curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
-        curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName) . '&timestamp=' + time());
+        $url = $this->setAlbumsUrl(false, $artistName) . '&timestamp=' . (string) time();
+        curl_setopt($ch, CURLOPT_URL, $url);
         // echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);

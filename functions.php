@@ -44,20 +44,20 @@ function displaySongsNew($collections, $upcoming = true)
 				if (!$unique && $song->first) {
 					echo "<div class=\"group--song\" data-id-collection=\"{$collectionId}\">";
 				}
-				
+
 				echo Song::withArray(Song::objectToArray($song))->toString(true);
 
 				// if (!$unique && $song->last || $unique) {
 				if (!$unique && $song->last) {
 					echo "</div>";
 				}
-
 			}
 		}
 	}
 }
 
-function getThisWeekReleases($type = null, $allow_duplicates = false) {
+function getThisWeekReleases($type = null, $allow_duplicates = false)
+{
 	$db = new db;
 	$releases = $db->getUserWeekReleases($type);
 
@@ -79,10 +79,10 @@ function getThisWeekReleases($type = null, $allow_duplicates = false) {
 	}
 
 	$html = '
-		<section class="main-header l-content-width section section--bordered '.($week_display === 'grid-2-row' ? 'l-multi-rows' : '').'"
+		<section class="main-header l-content-width section section--bordered ' . ($week_display === 'grid-2-row' ? 'l-multi-rows' : '') . '"
 				 id="weekly-releases">
 			<div class="section-header section__nav clearfix">
-				<h2 class="section-title section__headline">'.$title.'</h2>
+				<h2 class="section-title section__headline">' . $title . '</h2>
 			</div>
 
 			<div class="section-body l-row l-row--grid">';
@@ -127,21 +127,22 @@ function getThisWeekReleases($type = null, $allow_duplicates = false) {
 	if ($week_display === 'grid-2-row') {
 		$html_multi_row = '
 			<div class="section-body l-row l-row--peek l-row--flex">
-				<div class="l-sub-row l-sub-row--1">'.$html_row_1.'</div>
-				<div class="l-sub-row l-sub-row--2">'.$html_row_2.'</div>
+				<div class="l-sub-row l-sub-row--1">' . $html_row_1 . '</div>
+				<div class="l-sub-row l-sub-row--2">' . $html_row_2 . '</div>
 			</div>
 		';
 	}
 
 	$html .= '
 			</div>
-			'.$html_multi_row.'
+			' . $html_multi_row . '
 		</section>';
 
 	return $html;
 }
 
-function getUpcomingReleases() {
+function getUpcomingReleases()
+{
 	$db = new db;
 	$releases = $db->getUserUpcomingReleases();
 
@@ -186,7 +187,6 @@ function getUpcomingReleases() {
 		</section>';
 
 	return $html;
-
 }
 
 // Dernières sorties depuis actualisation, dans la BD
@@ -255,7 +255,7 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 
 	if ($filtrer_albums) {
 		$week_releases = $db->getUserWeekReleases();
-		$albums = $week_releases ? array_map(static function($album) {
+		$albums = $week_releases ? array_map(static function ($album) {
 			return $album['id'];
 		}, json_decode($db->getUserWeekReleases(), true)) : [];
 	}
@@ -269,7 +269,7 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 
 			$streamable = $song->isStreamable();
 			// $upcoming = (new DateTime()) < (new DateTime($song->getDate()));
-			$upcoming = (new DateTime()) < ((new DateTime($song->getDate()))->setTime(0,0));
+			$upcoming = (new DateTime()) < ((new DateTime($song->getDate()))->setTime(0, 0));
 
 			// type 1 : only streamable
 			if ($type === 1 && (!$streamable || $upcoming)) {
@@ -283,14 +283,14 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 			if ($type === 2 && (!$upcoming || ($available && !$streamable))) {
 				continue;
 			}
-			
+
 			if ($filtrer_albums && in_array($r->collectionId, $albums)) {
 				// unset($releases_array[$i]);
 				continue;
 			}
 
 			if ($only_explicit) {
-				$correspondances = array_keys(array_filter($releases_array, function($element) use($r) { 
+				$correspondances = array_keys(array_filter($releases_array, function ($element) use ($r) {
 					return $element->trackName === $r->trackName
 						&& $element->collectionName === $r->collectionName
 						&& $element->artistName === $r->artistName;
@@ -333,9 +333,9 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 			// $return[] = $res[$indexes];
 		}
 
-//		foreach ($artists as $artist) {
-//			Artist::withNewRelease($artist)->toString();
-//		}
+		//		foreach ($artists as $artist) {
+		//			Artist::withNewRelease($artist)->toString();
+		//		}
 		if ($type !== 1) {
 			$releases_array = array_reverse($releases_array);
 		}
@@ -353,60 +353,60 @@ function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = nul
 		if (!isset($final[$collectionId])) {
 			$release->first = true;
 		} else {
-			$final[$collectionId][count($final[$collectionId])-1]->last = false;
+			$final[$collectionId][count($final[$collectionId]) - 1]->last = false;
 		}
 		$final[$collectionId][] = $release;
 	}
 	return $final;
 
 	// print_r($final);
-    // [id] => 1587680893
-    // [collectionId] => 1587680887
-    // [collectionName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS] - Single
-    // [trackName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS]
-    // [artistName] => SK8
-    // [date] => 2021-09-27 00:00:00
-    // [artwork] => //is5-ssl.mzstatic.com/image/thumb/Music115/v4/5c/54/e2/5c54e293-4770-bf55-4749-b9289a7b2f47/source/100x100bb.jpg
-    // [idArtist] => 201714418
-    // [lastUpdate] => 2019-10-09 00:00:00
-    // [explicit] => 1
-    // [isStreamable] => 0
+	// [id] => 1587680893
+	// [collectionId] => 1587680887
+	// [collectionName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS] - Single
+	// [trackName] => Girl Next Door (Young Bombs Remix) [feat. Wiz Khalifa, DVBBS]
+	// [artistName] => SK8
+	// [date] => 2021-09-27 00:00:00
+	// [artwork] => //is5-ssl.mzstatic.com/image/thumb/Music115/v4/5c/54/e2/5c54e293-4770-bf55-4749-b9289a7b2f47/source/100x100bb.jpg
+	// [idArtist] => 201714418
+	// [lastUpdate] => 2019-10-09 00:00:00
+	// [explicit] => 1
+	// [isStreamable] => 0
 
 	return $releases_array;
 }
 
 
 // Récupère tous les artistes
-function getAllNewReleases()
+function getAllNewReleases(?int $idArtist = null)
 {
 	$db = new db;
 	$releases = array();
 	/*$removal =*/
-	$db->removeOldAlbums();
-	$db->removeOldSongs();
-	$artists = $db->getUsersArtists();
+	$db->removeOldAlbums(90, $idArtist);
+	$db->removeOldSongs(90, $idArtist);
+	$artists = $db->getUsersArtists(null, true, $idArtist);
 	if (!$artists) {
 		return $releases;
 	}
 	foreach (json_decode($artists) as $artist) {
 		$releases[] = getArtistRelease($artist);
-//		break;
+		//		break;
 	}
 	return $releases;
 }
 
-function getAllNewScrappedReleases()
+function getAllNewScrappedReleases(?int $idArtist = null)
 {
 	$db = new db;
 	$releases = array();
 	/*$removal =*/
-	$artists = $db->getUsersArtists();
+	$artists = $db->getUsersArtists(null, true, $idArtist);
 	if (!$artists) {
 		return $releases;
 	}
 	foreach (json_decode($artists) as $artist) {
 		$releases[] = getArtistScrappedRelease($artist);
-//		break;
+		//		break;
 	}
 	return $releases;
 }
@@ -424,7 +424,7 @@ function removeOldAlbums($days = 180)
  */
 function getArtistRelease($objArtist, $display = false)
 {
-//	$db = new db;
+	//	$db = new db;
 	global $nodisplay;
 	// Artiste
 	$artist = new Artist($objArtist->id);
@@ -456,7 +456,7 @@ function getArtistRelease($objArtist, $display = false)
 	foreach ($albums as $album) {
 		// Ajout de l'album à la BD
 		$album->addAlbum($artist->getId());
-//		$artist->update();
+		//		$artist->update();
 		echo $nodisplay ? null : $album->toString($display, $artist->getId());
 	}
 
@@ -465,15 +465,16 @@ function getArtistRelease($objArtist, $display = false)
 		foreach ($songs as $song) {
 			// Ajout de l'album à la BD
 			$song->addSong($artist->getId());
-//		$artist->update();
+			//		$artist->update();
 			//echo $nodisplay ? null : $song->toString($display);
 		}
 	}
 	return array("albums" => $albums, "songs" => $songs);
 }
 
-function getArtistScrappedRelease($objArtist, $display = false) {
-//	$db = new db;
+function getArtistScrappedRelease($objArtist, $display = false)
+{
+	//	$db = new db;
 	global $nodisplay;
 	// Artiste
 	$artist = new Artist($objArtist->id);
@@ -489,7 +490,8 @@ function getArtistScrappedRelease($objArtist, $display = false) {
 	return $newEntities;
 }
 
-function editLastUpdated($days = 7, $id_user = 0) {
+function editLastUpdated($days = 7, $id_user = 0)
+{
 	$db = new db;
 	return $db->editLastUpdated($days, $id_user);
 }
@@ -577,8 +579,7 @@ function getMonth($m, $short = false)
 
 	$m = intval($m);
 	return isset($monthNames[$m]) ?
-		$monthNames[$m] :
-		(1 <= $m && $m <= 12 ? strtolower(date("F", strtotime("01-$m-2000"))) : "error");
+		$monthNames[$m] : (1 <= $m && $m <= 12 ? strtolower(date("F", strtotime("01-$m-2000"))) : "error");
 }
 
 /**
@@ -599,22 +600,28 @@ function checkConnexion()
 	}
 }
 
-function int_greater_than_zero($var) {
+function int_greater_than_zero($var)
+{
 	return is_numeric($var) && intval($var) > 0;
 }
 
-function id_user() {
+function id_user()
+{
 	$idUser = $_SESSION["id_user"] ?? 0;
 	if (int_greater_than_zero($idUser)) {
 		return (int) $idUser;
 	}
-	if (is_array($idUser) && isset($idUser['id']) 
-		&& int_greater_than_zero($idUser['id'])) {
-	    return (int) $idUser['id'];
+	if (
+		is_array($idUser) && isset($idUser['id'])
+		&& int_greater_than_zero($idUser['id'])
+	) {
+		return (int) $idUser['id'];
 	}
-	if (is_array($idUser) && isset($idUser[0]) 
-		&& int_greater_than_zero($idUser[0])) {
-	    return (int) $idUser[0];
+	if (
+		is_array($idUser) && isset($idUser[0])
+		&& int_greater_than_zero($idUser[0])
+	) {
+		return (int) $idUser[0];
 	}
 	return 0;
 }
@@ -692,6 +699,7 @@ function writeJSON($name, $content)
  *
  * @return bool
  */
-function is_localhost() {
+function is_localhost()
+{
 	return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
 }

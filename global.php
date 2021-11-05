@@ -12,17 +12,29 @@ use AppleMusic\DB as db;
 
 $db = new db;
 
+$idArtist = $_GET['idArtist'] ?? $argv[3] ?? null;
+if (!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
+    $idArtist = null;
+}
+
+// print_r([
+//     '_GET' => $_GET,
+//     '$argv' => $argv ?? null,
+//     'idArtist' => $idArtist,
+// ]);
+// exit();
+
 foreach ($db->getUsersIDs() as $user) {
     $idUser = $user["id"];
     logRefresh("no display --- $idUser");
     $_SESSION["id_user"] = $idUser;
 
-	// reduce lastUpdated by a week
-	if ($delay) {
-	    $db->editLastUpdated($delay, $idUser);
-	}
+    // reduce lastUpdated by a week
+    if ($delay) {
+        $db->editLastUpdated($delay, $idUser);
+    }
 
-    $res = getAllNewReleases();
+    $res = getAllNewReleases($idArtist);
     $albums = $res && isset($res["albums"]) ? $res['albums'] : null;
     $songs = $res && isset($res["songs"]) ? $res['songs'] : null;
     echo json_encode(true);
