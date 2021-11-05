@@ -39,7 +39,7 @@ class API
     public function fetchAlbums($scrapped = false, $artistName = '')
     {
         $json = $this->curlRequest($scrapped, $artistName);
-        
+
         $db = new db;
         $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false), $json, $scrapped ? '1' : '0');
 
@@ -119,7 +119,7 @@ class API
                                         "trackName" => $collection["trackName"],
                                         "name" => $collection["collectionName"],
                                         "artistName" => $collection["artistName"],
-                                        "date" => $collection["releaseDate"],
+                                        "date" => $collection["releaseDate"] ?? null,
                                         "artwork" => $collection["artworkUrl100"],
                                         "explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
                                         "isStreamable" => $collection["isStreamable"]
@@ -136,8 +136,7 @@ class API
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     // print_r($results);
                     if (!$results['songs']) {
                         return $songs;
@@ -157,23 +156,23 @@ class API
 
 
                         // 
-                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) && 
-                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) && 
-                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) && 
-                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" || 
+                        $explicit = isset($collection['attributes']['contentRatingsBySystem']) &&
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
+                            isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
+                            ($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" ||
                                 $collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
 
                         $artworkId = $collection['relationships']['artwork']['data']['id'];
-                        $artworkAttributesMatches = array_filter($results['images'], function($relationship) use($artworkId) {
+                        $artworkAttributesMatches = array_filter($results['images'], function ($relationship) use ($artworkId) {
                             return $relationship['type'] === 'image' && $relationship['id'] === $artworkId;
                         });
                         $artworkAttributes = array_shift($artworkAttributesMatches);
                         $artworkUrl100 = str_replace('{w}x{h}bb.{f}', '100x100bb.jpg', $artworkAttributes['attributes']['url']);
 
 
-                    // if (empty($collection['attributes']['releaseDate'])) {
-                    //     print_r($collection);
-                    // }
+                        // if (empty($collection['attributes']['releaseDate'])) {
+                        //     print_r($collection);
+                        // }
                         $releaseDate = $collection["attributes"]["releaseDate"];
                         if (preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
                             $releaseDate = "{$collection["attributes"]["releaseDate"]}-01-01";
