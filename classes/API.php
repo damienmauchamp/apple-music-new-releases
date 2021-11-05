@@ -41,7 +41,7 @@ class API
         $json = $this->curlRequest($scrapped, $artistName);
 
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false) . $this->getUrlTimestamp(), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
 
@@ -62,7 +62,7 @@ class API
         $json = $this->curlRequest($scrapped, $artistName);
 
         $db = new db;
-        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false), $json, $scrapped ? '1' : '0');
+        $db->logCurlRequest($this->id, $this->entity, $this->setAlbumsUrl($scrapped, $artistName, false) . $this->getUrlTimestamp(), $json, $scrapped ? '1' : '0');
 
         $results = json_decode($json, true);
 
@@ -383,6 +383,11 @@ class API
         return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
     }
 
+    private function getUrlTimestamp()
+    {
+        return  '&timestamp=' . (string) time();
+    }
+
     private function curlRequest($scrapped = false, $artistName = '')
     {
         if ($scrapped) {
@@ -391,7 +396,7 @@ class API
 
         $ch = curl_init();
         // curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
-        $url = $this->setAlbumsUrl(false, $artistName) . '&timestamp=' . (string) time();
+        $url = $this->setAlbumsUrl(false, $artistName) . $this->getUrlTimestamp();
         curl_setopt($ch, CURLOPT_URL, $url);
         // echo $this->setAlbumsUrl($scrapped);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -436,9 +441,9 @@ class API
             CURLOPT_HTTPHEADER => $header,
         );
 
-        $url = $this->setAlbumsUrl(true, $artistName);
+        $url = $this->setAlbumsUrl(true, $artistName) . $this->getUrlTimestamp();
 
-        $ch = curl_init($url . '&timestamp=' + time());
+        $ch = curl_init($url);
         curl_setopt_array($ch, $options);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $content = curl_exec($ch);
