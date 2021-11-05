@@ -390,9 +390,10 @@ class API
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
+        // curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
+        curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName) . '&timestamp=' + time());
         // echo $this->setAlbumsUrl($scrapped);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
         // $header = array("Cache-Control: no-cache");
         $header = [
@@ -407,6 +408,12 @@ class API
     private function curlScrappedRequest($artistName = '')
     {
         $user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
+
+        $header = [
+            "Cache-Control: no-cache, no-store, must-revalidate",
+            "Pragma: no-cache",
+            "Expires: 0",
+        ];
 
         $options = array(
 
@@ -424,13 +431,15 @@ class API
             CURLOPT_TIMEOUT => 120,      // timeout on response
             CURLOPT_MAXREDIRS => 10,       // stop after 10 redirects
             CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => 0
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_HTTPHEADER => $header,
         );
 
         $url = $this->setAlbumsUrl(true, $artistName);
 
-        $ch = curl_init($url);
+        $ch = curl_init($url . '&timestamp=' + time());
         curl_setopt_array($ch, $options);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $content = curl_exec($ch);
         $err = curl_errno($ch);
         $errmsg = curl_error($ch);
