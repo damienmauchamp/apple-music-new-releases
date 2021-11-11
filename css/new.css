@@ -22,7 +22,7 @@ section.section--bordered,
 }
 
 .table__row, .table--artwork .table__row:first-child:last-child,
-.table--see-all .table__row:first-child:last-child, {
+.table--see-all .table__row:first-child:last-child {
     border-width: 1px;
     border-color: var(--main-border-color) !important;
     border-bottom: 1px solid var(--main-border-color);
@@ -57,10 +57,10 @@ h2.section__headline {
     margin-bottom: 11px;
 }
 
-div.section-body:not(.l-row--grid) a.album {
+/* div.section-body:not(.l-row--grid) a.album { */
     /* padding-bottom: 0 !important; */
 /*    margin-bottom: 0 !important;
-*/}
+/* } */
 
 @media only screen and (max-width: 735px) {
     /*div.section-body.l-row--peek a.album {*/
@@ -122,10 +122,10 @@ tr.song {
     border: none !important;
 }
 
-div.song:hover div.table__row__artwork,
+/* div.song:hover div.table__row__artwork,
 tr.song:hover td.table__row__artwork {
     /*border: none !important;*/
-}
+/* }  */
 .song.table__row div[class^="table__"],
 .song.table__row td {
     height: unset;
@@ -151,10 +151,10 @@ tr.song:hover td.table__row__artwork {
     border-radius: 6px;
 }
 
-div.table__row__name,
-td.table__row__name {
+/* div.table__row__name,
+td.table__row__name { */
     /*max-width: 50%;*/
-}
+/* } */
 div.table__row__name .table__row__link, .tracklist-item__text__link,
 td.table__row__name .table__row__link, .tracklist-item__text__link {
     width: 100%;
@@ -174,14 +174,14 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
 .song.table__row td.table__row__artwork {
     padding-right: 15px;
 }
-.song.table__row div:not(.table__row__artwork),
+/* .song.table__row div:not(.table__row__artwork),
 .song.table__row td:not(.table__row__artwork) {
     /*background: #0000ff2b;*/
-}
-.song.table__row div.table__row__artwork,
-.song.table__row td.table__row__artwork {
+/* } */
+/* .song.table__row div.table__row__artwork,
+.song.table__row td.table__row__artwork { */
     /*background: #ff00002b;*/
-}
+/* } */
 
 .song.table__row div.table__row__name,
 .song.table__row td.table__row__name {
