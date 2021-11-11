@@ -230,16 +230,21 @@ $(function () {
 
 		$(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
 		$(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
-
-		// Show contextmenu
-		$(".custom-menu").finish().toggle(100).
 		
 		// In the right position (the mouse)
-		css({
-			top: e.pageY + "px",
-			left: e.pageX + "px"
-		});
+		let screenHeight = $(document).height(),
+			screenWidth = $(document).width(),
+			menuWidth = $(".custom-menu").outerWidth(),
+			menuHeight = $(".custom-menu").outerHeight();
 
+		let menuTop = e.pageY + menuHeight > screenHeight ? e.pageY - menuHeight : e.pageY,
+			menuLeft = e.pageX + menuWidth > screenWidth ? e.pageX - menuWidth : e.pageX;
+
+		// Show contextmenu
+		$(".custom-menu").finish().toggle(100).css({
+			top: menuTop + "px",
+			left: menuLeft + "px"
+		});
 
 		// prevent longpress & contextmenu
 		$(document).longclick(250, e => {
