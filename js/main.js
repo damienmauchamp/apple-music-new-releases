@@ -260,7 +260,7 @@ $(function () {
 			// Avoid the real one
 			e.preventDefault();
 
-			$album.trigger('contextmenu');
+			$album.trigger({ type: 'mousedown', which: 3 });
 		});
 	});
 
