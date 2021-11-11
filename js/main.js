@@ -231,16 +231,44 @@ $(function () {
 		$(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
 		$(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
 
-		$(".custom-menu li[data-action='remove-item'] a").attr('data-id', $album.data('link').replace(/^.+(?:=|\/)([\d]+)$/, '$1'));
-		$(".custom-menu li[data-action='remove-item'] a").attr('data-type', $album.data('am-kind') ||'song');
+		$(".custom-menu li[data-action='remove-item'] a")
+			.attr('data-id', $album.data('link').replace(/^.+(?:=|\/)([\d]+)$/, '$1'))
+			.attr('data-type', $album.data('am-kind') ||'song');
+		
+		// Determines the position of the menu
+		let screenHeight = $(document).height(),
+			screenWidth = $(document).width(),
+			menuWidth = $(".custom-menu").outerWidth(),
+			menuHeight = $(".custom-menu").outerHeight();
+		let menuTop = e.pageY + menuHeight > screenHeight ? e.pageY - menuHeight : e.pageY,
+			menuLeft = e.pageX + menuWidth > screenWidth ? e.pageX - menuWidth : e.pageX;
 
 		// Show contextmenu
-		$(".custom-menu").finish().toggle(100).
-		
-		// In the right position (the mouse)
-		css({
-			top: e.pageY + "px",
-			left: e.pageX + "px"
+		$(".custom-menu").finish().toggle(100).css({
+			top: menuTop + "px",
+			left: menuLeft + "px"
+		});
+
+		// prevent longpress & contextmenu
+		$(document).longclick(250, e => {
+
+			var $album;
+			if ($(e.target).hasClass('album')) {
+				$album = $(e.target);
+			} else if (e.target.closest('.album')) {
+				$album = $(e.target.closest('.album'));
+			} else if ($(e.target).hasClass('song')) {
+				$album = $(e.target);
+			} else if (e.target.closest('.song')) {
+				$album = $(e.target.closest('.song'));
+			} else {
+				return true;
+			}
+
+			// Avoid the real one
+			e.preventDefault();
+
+			$album.trigger({ type: 'mousedown', which: 3 });
 		});
 	});
 	$(document).on('click', '.custom-menu a', e => {
