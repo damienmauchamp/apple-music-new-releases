@@ -276,7 +276,13 @@ td.table__row__name .table__row__link, .tracklist-item__text__link {
 
 
 
-
+/* longpress */
+body {
+     -webkit-touch-callout: none !important; 
+}
+a {
+     -webkit-user-select: none !important; 
+}
 
 
 

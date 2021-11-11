@@ -239,6 +239,29 @@ $(function () {
 			top: e.pageY + "px",
 			left: e.pageX + "px"
 		});
+
+
+		// prevent longpress & contextmenu
+		$(document).longclick(250, e => {
+
+			var $album;
+			if ($(e.target).hasClass('album')) {
+				$album = $(e.target);
+			} else if (e.target.closest('.album')) {
+				$album = $(e.target.closest('.album'));
+			} else if ($(e.target).hasClass('song')) {
+				$album = $(e.target);
+			} else if (e.target.closest('.song')) {
+				$album = $(e.target.closest('.song'));
+			} else {
+				return true;
+			}
+
+			// Avoid the real one
+			e.preventDefault();
+
+			$album.trigger('contextmenu');
+		});
 	});
 
 	// If the document is clicked somewhere
