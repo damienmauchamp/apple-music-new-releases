@@ -322,10 +322,10 @@ h3, .table__row__headline, .tracklist-item__text__headline {
 	color: var(--main-color);
 }
 
-.select2-dropdown {
+/* .select2-dropdown { */
 	/* background: #1C1C1E; TODO !*/
 	/* + 'Ajouter' + gestion .light*/
-}
+/* } */
 
 .select2-container--default .select2-selection--multiple {
     background-color: var(--main-input-background);
@@ -344,6 +344,9 @@ h3, .table__row__headline, .tracklist-item__text__headline {
 }
 .custom-menu li a {
     color: var(--main-color);
+}
+.custom-menu li.remove a {
+	color: var(--main-red);
 }
 
 @media (prefers-color-scheme: dark) {
