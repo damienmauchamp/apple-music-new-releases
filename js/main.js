@@ -252,8 +252,6 @@ $(function () {
 		// prevent longpress & contextmenu
 		$(document).longclick(250, e => {
 
-			alert('longclick');
-
 			var $album;
 			if ($(e.target).hasClass('album')) {
 				$album = $(e.target);
