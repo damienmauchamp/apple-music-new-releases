@@ -231,6 +231,9 @@ $(function () {
 		$(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
 		$(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
 
+		$(".custom-menu li[data-action='remove-item'] a").attr('data-id', $album.data('link').replace(/^.+(?:=|\/)([\d]+)$/, '$1'));
+		$(".custom-menu li[data-action='remove-item'] a").attr('data-type', $album.data('am-kind') ||'song');
+
 		// Show contextmenu
 		$(".custom-menu").finish().toggle(100).
 		
@@ -238,6 +241,34 @@ $(function () {
 		css({
 			top: e.pageY + "px",
 			left: e.pageX + "px"
+		});
+	});
+	$(document).on('click', '.custom-menu a', e => {
+		var $target = $(e.target),
+			id = $target.data('id') || null,
+			type = $target.data('type') || null;
+		
+		e.preventDefault();
+		if (!id ||!type) {
+			alert('Erreur');
+		}
+
+		if (!confirm('Êtes-vous sûr de vouloir cacher définitivement cet élément ?')) {
+			return false;
+		}
+		
+		$.ajax({
+			url: "./ajax/disable.php",
+			method: "POST",
+			data: {
+				id: id,
+				type: type
+			}, success: function (data) {
+				alert('L\'item n\'apparaitra plus au prochain chargement.');
+			}, complete: function () {
+			}, error: function () {
+				alert('Erreur.');
+			}
 		});
 	});
 

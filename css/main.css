@@ -1,6 +1,8 @@
 :root {
 	--main-color: #333;
 	--main-bg-color: #FFF;
+
+	--main-red: #da0f47;
 }
 
 .--invisible {
@@ -431,6 +433,10 @@ span.artist-search-count {
 	color: var(--main-color);
 	text-decoration: none;
 	display: block;
+}
+
+.custom-menu li.remove a {
+	color: var(--main-red);
 }
 
 .custom-menu li:hover {

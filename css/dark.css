@@ -345,6 +345,9 @@ h3, .table__row__headline, .tracklist-item__text__headline {
 .custom-menu li a {
     color: var(--main-color);
 }
+.custom-menu li.remove a {
+	color: var(--main-red);
+}
 
 @media (prefers-color-scheme: dark) {
     :root:not(.light):not(.night) {

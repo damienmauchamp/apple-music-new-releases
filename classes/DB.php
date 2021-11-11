@@ -2,12 +2,11 @@
 
 namespace AppleMusic;
 
+use Dotenv;
 use PDO;
 use PDOException;
-use Dotenv;
 
-class DB
-{
+class DB {
 	/**
 	 * @var PDO null
 	 */
@@ -16,16 +15,14 @@ class DB
 	/**
 	 * DB constructor.
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->dbh = null;
 	}
 
 	/**
 	 * Connexion à la base de données
 	 */
-	private function connect()
-	{
+	private function connect() {
 
 		// loading .env data
 		if (is_file(dirname(__DIR__) . '/.env')) {
@@ -46,27 +43,24 @@ class DB
 			$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			echo "Erreur ! : " . $e->getMessage() . "<br/>";
-			die("Connexion impossible à la base de données." .  $e->getMessage());
+			die("Connexion impossible à la base de données." . $e->getMessage());
 		}
 	}
 
 	/**
 	 * Déconnexion de la base de données
 	 */
-	private function disconnect()
-	{
+	private function disconnect() {
 		$this->dbh = null;
 	}
 
-	private function getEnv()
-	{
+	private function getEnv() {
 		return file_get_contents(dirname(__DIR__) . '/.env');
 	}
 
 	// GET
 
-	public function getUserAlbums($userId = false)
-	{
+	public function getUserAlbums($userId = false) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$sql = "
@@ -89,11 +83,11 @@ class DB
 		$this->disconnect();
 
 		$res = $stmt->fetchAll();
+
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserWeekReleases($type = null, $userId = false)
-	{
+	public function getUserWeekReleases($type = null, $userId = false) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$complement_sql = '';
@@ -128,11 +122,11 @@ class DB
 		$this->disconnect();
 
 		$res = $stmt->fetchAll();
+
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserUpcomingReleases($userId = false)
-	{
+	public function getUserUpcomingReleases($userId = false) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$sql = "
@@ -160,11 +154,11 @@ class DB
 		$this->disconnect();
 
 		$res = $stmt->fetchAll();
+
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserSongs($days = 7, $userId = false)
-	{
+	public function getUserSongs($days = 7, $userId = false) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$sql = "
@@ -175,7 +169,7 @@ class DB
 			  INNER JOIN artists_songs aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user AND ua.active = 1
-			WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY) 
+			WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY)
 				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			GROUP BY id
 			ORDER BY al.isStreamable ASC, al.date DESC, al.date DESC, al.collectionName, al.collectionId, ar.name ASC";
@@ -190,11 +184,11 @@ class DB
 
 		//		$res = $stmt->rowCount() > 0 ? $stmt->fetchAll() : null;
 		$res = $stmt->fetchAll();
+
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUsersArtists($userId = false, $lastUpdate = true, ?int $idArtist = null)
-	{
+	public function getUsersArtists($userId = false, $lastUpdate = true, ?int $idArtist = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$lastUpdateStr = $lastUpdate ? ", ua.lastUpdate" : "";
@@ -219,11 +213,11 @@ class DB
 		$this->disconnect();
 
 		$res = $stmt->fetchAll();
+
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserArtist($idArtist, $userId = 0)
-	{
+	public function getUserArtist($idArtist, $userId = 0) {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$sql = "
@@ -237,14 +231,15 @@ class DB
 		$this->connect();
 		$stmt = $this->dbh->prepare($sql);
 		// $stmt->bindValue("id_artist", $idArtist);
-		$stmt->execute(array(
+		$stmt->execute([
 			'id_artist' => $idArtist,
-			'id_user' => $userId
-		));
+			'id_user' => $userId,
+		]);
 		// echo print_r($this->dbh->errorInfo(), true);
 		$this->disconnect();
 
 		$res = $stmt->fetch();
+
 		return $res ? json_encode($res) : null;
 	}
 
@@ -254,8 +249,7 @@ class DB
 	 * @param Artist $artist
 	 * @return bool
 	 */
-	public function addArtist($artist, $userId = null)
-	{
+	public function addArtist($artist, $userId = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
 		if ($userId < 0) {
 			return false;
@@ -266,32 +260,32 @@ class DB
 		$sqlArtist = "
 			INSERT INTO artists (id, name)
 			VALUES (:id, :name)
-			ON DUPLICATE KEY UPDATE 
-				id = :id, 
+			ON DUPLICATE KEY UPDATE
+				id = :id,
 				name = :name";
 
 		$sqlUserArtist = "
 			INSERT INTO users_artists (idUser, idArtist, lastUpdate, active)
 			VALUES (:id_user, :id, CONCAT(DATE(NOW()),' 00:00:00'), 1)
-			ON DUPLICATE KEY UPDATE 
-				idUser = :id_user, 
+			ON DUPLICATE KEY UPDATE
+				idUser = :id_user,
 				idArtist = :id";
-
 
 		$this->connect();
 		$stmt = $this->dbh->prepare($sqlArtist);
-		$resArtist = $stmt->execute(array(
+		$resArtist = $stmt->execute([
 			'id' => $id,
-			'name' => $name
-		));
+			'name' => $name,
+		]);
 		$stmt = $this->dbh->prepare($sqlUserArtist);
-		$resUserArtist = $stmt->execute(array(
+		$resUserArtist = $stmt->execute([
 			'id_user' => (int) $userId,
-			'id' => $id
-		));
+			'id' => $id,
+		]);
 		$this->disconnect();
 		//		var_dump($sqlArtist, $sqlUserArtist);exit;
 		//		echo json_encode($sqlUserArtist);
+
 		return $resArtist && $resUserArtist;
 	}
 
@@ -300,8 +294,7 @@ class DB
 	 * @param $idArtist
 	 * @return bool
 	 */
-	public function addAlbum($album, $idArtist)
-	{
+	public function addAlbum($album, $idArtist) {
 		$id = $album->getId();
 		$name = $album->getName();
 		$artistName = $album->getArtistName();
@@ -328,7 +321,7 @@ class DB
 		$this->connect();
 		try {
 			$stmt = $this->dbh->prepare($sqlAlbum);
-			$resAlbum = $stmt->execute(array(
+			$resAlbum = $stmt->execute([
 				'id' => $id,
 				'name' => $name,
 				'artist_name' => $artistName,
@@ -336,15 +329,15 @@ class DB
 				'artwork' => $artwork,
 				'explicit' => $explicit,
 				// 'added' => $added->format('Y-m-d H:i:s')
-			));
+			]);
 
 			$stmt = $this->dbh->prepare($sqlArtistAlbum);
-			$resArtistAlbum = $stmt->execute(array(
+			$resArtistAlbum = $stmt->execute([
 				'id_artist' => $idArtist,
-				'id_album' => $id
-			));
+				'id_album' => $id,
+			]);
 		} catch (PDOException $e) {
-			echo "\nALBUM ERROR: " . json_encode(array(
+			echo "\nALBUM ERROR: " . json_encode([
 				'erreur' => $e->getMessage(),
 				'id' => $id,
 				'name' => $name,
@@ -353,11 +346,12 @@ class DB
 				'artwork' => $artwork,
 				'explicit' => $explicit,
 				// 'added' => $added->format('Y-m-d H:i:s')
-			)) . "\n";
+			]) . "\n";
 
 			$resAlbum = $resArtistAlbum = false;
 		}
 		$this->disconnect();
+
 		return $resAlbum && $resArtistAlbum;
 	}
 
@@ -366,8 +360,7 @@ class DB
 	 * @param $idArtist
 	 * @return bool
 	 */
-	public function addSong($song, $idArtist)
-	{
+	public function addSong($song, $idArtist) {
 		$id = $song->getId();
 		$collectionId = $song->getCollectionId();
 		$collectionName = $song->getCollectionName();
@@ -398,28 +391,28 @@ class DB
 			ON DUPLICATE KEY UPDATE idArtist = :id_artist, idAlbum = :id";
 
 		/*if (strstr($artistName, 'Denzel')) {
-			// file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
-			echo "\nSONG ADDED: " . json_encode(array(
-				'id' => $id,
-				'collection_id' => $collectionId,
-				'collection_name' => $collectionName,
-				'track_name' => utf8_encode($trackName),
-				'artist_name' => $artistName,
-				'$song->getDate()' => $song->getDate(),
-				'date' => $date,
-				'datetime' => new \DateTime($song->getDate()),
-				'datetime2' => new \DateTime($date),
-				'artwork' => $artwork,
-				'explicit' => $explicit,
-				'isStreamable' => $isStreamable,
-				// 'added' => $added->format('Y-m-d H:i:s')
-			)) . "\n";
+		// file_put_contents(LOG_FILE, "\nSONG ADDED: " . json_encode(array(
+		echo "\nSONG ADDED: " . json_encode(array(
+		'id' => $id,
+		'collection_id' => $collectionId,
+		'collection_name' => $collectionName,
+		'track_name' => utf8_encode($trackName),
+		'artist_name' => $artistName,
+		'$song->getDate()' => $song->getDate(),
+		'date' => $date,
+		'datetime' => new \DateTime($song->getDate()),
+		'datetime2' => new \DateTime($date),
+		'artwork' => $artwork,
+		'explicit' => $explicit,
+		'isStreamable' => $isStreamable,
+		// 'added' => $added->format('Y-m-d H:i:s')
+		)) . "\n";
 		}*/
 
 		$this->connect();
 		try {
 			$stmt = $this->dbh->prepare($sqlAlbum);
-			$resAlbum = $stmt->execute(array(
+			$resAlbum = $stmt->execute([
 				'id' => $id,
 				'collection_id' => $collectionId,
 				'collection_name' => $collectionName,
@@ -430,14 +423,14 @@ class DB
 				'explicit' => $explicit,
 				'isStreamable' => $isStreamable,
 				// 'added' => $added->format('Y-m-d H:i:s')
-			));
+			]);
 			$stmt = $this->dbh->prepare($sqlArtistAlbum);
-			$resArtistAlbum = $stmt->execute(array(
+			$resArtistAlbum = $stmt->execute([
 				'id' => $id,
-				'id_artist' => $idArtist
-			));
+				'id_artist' => $idArtist,
+			]);
 		} catch (PDOException $e) {
-			echo "\nSONG ERROR: " . json_encode(array(
+			echo "\nSONG ERROR: " . json_encode([
 				'erreur' => $e->getMessage(),
 				'id' => $id,
 				'collection_id' => $collectionId,
@@ -452,7 +445,7 @@ class DB
 				'explicit' => $explicit,
 				'isStreamable' => $isStreamable,
 				// 'added' => $added->format('Y-m-d H:i:s')
-			)) . "\n";
+			]) . "\n";
 
 			$resAlbum = $resArtistAlbum = false;
 		}
@@ -461,8 +454,7 @@ class DB
 		return $resAlbum && $resArtistAlbum;
 	}
 
-	public function artistUpdated($idArtist, $minDate)
-	{
+	public function artistUpdated($idArtist, $minDate) {
 
 		$userId = $_SESSION['id_user'] ?? 0;
 
@@ -474,17 +466,17 @@ class DB
 			WHERE idArtist = :id_artist AND idUser = :id_user";
 		$this->connect();
 		$stmt = $this->dbh->prepare($sql);
-		$res = $stmt->execute(array(
+		$res = $stmt->execute([
 			'date' => $date,
 			'id_artist' => $idArtist,
-			'id_user' => $userId
-		));
+			'id_user' => $userId,
+		]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getArtist($idArtist)
-	{
+	public function getArtist($idArtist) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -493,25 +485,25 @@ class DB
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ar.id = :id_artist"
 		);
-		$stmt->execute(array("id_artist" => $idArtist));
+		$stmt->execute(["id_artist" => $idArtist]);
 		$this->disconnect();
 
 		$res = $stmt->fetch();
+
 		return $res;
 	}
 
-	public function removeOldAlbums($days = 180, ?int $idArtist = null)
-	{
+	public function removeOldAlbums($days = 180, ?int $idArtist = null) {
 		$userId = $_SESSION['id_user'] ?? 0;
 		$this->disableForeignKeysCheck();
 		$this->connect();
 		/*$stmt = $this->dbh->prepare("
-			DELETE aa, al
-			FROM albums al
-			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
-			  INNER JOIN artists ar ON ar.id = aa.idArtist
-			  INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
-			WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+		DELETE aa, al
+		FROM albums al
+		INNER JOIN artists_albums aa ON al.id = aa.idAlbum
+		INNER JOIN artists ar ON ar.id = aa.idArtist
+		INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
+		WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
 		);
 		$res = $stmt->execute(array("id_user" => $userId, "days" => $days));*/
 		$stmt = $this->dbh->prepare(
@@ -522,24 +514,24 @@ class DB
 			  JOIN artists ar ON ar.id = aa.idArtist
 			WHERE al.date < DATE_SUB(NOW(), INTERVAL :days DAY);"
 		);
-		$res = $stmt->execute(array("days" => $days));
+		$res = $stmt->execute(["days" => $days]);
 		$this->disconnect();
 		$this->enableForeignKeysCheck();
+
 		return $res;
 	}
 
-	public function removeOldSongs($days = 90, ?int $idArtist = null)
-	{
+	public function removeOldSongs($days = 90, ?int $idArtist = null) {
 		$userId = $_SESSION['id_user'] ?? 0;
 		$this->disableForeignKeysCheck();
 		$this->connect();
 		/*$stmt = $this->dbh->prepare("
-			DELETE aa, al
-			FROM songs al
-			  INNER JOIN artists_songs aa ON al.id = aa.idAlbum
-			  INNER JOIN artists ar ON ar.id = aa.idArtist
-			  INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
-			WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
+		DELETE aa, al
+		FROM songs al
+		INNER JOIN artists_songs aa ON al.id = aa.idAlbum
+		INNER JOIN artists ar ON ar.id = aa.idArtist
+		INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user
+		WHERE DATE_SUB(ua.lastUpdate, INTERVAL :days DAY) > al.date;"
 		);
 		$res = $stmt->execute(array("id_user" => $user_id, "days" => $days));*/
 		$stmt = $this->dbh->prepare(
@@ -550,14 +542,14 @@ class DB
 			  JOIN artists ar ON ar.id = aa.idArtist
 			WHERE al.date < DATE_SUB(NOW(), INTERVAL :days DAY);"
 		);
-		$res = $stmt->execute(array("days" => $days));
+		$res = $stmt->execute(["days" => $days]);
 		$this->disconnect();
 		$this->enableForeignKeysCheck();
+
 		return $res;
 	}
 
-	public function artistIsAdded($id)
-	{
+	public function artistIsAdded($id) {
 		$userId = $_SESSION['id_user'] ?? 0;
 		$this->connect();
 		$stmt = $this->dbh->prepare(
@@ -566,36 +558,37 @@ class DB
 			FROM users_artists ua
 			WHERE ua.idUser = :id_user AND ua.idArtist = :id_artist;"
 		);
-		$stmt->execute(array("id_user" => $userId, "id_artist" => $id));
+		$stmt->execute(["id_user" => $userId, "id_artist" => $id]);
 		$res = $stmt->fetch();
 		$this->disconnect();
 
 		return $res ? false : true;
 	}
 
-	public function selectPerso($sql)
-	{
+	public function selectPerso($sql) {
 		$this->connect();
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute() or die("Erreur dans la requête.");
 		$this->disconnect();
+
 		return $stmt->fetchAll();
 	}
 
 	// Functions
 
-	protected function setResults($array)
-	{
-		$res = array();
+	protected function setResults($array) {
+		$res = [];
 		foreach ($array as $key => $value) {
-			if (!is_numeric($key))
+			if (!is_numeric($key)) {
 				$res[$key] = $value;
+			}
+
 		}
+
 		return json_encode($res);
 	}
 
-	public function editLastUpdated($days = 7, $id_user = 0)
-	{
+	public function editLastUpdated($days = 7, $id_user = 0) {
 		$this->connect();
 		$user_condition = "";
 		$params = ["days" => $days];
@@ -611,24 +604,24 @@ class DB
 		);
 		$res = $stmt->execute($params);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function logMail($description, $id_user)
-	{
+	public function logMail($description, $id_user) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
 			INSERT INTO logs (type, date, id_user)
 			VALUES (:description, :date, :user);"
 		);
-		$res = $stmt->execute(array("description" => $description, "date" => date("Y-m-d H:i:s"), "user" => $id_user));
+		$res = $stmt->execute(["description" => $description, "date" => date("Y-m-d H:i:s"), "user" => $id_user]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function logRefresh($type = "")
-	{
+	public function logRefresh($type = "") {
 		$userId = $_SESSION['id_user'] ?? 0;
 		$refresh = $type ? "refresh $type" : "refresh";
 		$this->connect();
@@ -637,13 +630,13 @@ class DB
 			INSERT INTO logs (type, date, id_user)
 			VALUES (:type, :date, :user);"
 		);
-		$res = $stmt->execute(array("type" => $refresh, "date" => date("Y-m-d H:i:s"), "user" => $userId));
+		$res = $stmt->execute(["type" => $refresh, "date" => date("Y-m-d H:i:s"), "user" => $userId]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getLastRefresh($userId = null)
-	{
+	public function getLastRefresh($userId = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
 		$this->connect();
 		$stmt = $this->dbh->prepare(
@@ -652,14 +645,14 @@ class DB
 			FROM logs
 			WHERE id_user= :user;"
 		);
-		$stmt->execute(array("user" => $userId));
+		$stmt->execute(["user" => $userId]);
 		$res = $stmt->fetch();
 		$this->disconnect();
+
 		return $res[0];
 	}
 
-	public function getNotificationsStatus($userId = null)
-	{
+	public function getNotificationsStatus($userId = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
 		$this->connect();
 		$stmt = $this->dbh->prepare(
@@ -668,9 +661,10 @@ class DB
 			FROM users
 			WHERE id= :user;"
 		);
-		$stmt->execute(array("user" => $userId));
+		$stmt->execute(["user" => $userId]);
 		$res = $stmt->fetch();
 		$this->disconnect();
+
 		return $res[0];
 	}
 
@@ -679,8 +673,7 @@ class DB
 	 * @param null $userId
 	 * @return mixed
 	 */
-	public function setNotificationsStatus($status, $userId = null)
-	{
+	public function setNotificationsStatus($status, $userId = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
 		$this->connect();
 		$stmt = $this->dbh->prepare(
@@ -689,13 +682,13 @@ class DB
 			SET notifications= :status
 			WHERE id= :user;"
 		);
-		$res = $stmt->execute(array("user" => $userId, "status" => $status));
+		$res = $stmt->execute(["user" => $userId, "status" => $status]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getUsersIDs()
-	{
+	public function getUsersIDs() {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -705,11 +698,11 @@ class DB
 		$stmt->execute();
 		$res = $stmt->fetchAll();
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function connexion($username, $password)
-	{
+	public function connexion($username, $password) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -717,14 +710,14 @@ class DB
 			FROM users
 			WHERE username = :username AND password = :password"
 		);
-		$stmt->execute(array("username" => $username, "password" => md5($password)));
+		$stmt->execute(["username" => $username, "password" => md5($password)]);
 		$res = $stmt->rowCount() ? $stmt->fetch() : null;
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function removeUsersArtist($idArtist)
-	{
+	public function removeUsersArtist($idArtist) {
 		$userId = $_SESSION['id_user'] ?? 0;
 		$this->disableForeignKeysCheck();
 		$this->connect();
@@ -733,14 +726,14 @@ class DB
 			DELETE FROM users_artists
 			WHERE idArtist = :idArtist AND idUser = :idUser"
 		);
-		$res = $stmt->execute(array("idArtist" => $idArtist, "idUser" => $userId));
+		$res = $stmt->execute(["idArtist" => $idArtist, "idUser" => $userId]);
 		$this->disconnect();
 		$this->enableForeignKeysCheck();
+
 		return $res;
 	}
 
-	public function getNotifiedUsers($force = false)
-	{
+	public function getNotifiedUsers($force = false) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -751,11 +744,11 @@ class DB
 		$stmt->execute();
 		$res = $stmt->fetchAll();
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getArtistIdFromSong($idSong)
-	{
+	public function getArtistIdFromSong($idSong) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -763,14 +756,14 @@ class DB
 			FROM artists_songs
 			WHERE idAlbum = :idSong"
 		);
-		$stmt->execute(array("idSong" => $idSong));
+		$stmt->execute(["idSong" => $idSong]);
 		$res = $stmt->fetch();
 		$this->disconnect();
+
 		return $res['idArtist'];
 	}
 
-	public function logCurlRequest($idArtist, $entity, $url, $data, $scrapped)
-	{
+	public function logCurlRequest($idArtist, $entity, $url, $data, $scrapped) {
 		$date = new \DateTime();
 		$datetime = $date->format('Y-m-d H:i:s');
 		$sqlLog = "
@@ -787,99 +780,97 @@ class DB
 		$this->connect();
 		$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$stmt = $this->dbh->prepare($sqlLog);
-		$resLog = $stmt->execute(array(
+		$resLog = $stmt->execute([
 			'idArtist' => $idArtist,
 			'entity' => $entity,
 			'url' => $url,
 			'data' => str_replace("'", "\'", $data),
 			'scrapped' => $scrapped,
 			'lastCall' => $datetime,
-		));
+		]);
 		$this->reinitAutoIncrement('logs_curl');
 		$this->disconnect();
+
 		return $resLog;
 	}
 
-	private function reinitAutoIncrement($table)
-	{
+	private function reinitAutoIncrement($table) {
 		$this->connect();
 		$stmt = $this->dbh->prepare("ALTER TABLE {$table} AUTO_INCREMENT = 0");
 		$res = $stmt->execute();
 		$this->disconnect();
+
 		return $res;
 	}
 
-	private function enableForeignKeysCheck()
-	{
+	private function enableForeignKeysCheck() {
 		//SET FOREIGN_KEY_CHECKS = 1;
 		return $this->foreignKeysCheck(true);
 	}
 
-	private function disableForeignKeysCheck()
-	{
+	private function disableForeignKeysCheck() {
 		//SET FOREIGN_KEY_CHECKS = 0;
 		return $this->foreignKeysCheck(false);
 	}
 
-	private function foreignKeysCheck($mode = true)
-	{
+	private function foreignKeysCheck($mode = true) {
 		$this->connect();
 		$mode_str = $mode ? '1' : '0';
 		// $stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = :mode");
 		$stmt = $this->dbh->prepare("SET FOREIGN_KEY_CHECKS = {$mode_str}");
 		// $res = $stmt->execute(array("mode" => ($mode ? '1' : '0')));
-		$res = $stmt->execute(/*array("mode" => $mode)*/);
+		$res = $stmt->execute( /*array("mode" => $mode)*/);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getTokenByUsername($username)
-	{
+	public function getTokenByUsername($username) {
 		$this->connect();
 		$stmt = $this->dbh->prepare("
 			SELECT *
 			FROM user_auth
 			WHERE username = :username
 				AND is_expired = 0");
-		$stmt->execute(array("username" => $username));
+		$stmt->execute(["username" => $username]);
 		if (!$stmt->rowCount()) {
 			return false;
 		}
+
 		return $stmt->fetchAll();
 	}
 
-	public function setTokenAsExpired($id)
-	{
+	public function setTokenAsExpired($id) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
 			UPDATE user_auth SET is_expired = 1 WHERE id = :id"
 		);
-		$res = $stmt->execute(array("id" => $id));
+		$res = $stmt->execute(["id" => $id]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function insertToken($username, $random_password_hash, $random_selector_hash, $expiry_date)
-	{
+	public function insertToken($username, $random_password_hash, $random_selector_hash, $expiry_date) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
 			INSERT INTO user_auth (username, password_hash, selector_hash, expiry_date)
 			VALUES (:username, :password_hash, :selector_hash, :expiry_date)"
 		);
-		$res = $stmt->execute(array(
+		$res = $stmt->execute([
 			"username" => $username,
 			"password_hash" => $random_password_hash,
 			"selector_hash" => $random_selector_hash,
 			"expiry_date" => $expiry_date,
-		));
+		]);
 		$this->disconnect();
+
 		return $res;
 	}
 
-	public function getUserFromTokenId($token_id)
-	{
+	public function getUserFromTokenId($token_id) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -888,18 +879,18 @@ class DB
 			INNER JOIN users u ON u.username = ua.username
 			WHERE ua.id = :token_id"
 		);
-		$stmt->execute(array("token_id" => $token_id));
+		$stmt->execute(["token_id" => $token_id]);
 		if (!$stmt->rowCount()) {
 			return false;
 		}
+
 		return $stmt->fetch();
 		// $res = $stmt->fetch();
 		// $this->disconnect();
 		// return $res ?: false;
 	}
 
-	public function getUserFromUserToken($userToken = null)
-	{
+	public function getUserFromUserToken($userToken = null) {
 		$this->connect();
 		$stmt = $this->dbh->prepare(
 			"
@@ -910,9 +901,57 @@ class DB
 		$stmt->execute(["token" => $userToken]);
 		$res = $stmt->fetch();
 		$this->disconnect();
+
 		return $res ?: false;
 	}
 
+	public function disableAlbum($id) {
+		$this->connect();
+		// $stmt = $this->dbh->prepare("UPDATE albums SET is_disabled = 1 WHERE id = :id");
+		$stmt = $this->dbh->prepare("
+			UPDATE albums
+			SET date = '0000-00-00',
+				custom = 1
+			WHERE id = :id"
+		);
+		$res = $stmt->execute(["id" => $id]);
+		$this->disconnect();
+
+		return $res;
+	}
+
+	public function disableSong($id) {
+		$this->connect();
+		// $stmt = $this->dbh->prepare("UPDATE albums SET is_disabled = 1 WHERE id = :id");
+		$stmt = $this->dbh->prepare("
+			UPDATE songs
+			SET date = '0000-00-00',
+				custom = 1
+			WHERE id = :id"
+		);
+		$res = $stmt->execute(["id" => $id]);
+		$this->disconnect();
+
+		return $res;
+	}
+
+	// public function insertToken($id, $type)
+	// {
+	// 	$this->connect();
+	// 	$stmt = $this->dbh->prepare(
+	// 		"
+	// 		INSERT INTO user_auth (username, password_hash, selector_hash, expiry_date)
+	// 		VALUES (:username, :password_hash, :selector_hash, :expiry_date)"
+	// 	);
+	// 	$res = $stmt->execute(array(
+	// 		"username" => $username,
+	// 		"password_hash" => $random_password_hash,
+	// 		"selector_hash" => $random_selector_hash,
+	// 		"expiry_date" => $expiry_date,
+	// 	));
+	// 	$this->disconnect();
+	// 	return $res;
+	// }
 
 	//	public function example()
 	//	{
