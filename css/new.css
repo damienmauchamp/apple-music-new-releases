@@ -286,9 +286,17 @@ a *,
 .album *,
 .song,
 .song * {
+    user-select: none !important;
     -webkit-user-select: none !important; 
 }
 
+
+@media only screen and (max-width: 1068px) {
+    * {
+        user-select: none !important;
+        -webkit-user-select: none !important; 
+    }    
+}
 
 
 
