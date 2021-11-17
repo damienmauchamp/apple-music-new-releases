@@ -234,18 +234,18 @@ $(function () {
 			var $album;
 			if ($(e.target).hasClass('album')) {
 				$album = $(e.target);
-			} else if ($(e.target).closest('.album')) {
+			} else if ($(e.target).closest('.album').length) {
 				$album = $(e.target).closest('.album');
 			} else if ($(e.target).hasClass('song')) {
 				$album = $(e.target);
-			} else if ($(e.target).closest('.song')) {
+			} else if ($(e.target).closest('.song').length) {
 				$album = $(e.target).closest('.song');
 			} else {
 				return true;
 			}
 
-			console.log('$album', $album);
-			console.log('$(e.target)', $(e.target));
+			// console.log('$album', $album);
+			// console.log('$(e.target)', $(e.target));
 
 			// Avoid the real one
 			e.preventDefault();
@@ -280,7 +280,6 @@ $(function () {
 			}, 500);
 		} catch (err) {
 			contextMenuHasBeenTriggered = false;
-			alert(err);
 			console.log(err);
 		}
 	}
