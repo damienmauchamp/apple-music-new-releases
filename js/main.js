@@ -208,69 +208,90 @@ $(function () {
 	// $(".rm-artist").on("click", function (e) {
 
 
+
 	/* CONTEXT MENU */
-	// Trigger action when the contexmenu is about to be shown
-	$(document).bind("contextmenu", function (e) {
+	var contextMenuHasBeenTriggered = false;
+	function openContextMenu(e) {
 
-		var $album;
-		if ($(this).hasClass('album')) {
-			$album = $(this);
-		} else if (e.target.closest('.album')) {
-			$album = $(e.target.closest('.album'));
-		} else if ($(this).hasClass('song')) {
-			$album = $(this);
-		} else if (e.target.closest('.song')) {
-			$album = $(e.target.closest('.song'));
-		} else {
-			return true;
+		// alert('openContextMenu');
+
+		// console.log('e:', e);
+		// console.log('e.target:', e.target);
+		console.log('TRY');
+
+		if ($('.custom-menu:visible').length || contextMenuHasBeenTriggered) {
+			console.log('CANCEL')
+			return false;
 		}
-		
-		// Avoid the real one
-		e.preventDefault();
+		contextMenuHasBeenTriggered = true;
 
-		$(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
-		$(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
+		try {
 
-		$(".custom-menu li[data-action='remove-item'] a")
-			.attr('data-id', $album.data('link').replace(/^.+(?:=|\/)([\d]+)$/, '$1'))
-			.attr('data-type', $album.data('am-kind') ||'song');
-		
-		// Determines the position of the menu
-		let screenHeight = $(document).height(),
-			screenWidth = $(document).width(),
-			menuWidth = $(".custom-menu").outerWidth(),
-			menuHeight = $(".custom-menu").outerHeight();
-		let menuTop = e.pageY + menuHeight > screenHeight ? e.pageY - menuHeight : e.pageY,
-			menuLeft = e.pageX + menuWidth > screenWidth ? e.pageX - menuWidth : e.pageX;
-
-		// Show contextmenu
-		$(".custom-menu").finish().toggle(100).css({
-			top: menuTop + "px",
-			left: menuLeft + "px"
-		});
-
-		// prevent longpress & contextmenu
-		$(document).longclick(250, e => {
+			// alert(JSON.stringify($(e.target).data()));
+			// alert(JSON.stringify(e.type));
+			// alert(JSON.stringify(this));
 
 			var $album;
 			if ($(e.target).hasClass('album')) {
 				$album = $(e.target);
-			} else if (e.target.closest('.album')) {
-				$album = $(e.target.closest('.album'));
+			} else if ($(e.target).closest('.album')) {
+				$album = $(e.target).closest('.album');
 			} else if ($(e.target).hasClass('song')) {
 				$album = $(e.target);
-			} else if (e.target.closest('.song')) {
-				$album = $(e.target.closest('.song'));
+			} else if ($(e.target).closest('.song')) {
+				$album = $(e.target).closest('.song');
 			} else {
 				return true;
 			}
 
+			console.log('$album', $album);
+			console.log('$(e.target)', $(e.target));
+
 			// Avoid the real one
 			e.preventDefault();
+			// return false;
 
-			$album.trigger({ type: 'mousedown', which: 3 });
-		});
+			$(".custom-menu li[data-action='open-itunes'] a").attr('href', $album.data('itunes-link'));
+			$(".custom-menu li[data-action='open-browser'] a").attr('href', $album.data('link'));
+
+			$(".custom-menu li[data-action='remove-item'] a")
+				.attr('data-id', $album.data('link').replace(/^.+(?:=|\/)([\d]+)$/, '$1'))
+				.attr('data-type', $album.data('am-kind') ||'song');
+
+			// Determines the position of the menu
+			let x = e.pageX || $album.offset().left + $album.width()/2,
+				y = e.pageY || $album.offset().top + $album.height()/2;
+			let screenHeight = $(document).height(),
+				screenWidth = $(document).width(),
+				menuWidth = $(".custom-menu").outerWidth(),
+				menuHeight = $(".custom-menu").outerHeight();
+			let menuTop = y + menuHeight > screenHeight ? y - menuHeight : y,
+				menuLeft = x + menuWidth > screenWidth ? x - menuWidth : x;
+
+			// Show contextmenu
+			$(".custom-menu").finish().toggle(100).css({
+				top: menuTop + "px",
+				left: menuLeft + "px"
+			});
+			console.log('OPENED');
+			setTimeout(function () {
+				contextMenuHasBeenTriggered = false;
+				console.log('false');
+			}, 500);
+		} catch (err) {
+			contextMenuHasBeenTriggered = false;
+			alert(err);
+			console.log(err);
+		}
+	}
+	// Trigger action when the contexmenu is about to be shown
+	$(document).bind("contextmenu", openContextMenu);
+	// prevent longpress & contextmenu
+	$('.album, .song, .album *, .song *').click(250, function(e) {
+		$(e.target).trigger('contextmenu');
 	});
+
+	// If a menu element is clicked
 	$(document).on('click', '.custom-menu a', e => {
 		var $target = $(e.target),
 			id = $target.data('id') || null,
@@ -278,7 +299,7 @@ $(function () {
 		
 		e.preventDefault();
 		if (!id ||!type) {
-			alert('Erreur');
+			return false;
 		}
 
 		if (!confirm('Êtes-vous sûr de vouloir cacher définitivement cet élément ?')) {
@@ -304,7 +325,8 @@ $(function () {
 	$(document).on("mousedown", function (e) {
 		
 		// If the clicked element is not the menu
-		if (!$(e.target).parents(".custom-menu").length > 0) {
+		if (!$(e.target).parents(".custom-menu").length > 0 && !contextMenuHasBeenTriggered) {
+			console.log('CLOSE');
 			$(".custom-menu").hide(100);
 			$(".custom-menu li a").attr('href', '#');
 		} else {

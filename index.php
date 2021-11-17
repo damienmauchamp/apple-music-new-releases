@@ -100,12 +100,12 @@ if ($news && $nodisplay) {
 
 					<?php if (!$full):
 	logRefresh();?>
-										<script>getNewReleases(<?=$scrapped ? 'true' : ''?>);</script>
-										<div class="spinner-cont">
-											<div id="loading-spinner"
-												 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
-										</div>
-									<?php else:
+																																																<script>getNewReleases(<?=$scrapped ? 'true' : ''?>);</script>
+																																																<div class="spinner-cont">
+																																																	<div id="loading-spinner"
+																																																		 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+																																																</div>
+																																															<?php else:
 	logRefresh("full");
 	$res = $scrapped ? getAllNewScrappedReleases() : getAllNewReleases();
 	$albums = $res["albums"];
@@ -134,145 +134,145 @@ endif?>
 	$songs = [];  //false;//getAllSongs();
 	              //var_dump($songs);
 	?>
-							<!-- RECENT SONGS -->
-							<section class="l-content-width section section--bordered">
-								<div class="l-row">
-									<div class="l-column small-12">
-										<h2 class="section__headline">
-											Chansons récentes
-										</h2>
-										<!-- <table class="table table--see-all" id="song-table-table"> -->
-										<div class="table table--see-all" id="song-table-table">
-											<!-- <thead class="table__head">
-											<tr>
-												<th class="table__head__heading--artwork"></th>
-												<th class="table__head__heading table__head__heading--song">TITRE</th>
-												<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
-													ARTISTE
-												</th>
-												<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
-													ALBUM
-												</th>
-												<th class="table__head__heading table__head__heading--duration">SORTIE</th>
-											</tr>
-											</thead> -->
-											<div id="recent-songs-table-tbody">
-											<!-- <tbody id="recent-songs-table-tbody"> -->
-											<?php //displaySongs($songs)
+																																													<!-- RECENT SONGS -->
+																																													<section class="l-content-width section section--bordered">
+																																														<div class="l-row">
+																																															<div class="l-column small-12">
+																																																<h2 class="section__headline">
+																																																	Chansons récentes
+																																																</h2>
+																																																<!-- <table class="table table--see-all" id="song-table-table"> -->
+																																																<div class="table table--see-all" id="song-table-table">
+																																																	<!-- <thead class="table__head">
+																																																	<tr>
+																																																		<th class="table__head__heading--artwork"></th>
+																																																		<th class="table__head__heading table__head__heading--song">TITRE</th>
+																																																		<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+																																																			ARTISTE
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+																																																			ALBUM
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+																																																	</tr>
+																																																	</thead> -->
+																																																	<div id="recent-songs-table-tbody">
+																																																	<!-- <tbody id="recent-songs-table-tbody"> -->
+																																																	<?php //displaySongs($songs)
 	?>
-											<!-- </tbody> -->
-											</div>
-										</div>
-										<!-- </table> -->
-										<div class="spinner-cont">
-											<div id="loading-spinner_recent-songs"
-												 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
-										</div>
-									</div>
-								</div>
-							</section>
+																																																	<!-- </tbody> -->
+																																																	</div>
+																																																</div>
+																																																<!-- </table> -->
+																																																<div class="spinner-cont">
+																																																	<div id="loading-spinner_recent-songs"
+																																																		 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+																																																</div>
+																																															</div>
+																																														</div>
+																																													</section>
 
-							<!-- UPCOMING SONGS BUT AVAILABLE -->
-							<section class="l-content-width section section--bordered">
-								<div class="l-row">
-									<div class="l-column small-12">
-										<h2 class="section__headline">
-											Chansons disponibles à venir
-										</h2>
-										<table class="table table--see-all" id="song-table-table">
-											<thead class="table__head">
-											<tr>
-												<th class="table__head__heading--artwork"></th>
-												<th class="table__head__heading table__head__heading--song">TITRE</th>
-												<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
-													ARTISTE
-												</th>
-												<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
-													ALBUM
-												</th>
-												<th class="table__head__heading table__head__heading--duration">SORTIE</th>
-											</tr>
-											</thead>
-											<tbody id="upcoming-streamable-songs-table-tbody">
-											<?php //displaySongs($songs)
+																																													<!-- UPCOMING SONGS BUT AVAILABLE -->
+																																													<section class="l-content-width section section--bordered">
+																																														<div class="l-row">
+																																															<div class="l-column small-12">
+																																																<h2 class="section__headline">
+																																																	Chansons disponibles à venir
+																																																</h2>
+																																																<table class="table table--see-all" id="song-table-table">
+																																																	<thead class="table__head">
+																																																	<tr>
+																																																		<th class="table__head__heading--artwork"></th>
+																																																		<th class="table__head__heading table__head__heading--song">TITRE</th>
+																																																		<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+																																																			ARTISTE
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+																																																			ALBUM
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+																																																	</tr>
+																																																	</thead>
+																																																	<tbody id="upcoming-streamable-songs-table-tbody">
+																																																	<?php //displaySongs($songs)
 	?>
-											</tbody>
-										</table>
-										<div class="spinner-cont">
-											<div id="loading-spinner_upcoming-streamable-songs"
-												 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
-										</div>
-									</div>
-								</div>
-							</section>
+																																																	</tbody>
+																																																</table>
+																																																<div class="spinner-cont">
+																																																	<div id="loading-spinner_upcoming-streamable-songs"
+																																																		 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+																																																</div>
+																																															</div>
+																																														</div>
+																																													</section>
 
-							<!-- UPCOMING SONGS -->
-							<section class="l-content-width section section--bordered">
-								<div class="l-row">
-									<div class="l-column small-12">
-										<h2 class="section__headline">
-											Chansons à venir
-										</h2>
-										<table class="table table--see-all" id="song-table-table">
-											<thead class="table__head">
-											<tr>
-												<th class="table__head__heading--artwork"></th>
-												<th class="table__head__heading table__head__heading--song">TITRE</th>
-												<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
-													ARTISTE
-												</th>
-												<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
-													ALBUM
-												</th>
-												<th class="table__head__heading table__head__heading--duration">SORTIE</th>
-											</tr>
-											</thead>
-											<tbody id="upcoming-songs-table-tbody">
-											<?php //displaySongs($songs)
+																																													<!-- UPCOMING SONGS -->
+																																													<section class="l-content-width section section--bordered">
+																																														<div class="l-row">
+																																															<div class="l-column small-12">
+																																																<h2 class="section__headline">
+																																																	Chansons à venir
+																																																</h2>
+																																																<table class="table table--see-all" id="song-table-table">
+																																																	<thead class="table__head">
+																																																	<tr>
+																																																		<th class="table__head__heading--artwork"></th>
+																																																		<th class="table__head__heading table__head__heading--song">TITRE</th>
+																																																		<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+																																																			ARTISTE
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+																																																			ALBUM
+																																																		</th>
+																																																		<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+																																																	</tr>
+																																																	</thead>
+																																																	<tbody id="upcoming-songs-table-tbody">
+																																																	<?php //displaySongs($songs)
 	?>
-											</tbody>
-										</table>
-										<div class="spinner-cont">
-											<div id="loading-spinner_upcoming-songs"
-												 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
-										</div>
-									</div>
-								</div>
-							</section>
+																																																	</tbody>
+																																																</table>
+																																																<div class="spinner-cont">
+																																																	<div id="loading-spinner_upcoming-songs"
+																																																		 class="we-loading-spinner we-loading-spinner--see-all ember-view"></div>
+																																																</div>
+																																															</div>
+																																														</div>
+																																													</section>
 
-							<?php	// Chansons à venir
+																																													<?php	// Chansons à venir
 	?>
 
-							<?php // songs start
+																																													<?php // songs start
 	if ($songs): ?>
-								<section class="l-content-width section section--bordered">
-									<div class="l-row">
-										<div class="l-column small-12">
-											<h2 class="section__headline">
-												Toutes les chansons
-											</h2>
-											<table class="table table--see-all">
-												<thead class="table__head">
-												<tr>
-													<th class="table__head__heading--artwork"></th>
-													<th class="table__head__heading table__head__heading--song">TITRE</th>
-													<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
-														ARTISTE
-													</th>
-													<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
-														ALBUM
-													</th>
-													<th class="table__head__heading table__head__heading--duration">SORTIE</th>
-												</tr>
-												</thead>
-												<tbody>
-												<?php displaySongs($songs)?>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</section>
-							<?php // songs end
+																																														<section class="l-content-width section section--bordered">
+																																															<div class="l-row">
+																																																<div class="l-column small-12">
+																																																	<h2 class="section__headline">
+																																																		Toutes les chansons
+																																																	</h2>
+																																																	<table class="table table--see-all">
+																																																		<thead class="table__head">
+																																																		<tr>
+																																																			<th class="table__head__heading--artwork"></th>
+																																																			<th class="table__head__heading table__head__heading--song">TITRE</th>
+																																																			<th class="table__head__heading table__head__heading--artist small-hide large-show-tablecell">
+																																																				ARTISTE
+																																																			</th>
+																																																			<th class="table__head__heading table__head__heading--album small-hide medium-show-tablecell">
+																																																				ALBUM
+																																																			</th>
+																																																			<th class="table__head__heading table__head__heading--duration">SORTIE</th>
+																																																		</tr>
+																																																		</thead>
+																																																		<tbody>
+																																																		<?php displaySongs($songs)?>
+																																																		</tbody>
+																																																	</table>
+																																																</div>
+																																															</div>
+																																														</section>
+																																													<?php // songs end
 endif;?>
 
 			<?php // albums start
@@ -368,23 +368,6 @@ endif;?>
 
 
 	<script>
-		// console.log('yo');
-
-		// console.log('user_login:', getCookie('user_login'));
-		// console.log('random_password:', getCookie('random_password'));
-		// console.log('random_selector:', getCookie('random_selector'));
-
-		// setCookie('user_login', getCookie('user_login'))
-		// setCookie('random_password', getCookie('random_password'))
-		// setCookie('random_selector', getCookie('random_selector'))
-		// console.log(getCookie())
-            // [redirect] => http://damien.local/applemusic-update/index.php
-            // [user_login] => damien
-            // [random_password] => m48QqO6tCEsq1Xn8
-            // [random_selector] => wkgKbcBfWgvqxJ3F4TdBcLVam0F8tZbv
-            // [theme] => variant
-            // [PHPSESSID] => 6jpknrf6qmerogbq4d41fgdmb6
-
 	</script>
 	</body>
 	</html>
