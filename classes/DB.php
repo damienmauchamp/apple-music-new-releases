@@ -905,29 +905,35 @@ class DB {
 		return $res ?: false;
 	}
 
-	public function disableAlbum($id) {
+	public function disableAlbum($id, bool $removeSongs = true) {
 		$this->connect();
 		// $stmt = $this->dbh->prepare("UPDATE albums SET is_disabled = 1 WHERE id = :id");
 		$stmt = $this->dbh->prepare("
 			UPDATE albums
-			SET date = '0000-00-00',
+			SET date = NULL,
 				custom = 1
 			WHERE id = :id"
 		);
 		$res = $stmt->execute(["id" => $id]);
 		$this->disconnect();
 
+		if ($removeSongs) {
+			// Removing songs contained in the album
+			$this->disableSong($id, true);
+		}
+
 		return $res;
 	}
 
-	public function disableSong($id) {
+	public function disableSong($id, bool $isCollectionID = false) {
 		$this->connect();
 		// $stmt = $this->dbh->prepare("UPDATE albums SET is_disabled = 1 WHERE id = :id");
+		$field = $isCollectionID ? "collectionId" : "id";
 		$stmt = $this->dbh->prepare("
 			UPDATE songs
-			SET date = '0000-00-00',
+			SET date = NULL,
 				custom = 1
-			WHERE id = :id"
+			WHERE {$field} = :id"
 		);
 		$res = $stmt->execute(["id" => $id]);
 		$this->disconnect();
