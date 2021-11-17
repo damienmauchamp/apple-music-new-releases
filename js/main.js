@@ -293,9 +293,16 @@ $(function () {
 
 	// If a menu element is clicked
 	$(document).on('click', '.custom-menu a', e => {
-		var $target = $(e.target),
-			id = $target.data('id') || null,
-			type = $target.data('type') || null;
+
+		if ($(e.target).parent('li').data('action') !== 'remove-item') {
+			return true;
+		}
+
+		var $option = $(e.target),
+			id = $option.attr('data-id') || $option.data('id') || null,
+			type =  $option.attr('data-type') || $option.data('type') || null;
+
+			console.log($option, id, type);
 		
 		e.preventDefault();
 		if (!id ||!type) {
