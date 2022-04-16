@@ -42,3 +42,4 @@ Execute `crontab -e` and add this line (edit it as you wish) :
 - [ ] use the user token for API calls
 - [ ] settings page
 - [ ] fetch artists pics
+- [ ] unit tests
