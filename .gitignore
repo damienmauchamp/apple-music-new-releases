@@ -1,8 +1,8 @@
 vendor
 tests
+.idea
 
 # file extensions
-.idea
 .git
 *.log
 *.txt
