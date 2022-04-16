@@ -3,6 +3,8 @@ define('API_NAME', 'api');
 define('API_PATH', '/'.API_NAME.'/');
 define('PAGE_ERROR_404', 'errors/404.php');
 
+include_once 'functions.php';
+
 function setUp($url) {
 	// parsing url
 	$parsed_url = parse_url($url);
@@ -33,8 +35,11 @@ switch ($api_request->route) {
     case '':
     case '/test':
 		break;
-    case '/releases':
-        $redirect = 'v1/releases.php';
+	case '/releases':
+		$redirect = 'v1/releases.php';
+		break;
+	case '/day':
+		$redirect = 'v1/day.php';
 		break;
 	case '/tests':
         $redirect = 'tests/index.php';

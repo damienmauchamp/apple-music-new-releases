@@ -565,10 +565,10 @@ class DB {
 		return $res ? false : true;
 	}
 
-	public function selectPerso($sql) {
+	public function selectPerso($sql, array $params = []) {
 		$this->connect();
 		$stmt = $this->dbh->prepare($sql);
-		$stmt->execute() or die("Erreur dans la requête.");
+		$stmt->execute($params) or die("Erreur dans la requête.");
 		$this->disconnect();
 
 		return $stmt->fetchAll();

@@ -10,7 +10,7 @@ $only_explicit = array_key_exists('only_explicit', $_GET) ? boolval($_GET['only_
 $status_code = 400;
 try {
 	$start_date = new \DateTime($start_date);
-} catch (Exception $e) {
+} catch(Exception $e) {
 	http_response_code($status_code);
 	exit(json_encode([
 		'status' => $status_code,
@@ -22,7 +22,7 @@ try {
 // start_date
 try {
 	$min_release_date = new \DateTime($min_release_date);
-} catch (Exception $e) {
+} catch(Exception $e) {
 	http_response_code($status_code);
 	exit(json_encode([
 		'status' => $status_code,
@@ -35,38 +35,20 @@ $db = new AppleMusic\DB();
 $sql = "
 	SELECT *
 	FROM albums a
-	WHERE a.added > '" . $start_date->format('Y-m-d H:i:s') . "'
+	WHERE a.added > '".$start_date->format('Y-m-d H:i:s')."'
 		AND a.date IS NOT NULL
-		AND a.date >= '" . $min_release_date->format('Y-m-d H:i:s') . "'
+		AND a.date >= '".$min_release_date->format('Y-m-d H:i:s')."'
 	ORDER BY a.added ASC, a.explicit DESC";
 $res = $db->selectPerso($sql);
 // $res[] = ['name' => 'test', 'artistName' => 'test', 'id' => 1, 'explicit' => true];
 
-$status_code = $res ? 200 : 204;
-
-$return = [];
-
-foreach ($res as $i => $item) {
-	foreach ($item as $key => $value) {
-		if (is_int($key)) {
-			unset($res[$i][$key]);
-		}
-	}
-	$res[$i]['id'] = intval($res[$i]['id']);
-	$res[$i]['explicit'] = boolval($res[$i]['explicit']);
-	$res[$i]['link'] = "https://music.apple.com/fr/album/" . preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($item["name"])), "-")) . "/" . $item["id"];
-
-	if ($only_explicit) {
-		// find duplicates
-		$indexes = array_keys(array_filter($res, function ($element) use ($item) {return $element['name'] === $item['name'] && $element['artistName'] === $item['artistName'];}))[0];
-		$return[] = $res[$indexes];
-	}
-}
+$return = album_filters($res, $only_explicit);
+$status_code = $return ? 200 : 204;
 
 http_response_code($status_code);
 echo json_encode([
 	'status' => $status_code,
-	'data' => array_values($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []): ($res ?: []))
+	'data' => array_values($only_explicit ? (array_unique($return, SORT_REGULAR) ?: []) : ($res ?: []))
 ]);
 exit();
 
