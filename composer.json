@@ -11,7 +11,8 @@
     "ext-curl": "^7.0",
     "phpmailer/phpmailer": "^6.5.0",
     "vlucas/phpdotenv": "^3.3",
-    "sunra/php-simple-html-dom-parser": "^1.5"
+    "sunra/php-simple-html-dom-parser": "^1.5",
+    "pouler/apple-music-api": "^0.4.0"
   },
   "scripts": {
     "fetch": "php global.php refresh= nodisplay=",
