@@ -52,7 +52,7 @@ class Song {
 		$this->isStreamable = $array["isStreamable"];
 	}
 
-	public function addSong($idArtist) {
+	public function addSong($idArtist): bool {
 
 		$db = new db;
 		try {

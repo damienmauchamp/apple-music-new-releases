@@ -5,6 +5,7 @@ namespace AppleMusic;
 class AppleMusicAPI {
 
 	private $url = 'https://api.music.apple.com/v1';
+	private $storefront;
 
 	private $developer_token;
 	private $music_user_token;
@@ -12,6 +13,8 @@ class AppleMusicAPI {
 	public function __construct(?string $developer_token = null, string $music_user_token = '') {
 		$this->developer_token = $developer_token ?: getenv('DEVELOPER_TOKEN');
 		$this->music_user_token = $music_user_token;
+
+		$this->storefront = getenv('STOREFRONT') ?: 'us';
 	}
 
 	public function get(string $endpoint, array $params = []): array {
@@ -24,6 +27,10 @@ class AppleMusicAPI {
 
 	public function setMusicUserToken($token): void {
 		$this->music_user_token = $token;
+	}
+
+	public function getStorefront(): string {
+		return $this->storefront;
 	}
 
 	private function request(string $method, string $endpoint, array $params = []): array {
