@@ -9,18 +9,23 @@
 namespace AppleMusic;
 
 use AppleMusic\DB as db;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
-class Song {
+class Song extends AbstractItem {
 	private $id;
 	private $collectionId;
 	private $trackName;
 	private $collectionName;
 	private $artistName;
-	private $date;
+	protected $date;
 	private $artwork;
 	private $link;
 	private $explicit;
 	private $isStreamable;
+
+	const LOG_FILE = DEFAULT_PATH.'/logs/songs.log';
+	private $logger;
 
 	public function __construct() {
 
@@ -52,19 +57,45 @@ class Song {
 		$this->isStreamable = $array["isStreamable"];
 	}
 
+	/**
+	 * Add or update a song in the database
+	 * @param $idArtist
+	 * @return bool
+	 */
 	public function addSong($idArtist): bool {
-
 		$db = new db;
+		if($this->isNew()) {
+			$this->addToPlaylist();
+		}
+		return $db->addSong($this, $idArtist);
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function addToPlaylist(): bool {
+		$log = "[addSong] {$this->id} - {$this->trackName} by {$this->artistName}: ";
+
 		try {
 			$user = User::getCurrentUser();
+			print_r($user);
 			if($user && $user->musicKitTokenIsValid() && $user->playlistIsSet()) {
-				$user->getPlaylist()->addSong($this->id, $user->getMusicKitToken());
+				$added = $user->getPlaylist()->addSong($this->id, $user->getMusicKitToken());
+				$this->log($log.($added ? "Added to playlist" : 'Fail to add to playlist (Sm1)'));
+			}
+			else {
+				$log .= "User not found or token not valid (Sx1)";
+				$this->logger->log($log, 'error');
+				return false;
 			}
 		} catch(\Exception $e) {
-//			echo $e->getMessage();
+			print_r($e);
+			$log .= "Error: {$e->getMessage()} (Sx2)";
+			$this->logger->log($log, 'error');
+			return false;
 		}
+		return true;
 
-		return $db->addSong($this, $idArtist);
 	}
 
 	public static function objectToArray($obj) {
@@ -202,6 +233,15 @@ class Song {
             </'.$td.'>
         </'.$tr.'>
         ';
+	}
+
+	private function log(string $message, string $type = 'info', array $context = []): void {
+		if(!$this->logger) {
+			$this->logger = new Logger('Songs');
+			$this->logger->pushHandler(new StreamHandler(self::LOG_FILE, Logger::DEBUG));
+		}
+
+		$this->logger->$type($message, $context);
 	}
 
 }

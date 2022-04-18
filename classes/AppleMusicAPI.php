@@ -2,6 +2,10 @@
 
 namespace AppleMusic;
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+
 class AppleMusicAPI {
 
 	private $url = 'https://api.music.apple.com/v1';
@@ -10,11 +14,17 @@ class AppleMusicAPI {
 	private $developer_token;
 	private $music_user_token;
 
+	const LOG_FILE = DEFAULT_PATH .'/logs/apple_music_api.log';
+	private $logger;
+
 	public function __construct(?string $developer_token = null, string $music_user_token = '') {
 		$this->developer_token = $developer_token ?: getenv('DEVELOPER_TOKEN');
 		$this->music_user_token = $music_user_token;
 
 		$this->storefront = getenv('STOREFRONT') ?: 'us';
+
+		$this->logger = new Logger('AppleMusicAPI');
+		$this->logger->pushHandler(new StreamHandler(self::LOG_FILE, Logger::API));
 	}
 
 	public function get(string $endpoint, array $params = []): array {
@@ -33,10 +43,21 @@ class AppleMusicAPI {
 		return $this->storefront;
 	}
 
+	private function logRequest(string $method, string $endpoint, array $params = [], array $data = []): void {
+		$this->logger->info("Request {$method} {$endpoint}" . json_encode([
+			'method' => $method,
+			'endpoint' => $endpoint,
+			'params' => $params,
+			'data' => $data,
+		]));
+	}
+
 	private function request(string $method, string $endpoint, array $params = []): array {
 		$curl = curl_init();
+
+		$url = "{$this->url}{$endpoint}";
 		$options = [
-			CURLOPT_URL => "{$this->url}{$endpoint}",
+			CURLOPT_URL => $url,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -66,6 +87,15 @@ class AppleMusicAPI {
 		$err = curl_error($curl);
 		$infos = curl_getinfo($curl);
 		curl_close($curl);
+
+		$this->logRequest($method, $endpoint, [
+			'url' => $url,
+			'options' => $options,
+			'status' => $infos['http_code'] ?? null,
+			'infos' => $infos,
+			'body' => $response,
+			'error' => $err,
+		]);
 
 		return [
 			'status' => $infos['http_code'] ?? null,

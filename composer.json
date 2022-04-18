@@ -1,21 +1,30 @@
 {
-  "autoload": {
-    "psr-4": {
-      "AppleMusic\\": "classes/"
-    }
-  },
-  "require": {
-    "monolog/monolog": "^1.23",
-    "mobiledetect/mobiledetectlib": "^2.8",
-    "ext-json": "^1.4",
-    "ext-curl": "^7.0",
-    "phpmailer/phpmailer": "^6.5.0",
-    "vlucas/phpdotenv": "^3.3",
-    "sunra/php-simple-html-dom-parser": "^1.5",
-    "pouler/apple-music-api": "^0.4.0"
-  },
-  "scripts": {
-    "fetch": "php global.php refresh= nodisplay=",
-    "scrap": "php global_scrapping.php refresh= nodisplay="
-  }
+	"autoload": {
+		"psr-4": {
+			"AppleMusic\\": "classes/"
+		}
+	},
+	"require": {
+		"monolog/monolog": "^2.5",
+		"mobiledetect/mobiledetectlib": "^2.8",
+		"ext-json": "^1.4",
+		"ext-curl": "^7.0",
+		"phpmailer/phpmailer": "^6.5.0",
+		"vlucas/phpdotenv": "^3.3",
+		"sunra/php-simple-html-dom-parser": "^1.5",
+		"pouler/apple-music-api": "^0.4.0",
+		"ext-openssl": "*"
+	},
+	"scripts": {
+		"fetch": "php global.php refresh= nodisplay=",
+		"scrap": "php global_scrapping.php refresh= nodisplay=",
+		"fetch-debug": "php global.php refresh=",
+		"scrap-debug": "php global_scrapping.php refresh="
+	},
+	"scripts-descriptions": {
+		"fetch": "Global update",
+		"scrap": "Global scrapped update",
+		"fetch-debug": "Global update with display",
+		"scrap-debug": "Global scrapped update with display"
+	}
 }

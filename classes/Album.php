@@ -4,11 +4,11 @@ namespace AppleMusic;
 
 use AppleMusic\DB as db;
 
-class Album {
+class Album extends AbstractItem {
 	private $id;
 	private $name;
 	private $artistName;
-	private $date;
+	protected $date;
 	private $artwork;
 	private $link;
 	private $explicit;

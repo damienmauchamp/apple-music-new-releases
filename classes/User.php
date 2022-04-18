@@ -39,10 +39,10 @@ class User {
 
 		return new User($data['username'],
 			$data['token'],
-			$data['musickit_user_token'],
-			$data['date_generated'],
-			$data['playlist_id'],
-			$data['add_to_playlist']);
+			$data['musickit_user_token'] ?? null,
+			$data['date_generated'] ?? null,
+			$data['playlist_id'] ?? null,
+			$data['add_to_playlist'] ?? false);
 	}
 
 	public static function getUser(string $username): ?User {
@@ -54,10 +54,10 @@ class User {
 
 		return new User($data['username'],
 			$data['token'],
-			$data['musickit_user_token'],
-			$data['date_generated'],
-			$data['playlist_id'],
-			$data['add_to_playlist']);
+			$data['musickit_user_token'] ?? null,
+			$data['date_generated'] ?? null,
+			$data['playlist_id'] ?? null,
+			$data['add_to_playlist'] ?? false);
 	}
 
 	public static function getUserID(): ?int {

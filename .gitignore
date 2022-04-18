@@ -1,6 +1,9 @@
+# directories
 vendor
 tests
 .idea
+v2
+#logs
 
 # file extensions
 .git
