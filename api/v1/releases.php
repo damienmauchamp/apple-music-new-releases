@@ -43,7 +43,7 @@ $res = $db->selectPerso($sql);
 // $res[] = ['name' => 'test', 'artistName' => 'test', 'id' => 1, 'explicit' => true];
 
 $return = album_filters($res, $only_explicit);
-$status_code = 200;/ $return ? 200 : 204;
+$status_code = 200;// $return ? 200 : 204;
 
 http_response_code($status_code);
 echo json_encode([
