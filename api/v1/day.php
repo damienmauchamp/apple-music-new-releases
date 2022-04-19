@@ -25,13 +25,12 @@ $sql = "
 	WHERE a.date LIKE '{$date->format('Y-m-d')}%'
 	ORDER BY a.added, a.explicit DESC";
 $res = $db->selectPerso($sql);
-$status_code = $res ? 200 : 204;
 
 // Filter
 $return = album_filters($res);
 $data = array_values(array_unique($return, SORT_REGULAR) ?: []);
 $count = count($data);
-$status_code = $data ? 200 : 204;
+$status_code = 200;//$data ? 200 : 204;
 
 // Return
 http_response_code($status_code);
