@@ -71,7 +71,8 @@ class Song extends AbstractItem {
 			$this->addToPlaylist();
 		}
 		else if($new) {
-			$log = "[addSong] {$this->id} - {$this->trackName} by {$this->artistName}: already in database";
+			$icon = "👍";
+			$log = "{$icon} [addSong] {$this->id} - {$this->trackName} by {$this->artistName}: already in database";
 			$this->log($log);
 		}
 		return $db->addSong($this, $idArtist);
@@ -92,7 +93,8 @@ class Song extends AbstractItem {
 			$user = User::getCurrentUser();
 			if($user && $user->musicKitTokenIsValid() && $user->playlistIsSet()) {
 				$added = $user->getPlaylist()->addSong($this->id, $user->getMusicKitToken());
-				$this->log($log.($added ? "Added to playlist" : 'Fail to add to playlist (Sm1)'),
+				$icon = $added ? "❌" : "🟢";
+				$this->log("{$icon} {$log}".($added ? "Added to playlist" : 'Fail to add to playlist (Sm1)'),
 					$added ? 'info' : 'error',
 					$added ? [] : [
 						'music-token' => $user->getMusicKitToken(),
@@ -101,7 +103,7 @@ class Song extends AbstractItem {
 			}
 			else {
 				$log .= "User not found or token not valid (Sx1)";
-				$this->log($log, 'error', [
+				$this->log("⚠ {$log}", 'error', [
 					'user' => $user,
 					'token' => $user->musicKitTokenIsValid(),
 					'playlist' => $user->playlistIsSet()
@@ -110,7 +112,7 @@ class Song extends AbstractItem {
 			}
 		} catch(\Exception $e) {
 			$log .= "Error: {$e->getMessage()} (Sx2)";
-			$this->log($log, 'error');
+			$this->log("⚠ {$log}", 'error');
 			return false;
 		}
 		return true;
