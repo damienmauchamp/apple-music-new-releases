@@ -85,7 +85,11 @@ class Song extends AbstractItem {
 			}
 			else {
 				$log .= "User not found or token not valid (Sx1)";
-				$this->log($log, 'error');
+				$this->log($log, 'error', [
+					'user' => $user,
+					'token' => $user->musicKitTokenIsValid(),
+					'playlist' => $user->playlistIsSet()
+				]);
 				return false;
 			}
 		} catch(\Exception $e) {

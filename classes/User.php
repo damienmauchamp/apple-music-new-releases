@@ -81,7 +81,7 @@ class User {
 	}
 
 	public function musicKitTokenIsValid(): bool {
-		return $this->musicKitTokenIsSet() && (new DateTime)->diff($this->date_generated)->d >= self::TOKEN_VALIDITY_DAYS;
+		return $this->musicKitTokenIsSet() && (new DateTime)->diff($this->date_generated)->d < self::TOKEN_VALIDITY_DAYS;
 	}
 
 	public function playlistIsSet(): bool {
