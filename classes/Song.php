@@ -9,6 +9,7 @@
 namespace AppleMusic;
 
 use AppleMusic\DB as db;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -259,7 +260,7 @@ class Song extends AbstractItem {
 	private function log(string $message, string $type = 'info', array $context = []): void {
 		if(!$this->logger) {
 			$this->logger = new Logger('Songs');
-			$this->logger->pushHandler(new StreamHandler(self::LOG_FILE, Logger::DEBUG));
+			$this->logger->pushHandler(new RotatingFileHandler(self::LOG_FILE, 7, Logger::DEBUG));
 		}
 
 		$this->logger->$type($message, $context);

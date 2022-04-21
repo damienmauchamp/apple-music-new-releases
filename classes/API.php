@@ -4,6 +4,7 @@ namespace AppleMusic;
 
 use AppleMusic\Album as Album;
 use AppleMusic\DB as db;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Sunra\PhpSimple\HtmlDomParser;
@@ -26,7 +27,7 @@ class API {
 		$this->id = $idArtist;
 
 		$this->logger = new Logger('iTunesAPI');
-		$this->logger->pushHandler(new StreamHandler(self::LOG_FILE, Logger::API));
+		$this->logger->pushHandler(new RotatingFileHandler(self::LOG_FILE, 7, Logger::API));
 	}
 
 	private function logRequest(string $type, $scrapped, array $data = []): void {

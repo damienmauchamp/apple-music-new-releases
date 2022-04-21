@@ -2,6 +2,7 @@
 
 namespace AppleMusic;
 
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -14,7 +15,7 @@ class AppleMusicAPI {
 	private $developer_token;
 	private $music_user_token;
 
-	const LOG_FILE = DEFAULT_PATH .'/logs/apple_music_api.log';
+	const LOG_FILE = DEFAULT_PATH.'/logs/apple_music_api.log';
 	private $logger;
 
 	public function __construct(?string $developer_token = null, string $music_user_token = '') {
@@ -24,7 +25,7 @@ class AppleMusicAPI {
 		$this->storefront = getenv('STOREFRONT') ?: 'us';
 
 		$this->logger = new Logger('AppleMusicAPI');
-		$this->logger->pushHandler(new StreamHandler(self::LOG_FILE, Logger::API));
+		$this->logger->pushHandler(new RotatingFileHandler(self::LOG_FILE, 7, Logger::API));
 	}
 
 	public function get(string $endpoint, array $params = []): array {
@@ -44,12 +45,12 @@ class AppleMusicAPI {
 	}
 
 	private function logRequest(string $method, string $endpoint, array $params = [], array $data = []): void {
-		$this->logger->info("Request {$method} {$endpoint}" . json_encode([
-			'method' => $method,
-			'endpoint' => $endpoint,
-			'params' => $params,
-			'data' => $data,
-		]));
+		$this->logger->info("Request {$method} {$endpoint}".json_encode([
+				'method' => $method,
+				'endpoint' => $endpoint,
+				'params' => $params,
+				'data' => $data,
+			]));
 	}
 
 	private function request(string $method, string $endpoint, array $params = []): array {
