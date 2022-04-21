@@ -25,7 +25,7 @@ class DB {
 	private function connect() {
 
 		// loading .env data
-		if (is_file(dirname(__DIR__) . '/.env')) {
+		if(is_file(dirname(__DIR__).'/.env')) {
 			$dotenv = Dotenv\Dotenv::create(dirname(__DIR__));
 			$dotenv->load();
 		}
@@ -41,9 +41,9 @@ class DB {
 			$this->dbh->exec('SET CHARACTER SET utf8');
 			$this->dbh->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
 			$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		} catch (PDOException $e) {
-			echo "Erreur ! : " . $e->getMessage() . "<br/>";
-			die("Connexion impossible à la base de données." . $e->getMessage());
+		} catch(PDOException $e) {
+			echo "Erreur ! : ".$e->getMessage()."<br/>";
+			die("Connexion impossible à la base de données.".$e->getMessage());
 		}
 	}
 
@@ -55,7 +55,7 @@ class DB {
 	}
 
 	private function getEnv() {
-		return file_get_contents(dirname(__DIR__) . '/.env');
+		return file_get_contents(dirname(__DIR__).'/.env');
 	}
 
 	// GET
@@ -91,7 +91,7 @@ class DB {
 		$userId = $userId ?: $_SESSION['id_user'];
 
 		$complement_sql = '';
-		switch ($type) {
+		switch($type) {
 			case 'albums':
 				$complement_sql = "AND al.name NOT REGEXP '- Single'";
 				break;
@@ -206,7 +206,7 @@ class DB {
 		//		$stmt = $this->dbh->query($sql);
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue("id_user", $userId);
-		if ($idArtist) {
+		if($idArtist) {
 			$stmt->bindValue("idArtist", $idArtist);
 		}
 		$stmt->execute();
@@ -251,7 +251,7 @@ class DB {
 	 */
 	public function addArtist($artist, $userId = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
-		if ($userId < 0) {
+		if($userId < 0) {
 			return false;
 		}
 
@@ -336,17 +336,17 @@ class DB {
 				'id_artist' => $idArtist,
 				'id_album' => $id,
 			]);
-		} catch (PDOException $e) {
-			echo "\nALBUM ERROR: " . json_encode([
-				'erreur' => $e->getMessage(),
-				'id' => $id,
-				'name' => $name,
-				'artist_name' => $artistName,
-				'date' => $date,
-				'artwork' => $artwork,
-				'explicit' => $explicit,
-				// 'added' => $added->format('Y-m-d H:i:s')
-			]) . "\n";
+		} catch(PDOException $e) {
+			echo "\nALBUM ERROR: ".json_encode([
+					'erreur' => $e->getMessage(),
+					'id' => $id,
+					'name' => $name,
+					'artist_name' => $artistName,
+					'date' => $date,
+					'artwork' => $artwork,
+					'explicit' => $explicit,
+					// 'added' => $added->format('Y-m-d H:i:s')
+				])."\n";
 
 			$resAlbum = $resArtistAlbum = false;
 		}
@@ -429,23 +429,23 @@ class DB {
 				'id' => $id,
 				'id_artist' => $idArtist,
 			]);
-		} catch (PDOException $e) {
-			echo "\nSONG ERROR: " . json_encode([
-				'erreur' => $e->getMessage(),
-				'id' => $id,
-				'collection_id' => $collectionId,
-				'collection_name' => $collectionName,
-				'track_name' => $trackName,
-				'artist_name' => $artistName,
-				'$song->getDate()' => $song->getDate(),
-				'date' => $date,
-				'datetime' => new \DateTime($song->getDate()),
-				'datetime2' => new \DateTime($date),
-				'artwork' => $artwork,
-				'explicit' => $explicit,
-				'isStreamable' => $isStreamable,
-				// 'added' => $added->format('Y-m-d H:i:s')
-			]) . "\n";
+		} catch(PDOException $e) {
+			echo "\nSONG ERROR: ".json_encode([
+					'erreur' => $e->getMessage(),
+					'id' => $id,
+					'collection_id' => $collectionId,
+					'collection_name' => $collectionName,
+					'track_name' => $trackName,
+					'artist_name' => $artistName,
+					'$song->getDate()' => $song->getDate(),
+					'date' => $date,
+					'datetime' => new \DateTime($song->getDate()),
+					'datetime2' => new \DateTime($date),
+					'artwork' => $artwork,
+					'explicit' => $explicit,
+					'isStreamable' => $isStreamable,
+					// 'added' => $added->format('Y-m-d H:i:s')
+				])."\n";
 
 			$resAlbum = $resArtistAlbum = false;
 		}
@@ -578,8 +578,8 @@ class DB {
 
 	protected function setResults($array) {
 		$res = [];
-		foreach ($array as $key => $value) {
-			if (!is_numeric($key)) {
+		foreach($array as $key => $value) {
+			if(!is_numeric($key)) {
 				$res[$key] = $value;
 			}
 
@@ -592,7 +592,7 @@ class DB {
 		$this->connect();
 		$user_condition = "";
 		$params = ["days" => $days];
-		if ($id_user > 0) {
+		if($id_user > 0) {
 			$user_condition = "WHERE ua.idUser = :id_user";
 			$params['id_user'] = $id_user;
 		}
@@ -738,7 +738,7 @@ class DB {
 		$stmt = $this->dbh->prepare(
 			"
 			SELECT id, prenom, mail
-			FROM users" . (!$force ? "
+			FROM users".(!$force ? "
 			WHERE notifications = TRUE" : "")
 		);
 		$stmt->execute();
@@ -833,7 +833,7 @@ class DB {
 			WHERE username = :username
 				AND is_expired = 0");
 		$stmt->execute(["username" => $username]);
-		if (!$stmt->rowCount()) {
+		if(!$stmt->rowCount()) {
 			return false;
 		}
 
@@ -880,7 +880,7 @@ class DB {
 			WHERE ua.id = :token_id"
 		);
 		$stmt->execute(["token_id" => $token_id]);
-		if (!$stmt->rowCount()) {
+		if(!$stmt->rowCount()) {
 			return false;
 		}
 
@@ -917,7 +917,7 @@ class DB {
 		$res = $stmt->execute(["id" => $id]);
 		$this->disconnect();
 
-		if ($removeSongs) {
+		if($removeSongs) {
 			// Removing songs contained in the album
 			$this->disableSong($id, true);
 		}
@@ -939,6 +939,17 @@ class DB {
 		$this->disconnect();
 
 		return $res;
+	}
+
+	public function songExists($id): bool {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT id
+			FROM songs
+			WHERE id= :id"
+		);
+		$res = $stmt->execute(["id" => $id]);
+		return (bool) $stmt->rowCount();
 	}
 
 	// public function insertToken($id, $type)

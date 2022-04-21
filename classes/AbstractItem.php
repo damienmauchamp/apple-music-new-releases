@@ -21,4 +21,11 @@ abstract class AbstractItem {
 			&& $diff->y < 1;
 	}
 
+	public function isAdded(): ?bool {
+		/**
+		 * @todo for Albums
+		 */
+		return null;
+	}
+
 }
