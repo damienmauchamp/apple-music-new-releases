@@ -85,13 +85,13 @@ class Song extends AbstractItem {
 			}
 			else {
 				$log .= "User not found or token not valid (Sx1)";
-				$this->logger->log($log, 'error');
+				$this->log($log, 'error');
 				return false;
 			}
 		} catch(\Exception $e) {
 			print_r($e);
 			$log .= "Error: {$e->getMessage()} (Sx2)";
-			$this->logger->log($log, 'error');
+			$this->log($log, 'error');
 			return false;
 		}
 		return true;
