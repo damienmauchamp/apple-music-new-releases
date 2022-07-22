@@ -71,7 +71,7 @@ class DB {
 			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
-			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1
+			WHERE ua.idUser = :id_user AND ua.lastUpdate <= al.date AND ua.active = 1
 				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 			ORDER BY ar.name ASC, al.date DESC";
 
@@ -108,7 +108,7 @@ class DB {
 			  INNER JOIN artists_albums aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
-			WHERE ua.idUser = :id_user AND ua.lastUpdate < al.date AND ua.active = 1 AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date AND al.date <= NOW()
+			WHERE ua.idUser = :id_user AND ua.lastUpdate <= al.date AND ua.active = 1 AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date AND al.date <= NOW()
 				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
 				{$complement_sql}
 			GROUP BY al.id
@@ -138,7 +138,7 @@ class DB {
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id
 			WHERE ua.idUser = :id_user
-				AND ua.lastUpdate < al.date
+				AND ua.lastUpdate <= al.date
 				AND ua.active = 1
 				-- AND DATE_SUB(NOW(), INTERVAL 7 DAY) <= al.date
 				AND al.date > NOW()
