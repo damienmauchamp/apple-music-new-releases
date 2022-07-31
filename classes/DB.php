@@ -26,7 +26,7 @@ class DB {
 
 		// loading .env data
 		if(is_file(dirname(__DIR__).'/.env')) {
-			$dotenv = Dotenv\Dotenv::create(dirname(__DIR__));
+			$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 			$dotenv->load();
 		}
 
@@ -158,19 +158,23 @@ class DB {
 		return $res ? json_encode($res) : null;
 	}
 
-	public function getUserSongs($days = 7, $userId = false) {
+	public function getUserSongs($days = 7, $userId = false, ?bool $compilation = null) {
 		$userId = $userId ?: $_SESSION['id_user'];
+
+		$compilation_sql = $compilation !== null ? "AND IFNULL(albums.isCompilation, 0) = :compilation" : "";
 
 		$sql = "
 			SELECT
 			  al.id AS id, al.collectionId AS collectionId, al.collectionName AS collectionName, al.trackName AS trackName, al.artistName AS artistName, al.date AS date, al.artwork AS artwork,
-			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.isStreamable AS isStreamable
+			  ar.id AS idArtist, ua.lastUpdate AS lastUpdate, al.explicit AS explicit, al.isStreamable AS isStreamable, IFNULL(albums.isCompilation, 0) as isCompilation	
 			FROM songs al
 			  INNER JOIN artists_songs aa ON al.id = aa.idAlbum
 			  INNER JOIN artists ar ON ar.id = aa.idArtist
 			  INNER JOIN users_artists ua ON ua.idArtist = ar.id AND ua.idUser = :id_user AND ua.active = 1
+			  LEFT JOIN albums ON albums.id = al.collectionId
+			
 			WHERE al.date >= DATE_SUB(NOW(), INTERVAL :n_days DAY)
-				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR)
+				AND al.date < DATE_ADD(NOW(), INTERVAL 1 YEAR) {$compilation_sql}
 			GROUP BY id
 			ORDER BY al.isStreamable ASC, al.date DESC, al.date DESC, al.collectionName, al.collectionId, ar.name ASC";
 
@@ -179,6 +183,9 @@ class DB {
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue("id_user", $userId);
 		$stmt->bindValue("n_days", $days);
+		if($compilation !== null) {
+			$stmt->bindValue("compilation", $compilation);
+		}
 		$stmt->execute();
 		$this->disconnect();
 
@@ -301,11 +308,12 @@ class DB {
 		$date = fixTZDate($album->getDate());
 		$artwork = $album->getArtwork();
 		$explicit = $album->isExplicit() ? 1 : 0;
+		$isCompilation = $album->isCompilation();
 		// $added = new \DateTime();
 
 		$sqlAlbum = "
-			INSERT INTO albums (id, name, artistName, date, artwork, explicit)
-			VALUES (:id, :name, :artist_name, :date, :artwork, :explicit)
+			INSERT INTO albums (id, name, artistName, date, artwork, explicit, isCompilation)
+			VALUES (:id, :name, :artist_name, :date, :artwork, :explicit, :isCompilation)
 			ON DUPLICATE KEY UPDATE
 				name = :name,
 				artistName = :artist_name,
@@ -328,6 +336,7 @@ class DB {
 				'date' => $date,
 				'artwork' => $artwork,
 				'explicit' => $explicit,
+				'isCompilation' => $isCompilation,
 				// 'added' => $added->format('Y-m-d H:i:s')
 			]);
 
@@ -345,6 +354,7 @@ class DB {
 					'date' => $date,
 					'artwork' => $artwork,
 					'explicit' => $explicit,
+					'isCompilation' => $isCompilation,
 					// 'added' => $added->format('Y-m-d H:i:s')
 				])."\n";
 
@@ -946,9 +956,21 @@ class DB {
 		$stmt = $this->dbh->prepare("
 			SELECT id
 			FROM songs
-			WHERE id= :id"
+			WHERE id = :id"
 		);
 		$res = $stmt->execute(["id" => $id]);
+		return (bool) $stmt->rowCount();
+	}
+
+	public function albumExists($id): bool {
+		$this->connect();
+		$stmt = $this->dbh->prepare("
+			SELECT id
+			FROM albums
+			WHERE id = :id"
+		);
+		$res = $stmt->execute(["id" => $id]);
+		
 		return (bool) $stmt->rowCount();
 	}
 

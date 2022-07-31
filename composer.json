@@ -4,16 +4,18 @@
 			"AppleMusic\\": "classes/"
 		}
 	},
+	"minimum-stability": "dev",
 	"require": {
 		"monolog/monolog": "^2.5",
 		"mobiledetect/mobiledetectlib": "^2.8",
 		"ext-json": "^1.4",
 		"ext-curl": "^7.0",
 		"phpmailer/phpmailer": "^6.5.0",
-		"vlucas/phpdotenv": "^3.3",
+		"vlucas/phpdotenv": "^5.4",
 		"sunra/php-simple-html-dom-parser": "^1.5",
 		"pouler/apple-music-api": "^0.4.0",
-		"ext-openssl": "*"
+		"ext-openssl": "*",
+		"d_mchp/applemusic-api-php": "dev-main"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",

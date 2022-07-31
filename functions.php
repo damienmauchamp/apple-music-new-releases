@@ -244,10 +244,10 @@ function getAllAlbums($display = "artists") {
 	return json_decode($releases);
 }
 
-function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = null, $available = false) {
+function getAllSongs($filtrer_albums = false, $only_explicit = true, $type = null, $available = false, ?bool $compilation = null) {
 	global $daysInterval;
 	$db = new db;
-	$releases = $db->getUserSongs($daysInterval);
+	$releases = $db->getUserSongs($daysInterval, null, $compilation);
 	$artists = array();
 
 	if($filtrer_albums) {

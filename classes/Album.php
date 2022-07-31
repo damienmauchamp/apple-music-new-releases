@@ -3,6 +3,7 @@
 namespace AppleMusic;
 
 use AppleMusic\DB as db;
+use Exception;
 
 class Album extends AbstractItem {
 	private $id;
@@ -12,6 +13,7 @@ class Album extends AbstractItem {
 	private $artwork;
 	private $link;
 	private $explicit;
+	private $isCompilation;
 	private $added;
 
 	public function __construct($id = null) {
@@ -33,12 +35,35 @@ class Album extends AbstractItem {
 		$this->artwork = $array["artwork"];
 		$this->link = "https://music.apple.com/fr/album/".preg_replace('/-{2,}/', '-', trim(preg_replace('/[^\w-]/', '-', strtolower($array["name"])), "-"))."/".$array["id"];
 		$this->explicit = $array["explicit"];
-		$this->added = isset($array["added"]) ? $array["added"] : '';
+		$this->isCompilation = $array["isCompilation"] ?? null;
+		$this->added = $array["added"] ?? '';
 	}
 
 	public function addAlbum($idArtist) {
+		//
 		$db = new db;
+//		$exists = $db->albumExists($this->id);
+//
+//		// checking if the album exists in the database
+//		if(!$exists) {
+//			// if it doesn't, API call to get the album details to see if it's a compilation album
+//			$data = $this->fetch();
+//			$this->isCompilation = $data ? $data['attributes']['isCompilation'] : false;
+//		}
+
 		return $db->addAlbum($this, $idArtist);
+	}
+
+	private function fetch(bool $debug = false): array {
+
+		$api = new AppleMusicAPI();
+		try {
+			$response = $api->get("/catalog/{$api->getStorefront()}/albums/{$this->id}");
+			$data = $response['data'] ?? [];
+			return $data[0] ?? [];
+		} catch(Exception $e) {
+			return [];
+		}
 	}
 
 	public static function objectToArray($obj) {
@@ -106,6 +131,10 @@ class Album extends AbstractItem {
 	 */
 	public function isExplicit() {
 		return $this->explicit;
+	}
+
+	public function isCompilation(): ?bool {
+		return $this->isCompilation;
 	}
 
 	public function isOnPreorder() {

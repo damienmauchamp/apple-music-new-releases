@@ -19,10 +19,10 @@ class AppleMusicAPI {
 	private $logger;
 
 	public function __construct(?string $developer_token = null, string $music_user_token = '') {
-		$this->developer_token = $developer_token ?: getenv('DEVELOPER_TOKEN');
+		$this->developer_token = $developer_token ?: getenv('DEVELOPER_TOKEN') ?: ($_ENV['DEVELOPER_TOKEN'] ?? '');
 		$this->music_user_token = $music_user_token;
 
-		$this->storefront = getenv('STOREFRONT') ?: 'us';
+		$this->storefront = getenv('STOREFRONT') ?: ($_ENV['STOREFRONT'] ?? '') ?: 'us';
 
 		$this->logger = new Logger('AppleMusicAPI');
 		$this->logger->pushHandler(new RotatingFileHandler(self::LOG_FILE, 7, Logger::API));
@@ -66,6 +66,7 @@ class AppleMusicAPI {
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => $method,
+			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_HTTPHEADER => array(
 				'Content-Type: application/json'
 			),

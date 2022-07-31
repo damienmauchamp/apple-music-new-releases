@@ -429,6 +429,7 @@ class API {
 		// echo $this->setAlbumsUrl($scrapped);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		// $header = array("Cache-Control: no-cache");
 		$header = [
 			"Cache-Control: no-cache, no-store, must-revalidate",
@@ -437,7 +438,17 @@ class API {
 		];
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
-		return curl_exec($ch);
+		$res = curl_exec($ch);
+//		print_r([
+//			'$res' => $res,
+//			'curl_error' => curl_error($ch),
+//			'curl_errno' => curl_errno($ch),
+//			'curl_getinfo' => curl_getinfo($ch),
+//		]);
+		curl_close($ch);
+
+		return $res;
+
 	}
 
 	private function curlScrappedRequest($artistName = '') {
