@@ -770,7 +770,7 @@ class DB {
 		$res = $stmt->fetch();
 		$this->disconnect();
 
-		return $res['idArtist'];
+		return $res ? $res['idArtist'] : null;
 	}
 
 	public function logCurlRequest($idArtist, $entity, $url, $data, $scrapped) {
@@ -970,7 +970,7 @@ class DB {
 			WHERE id = :id"
 		);
 		$res = $stmt->execute(["id" => $id]);
-		
+
 		return (bool) $stmt->rowCount();
 	}
 

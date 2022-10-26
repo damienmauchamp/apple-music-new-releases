@@ -76,7 +76,7 @@ class Song extends AbstractItem {
 			$log = "{$icon} [addSong] {$this->id} - {$this->trackName} by {$this->artistName}: already in database";
 			$this->log($log);
 		}
-		return $db->addSong($this, $idArtist);
+		return $added || $db->addSong($this, $idArtist);
 	}
 
 	public function isAdded(): ?bool {
