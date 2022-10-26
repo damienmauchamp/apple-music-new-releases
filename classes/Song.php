@@ -88,7 +88,7 @@ class Song extends AbstractItem {
 	 * @return bool
 	 */
 	protected function addToPlaylist(): bool {
-		$log = "[addSong] {$this->id} - {$this->trackName} by {$this->artistName}: ";
+		$log = "[addSong] {$this->id} - {$this->trackName} by {$this->artistName} [released: {$this->date}]: ";
 
 		try {
 			$user = User::getCurrentUser();
