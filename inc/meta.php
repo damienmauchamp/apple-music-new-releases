@@ -18,8 +18,10 @@ $page_title = isset($pageTitle) ? $pageTitle : "Apple Music Update";
     <meta name="msapplication-TileColor" content="#da532c">
     <!-- <meta name="theme-color" content="#ffffff"> -->
 
-    <script src="<?=$root?>libs/jquery/jquery-1.12.1.js"></script>
-    <script src="<?=$root?>libs/jquery/jquery.migrate-1.2.1.min.js"></script>
+    <!-- <script src="<?=$root?>libs/jquery/jquery-1.12.1.js"></script> -->
+    <!-- <script src="<?=$root?>libs/jquery/jquery.migrate-1.2.1.min.js"></script> -->
+    <script src="<?=$root?>libs/jquery/jquery-3.5.0.js"></script>
+    <script src="<?=$root?>libs/jquery/jquery-migrate-3.4.1.min.js"></script>
     <!-- <script src="<?=$root?>libs/jquery/jquery.mobile-1.4.5.min.js"></script> -->
     <link href="<?=$root?>libs/select2/select2.min.css" rel="stylesheet"/>
     <script src="<?=$root?>libs/select2/select2.min.js"></script>
