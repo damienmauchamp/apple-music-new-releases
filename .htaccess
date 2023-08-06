@@ -1,5 +1,0 @@
-#Empêche le listage de l'ensemble des fichiers si l'index n'est pas présent
-Options -Indexes
-
-# Pour suivre les liens symboliques
-Options +FollowSymlinks
