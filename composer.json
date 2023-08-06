@@ -6,13 +6,13 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
+		"php": ">=8.0.2",
 		"monolog/monolog": "^2.5",
 		"mobiledetect/mobiledetectlib": "^2.8",
 		"phpmailer/phpmailer": "^6.5.0",
 		"vlucas/phpdotenv": "^5.4",
 		"sunra/php-simple-html-dom-parser": "^1.5",
-		"pouler/apple-music-api": "^0.4.0",
-		"d_mchp/applemusic-api-php": "dev-main"
+		"pouler/apple-music-api": "^0.4.0"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",
