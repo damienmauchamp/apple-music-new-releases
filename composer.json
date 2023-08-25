@@ -14,7 +14,6 @@
 		"vlucas/phpdotenv": "^5.4",
 		"sunra/php-simple-html-dom-parser": "^1.5",
 		"pouler/apple-music-api": "^0.4.0",
-		"d_mchp/applemusic-api-php": "dev-main",
 		"ext-curl": "*",
 		"guzzlehttp/guzzle": "7.7.x-dev",
 		"ext-pdo": "*",
