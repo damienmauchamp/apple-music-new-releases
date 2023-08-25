@@ -31,21 +31,21 @@ fetch('./developer_token.php').then(response => response.json()).then(res => {
 		typeInput.value = '';
 	});
 
-	document.getElementById('play-btn').addEventListener('click', () => {
-		/***
-			  Resume or start playback of media item
-			  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992709-play
-		 ***/
-		music.play();
-	});
-
-	document.getElementById('pause-btn').addEventListener('click', () => {
-		/***
-			  Pause playback of media item
-			  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992708-pause
-		 ***/
-		music.pause();
-	});
+	// document.getElementById('play-btn').addEventListener('click', () => {
+	// 	/***
+	// 		  Resume or start playback of media item
+	// 		  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992709-play
+	// 	 ***/
+	// 	music.play();
+	// });
+	//
+	// document.getElementById('pause-btn').addEventListener('click', () => {
+	// 	/***
+	// 		  Pause playback of media item
+	// 		  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992708-pause
+	// 	 ***/
+	// 	music.pause();
+	// });
 
 	document.getElementById('login-btn').addEventListener('click', () => {
 		/***
