@@ -4,7 +4,7 @@ namespace API;
 
 use Psr\Http\Message\ResponseInterface;
 
-class MusicKit extends APIAbstract {
+class MusicKit extends AbstractAPI {
 	protected string $name = 'MusicKit API';
 	protected string $path = 'v1/me/';
 	private string $music_kit_token = '';

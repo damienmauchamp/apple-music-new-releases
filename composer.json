@@ -20,7 +20,8 @@
 		"ext-pdo": "*",
 		"firebase/php-jwt": "dev-main",
 		"ext-openssl": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"voku/simple_html_dom": "dev-master"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",

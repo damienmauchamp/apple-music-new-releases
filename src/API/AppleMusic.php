@@ -2,6 +2,6 @@
 
 namespace API;
 
-class AppleMusic extends APIAbstract {
+class AppleMusic extends AbstractAPI {
 	protected string $name = 'Apple Music API';
 }

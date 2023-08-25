@@ -13,15 +13,17 @@ class APIRequest {
 	private array $parameters;
 	private array $options;
 	private bool $retrying;
+	private bool $scrapped;
 	private int $page = 1;
 
-	public function __construct(Client $client, string $methode, string $uri, array $parameters, array $options, bool $retrying) {
+	public function __construct(Client $client, string $methode, string $uri, array $parameters, array $options, bool $retrying, bool $scrapped = false) {
 		$this->client = $client;
 		$this->methode = $methode;
 		$this->uri = $uri;
 		$this->parameters = $parameters;
 		$this->options = $options;
 		$this->retrying = $retrying;
+		$this->scrapped = $scrapped;
 	}
 
 	/**
@@ -39,7 +41,7 @@ class APIRequest {
 				$request = $this->client->request($this->methode, $this->uri, $this->options);
 		}
 
-		return new APIResponse($request);
+		return new APIResponse($request, $this->scrapped);
 
 //		$this->last_request = $request;
 //		$this->last_response = new APIResponse($request);

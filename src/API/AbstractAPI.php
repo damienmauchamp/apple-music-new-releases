@@ -8,13 +8,15 @@ use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use src\AbstractElement;
 
-class APIAbstract extends AbstractElement {
+class AbstractAPI extends AbstractElement {
 
 	protected string $name = 'API';
 	protected string $url = 'https://api.music.apple.com/';
 	protected string $path = 'v1/';
-	private string $storefront;
+	protected string $storefront;
 	//
+	protected bool $developer = true;
+	protected bool $scrapped = false;
 	private string $developer_token = '';
 	private int $token_expiracy = 3600; // 3600;
 	//
@@ -95,6 +97,11 @@ class APIAbstract extends AbstractElement {
 
 	protected function initDeveloperToken(bool $renew = false): void {
 
+		if(!$this->developer) {
+			$this->developer_token = '';
+			return;
+		}
+
 		// .env DEVELOPER_TOKEN
 		if($this->app->env('DEVELOPER_TOKEN')) {
 			$this->developer_token = $this->app->env('DEVELOPER_TOKEN');
@@ -137,7 +144,7 @@ class APIAbstract extends AbstractElement {
 
 		try {
 //			return $this->client->get($uri, $this->options);
-			$request = new APIRequest($this->client, 'GET', $uri, $parameters, $options, $retrying);
+			$request = new APIRequest($this->client, 'GET', $uri, $parameters, $options, $retrying, $this->scrapped);
 			return $request->run();
 		} catch(GuzzleException $e) {
 			if($this->token_expiracy_status && $this->token_expiracy_status === $e->getCode()) {

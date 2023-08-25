@@ -6,6 +6,13 @@ require '../load.php';
 
 // Getting app
 $app = App::get();
+if(!$app->isLogged()) {
+	http_response_code(401);
+	exit('Not logged');
+}
+
+// Getting app
+$app = App::get();
 
 $expiracy = $_GET['expiracy'] ?? $_POST['expiracy'] ?? 3600; // 15552000
 
