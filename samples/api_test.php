@@ -38,14 +38,14 @@ switch($_GET['type'] ?? null) {
 try {
 	$response = $api->test();
 	dump([
-//		'$api' => $api,
+		'$api' => $api,
 		'$response' => $response,
 		'data' => $response->getData(),
 		'status' => $response->getStatusCode(),
 	]);
 } catch(GuzzleException $e) {
 	dump([
-//		'$api' => $api,
+		'$api' => $api,
 		'$e' => $e,
 	]);
 }

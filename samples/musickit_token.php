@@ -32,6 +32,8 @@ if($token) {
 	}
 	exit(json_encode($result));
 }
+
+$token_valid = $user->isValidToken();
 ?>
 
 <html lang="en">
@@ -39,12 +41,13 @@ if($token) {
 		<title>Apple MusicKit Token Generation</title>
 	</head>
 	<body>
-		Hi <?= $user->getFirstName() ?>!
-		<button id="login-btn">Login to Apple Music</button>
-		<div>Token valid : <?= $user->isValidToken() ?></div>
+		<div>Hi <?= $user->getFirstName() ?>!</div>
+		<div>Token valid : <?= $token_valid ?></div>
 		<div>Token creation : <?= $user->getTokenCreationDateToString() ?></div>
 		<!--		<div>Token expiracy : --><?php //= $user->getTokenExpirationDateToString() ?><!--</div>-->
+		<button id="login-btn"><?= $token_valid ? 'Already logged, refresh token ?' : 'Login to Apple Music' ?></button>
 		<script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+		<!--		<script src="/musickit/v1/musickit.js"></script>-->
 		<script src="music_token.js"></script>
 	</body>
 </html>

@@ -2,9 +2,11 @@
 
 namespace Entity\Users;
 
+use API\MusicKit;
 use DateInterval;
 use DateTime;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use src\AbstractElement;
 
 class User extends AbstractElement {
@@ -120,6 +122,19 @@ class User extends AbstractElement {
 	}
 
 	public function isValidToken(): bool {
+
+		try {
+			$api = MusicKit::fromUser($this->id);
+		} catch(Exception $e) {
+			return false;
+		}
+
+		try {
+			$api->test();
+		} catch(GuzzleException $e) {
+			return false;
+		}
+		
 		return true;
 	}
 }

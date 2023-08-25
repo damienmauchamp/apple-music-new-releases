@@ -2,6 +2,7 @@
 
 namespace API;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class MusicKit extends AbstractAPI {
@@ -25,12 +26,27 @@ class MusicKit extends AbstractAPI {
 		return $api->setUserToken();
 	}
 
-//	public static function fromUser(int $id): self {
-//		// todo : fetch user via ID
-//	}
+	/**
+	 * @throws Exception No user found
+	 */
+	public static function fromUser(int $id): self {
+		$api = new self();
+		return $api->setUserTokenViaId($id);
+	}
 
 	public function setUserToken(): self {
 		return $this->setMusicKitToken($this->app->getUserToken());
+	}
+
+	/**
+	 * @throws Exception No user found
+	 */
+	public function setUserTokenViaId(int $id): self {
+		$user = $this->app->manager()->findOne2('users', ['id' => $id]);
+		if(!$user) {
+			throw new Exception('No user found');
+		}
+		return $this->setMusicKitToken($user['token']);
 	}
 
 	public function setMusicKitToken(string $music_kit_token): self {
