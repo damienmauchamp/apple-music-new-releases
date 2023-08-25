@@ -97,14 +97,12 @@ class Manager {
 
 		$set = [];
 		foreach($params as $key => $value) {
-//			$set[] = '? = ?';
 			$set[] = sprintf('%s = ?', $key);
 			$real_params[] = $value;
 		}
 
 		$conditions = [];
 		foreach($where as $key => $value) {
-//			$conditions[] = '? = ?';
 			$conditions[] = sprintf('%s = ?', $key);
 			$real_params[] = $value;
 		}
@@ -121,6 +119,20 @@ class Manager {
 		}
 		$query = $this->setUpdateQuery($table, $params, $where);
 		return $this->exec($query, $params, true);
+	}
+
+	public function insert(string $table, array $params = []): ?int {
+		if(!$params) {
+			return null;
+		}
+		$fields = sprintf('(%s)', implode(',', array_keys($params)));
+		$values = implode(',', array_fill(0, count($params), '?'));
+		$query = sprintf("INSERT INTO %s %s VALUES({$values})", $table, $fields);
+		$stmt = $this->pdo->prepare($query);
+		if($stmt->execute(array_values($params))) {
+			return $this->pdo->lastInsertId();
+		}
+		return null;
 	}
 
 }

@@ -6,7 +6,6 @@ use DateInterval;
 use DateTime;
 use Exception;
 use src\AbstractElement;
-use src\Database\DBTrait;
 
 class User extends AbstractElement {
 
@@ -16,7 +15,7 @@ class User extends AbstractElement {
 	private string $username;
 	private string $firstname;
 	private string $email;
-	private ?string $music_token = null;
+	private ?string $music_kit_token = null;
 	private ?DateTime $music_token_created = null;
 	private ?DateTime $music_token_expiracy = null;
 
@@ -40,12 +39,12 @@ class User extends AbstractElement {
 		$this->firstname = $data['prenom'];
 		$this->email = $data['mail'];
 
-		$this->setMusicToken($data['musickit_user_token'], null, $data['date_generated']);
+		$this->setMusicKitToken($data['musickit_user_token'], null, $data['date_generated']);
 	}
 
-	public function setMusicToken(string $music_token, ?string $date_expired, ?string $date_created): self {
-		$this->music_token = $music_token;
-		if(!$this->music_token) {
+	public function setMusicKitToken(string $music_token, ?string $date_expired, ?string $date_created): self {
+		$this->music_kit_token = $music_token;
+		if(!$this->music_kit_token) {
 			return $this;
 		}
 
@@ -65,7 +64,7 @@ class User extends AbstractElement {
 	}
 
 	public function musicTokenExpired(): bool {
-		return !$this->music_token || $this->music_token_expiracy < new DateTime();
+		return !$this->music_kit_token || $this->music_token_expiracy < new DateTime();
 	}
 
 	public static function current(): ?self {
@@ -90,12 +89,37 @@ class User extends AbstractElement {
 	 */
 	public function updateToken(): self {
 		$res = $this->app->manager()->update('users', [
-			'musickit_user_token' => $this->music_token,
+			'musickit_user_token' => $this->music_kit_token,
 			'date_generated' => $this->music_token_created->format('Y-m-d H:i:s.u'),
 		], ['id' => $this->id]);
+
 		if(!$res) {
 			throw new Exception('Error while saving new MusicKit token');
 		}
 		return $this;
+	}
+
+	public function getMusicKitToken(): string {
+		return $this->music_kit_token;
+	}
+
+	public function getTokenCreationDate(): ?DateTime {
+		return $this->music_token_created;
+	}
+
+	public function getTokenCreationDateToString(string $format = 'Y-m-d H:i:s'): string {
+		return $this->music_token_created ? $this->music_token_created->format($format) : '';
+	}
+
+	public function getTokenExpirationDate(): ?DateTime {
+		return $this->music_token_expiracy;
+	}
+
+	public function getTokenExpirationDateToString(string $format = 'Y-m-d H:i:s'): string {
+		return $this->music_token_expiracy ? $this->music_token_expiracy->format($format) : '';
+	}
+
+	public function isValidToken(): bool {
+		return true;
 	}
 }

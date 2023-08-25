@@ -66,7 +66,7 @@ fetch('./developer_token.php').then(response => response.json()).then(res => {
 });
 // });
 
-let saveToken = (musicUserToken) => {
+let saveToken = (musicUserToken, expiracy) => {
 	return fetch('', {
 		method: "post",
 		body: JSON.stringify({token: musicUserToken}),

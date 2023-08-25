@@ -3,7 +3,8 @@
 		"psr-4": {
 			"AppleMusic\\": "classes/",
 			"src\\": "src",
-			"Entity\\": "src/Entity"
+			"Entity\\": "src/Entity",
+			"API\\": "src/API"
 		}
 	},
 	"minimum-stability": "dev",

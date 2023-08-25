@@ -50,6 +50,11 @@ class App {
 		return $this->getUser() ? $this->getUser()->getId() : null;
 	}
 
+	public function getUserToken(): string {
+//		return $this->getUser()?->getMusicKitToken(); // PHP 8
+		return $this->getUser() ? $this->getUser()->getMusicKitToken() : '';
+	}
+
 	public function isLogged(): bool {
 		return (bool) User::current();
 //		return (bool) $this->user;

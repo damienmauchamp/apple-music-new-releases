@@ -31,7 +31,7 @@ if($token) {
 	];
 	$generated = $_POST['generated'] ?? 'now';
 	try {
-		$user->setMusicToken($token, null, $generated)
+		$user->setMusicKitToken($token, null, $generated)
 			->updateToken();
 	} catch(Exception $e) {
 		$result['error'] = true;
@@ -48,6 +48,9 @@ if($token) {
 	<body>
 		Hi <?= $user->getFirstName() ?>!
 		<button id="login-btn">Login to Apple Music</button>
+		<div>Token valid : <?= $user->isValidToken() ?></div>
+		<div>Token creation : <?= $user->getTokenCreationDateToString() ?></div>
+		<!--		<div>Token expiracy : --><?php //= $user->getTokenExpirationDateToString() ?><!--</div>-->
 		<script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
 		<script src="music_token.js"></script>
 	</body>
