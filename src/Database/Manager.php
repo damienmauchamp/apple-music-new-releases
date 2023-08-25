@@ -91,13 +91,36 @@ class Manager {
 		return sprintf('SELECT * FROM %s WHERE %s', $table, $where ? implode(' AND ', $where) : 1);
 	}
 
-//	private function parseParams(string &$requete, array &$params = []):string {
-//
-//		$where = [];
-//		foreach(array_keys($params) as $k => $key) {
-//			$where[] = sprintf(' AND %s = :%s', $key, $key);
-//		}
-////		return implode(' AND ', $where);
-//	}
+	private function setUpdateQuery(string $table, array &$params = [], array $where = []): string {
+
+		$real_params = [];
+
+		$set = [];
+		foreach($params as $key => $value) {
+//			$set[] = '? = ?';
+			$set[] = sprintf('%s = ?', $key);
+			$real_params[] = $value;
+		}
+
+		$conditions = [];
+		foreach($where as $key => $value) {
+//			$conditions[] = '? = ?';
+			$conditions[] = sprintf('%s = ?', $key);
+			$real_params[] = $value;
+		}
+
+		$sets = implode(', ', $set);
+		$params = $real_params;
+		return sprintf("UPDATE %s SET {$sets} WHERE %s", $table,
+			$conditions ? implode(' AND ', $conditions) : 1);
+	}
+
+	public function update(string $table, array $params, array $where): int {
+		if(!$params || !$where) {
+			return 0;
+		}
+		$query = $this->setUpdateQuery($table, $params, $where);
+		return $this->exec($query, $params, true);
+	}
 
 }

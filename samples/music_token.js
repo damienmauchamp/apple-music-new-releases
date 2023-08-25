@@ -53,8 +53,11 @@ fetch('./developer_token.php').then(response => response.json()).then(res => {
 			  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992701-authorize
 		 ***/
 		music.authorize().then(musicUserToken => {
-			console.log(`Authorized, music-user-token: ${musicUserToken}`);
-			alert(musicUserToken);
+			saveToken(musicUserToken, new Date().toLocaleString('us-US')).then(res => res.json()).then(json => {
+				alert(json.message);
+			}).catch(err => {
+				console.error(err);
+			})
 		});
 	});
 
@@ -62,3 +65,10 @@ fetch('./developer_token.php').then(response => response.json()).then(res => {
 	window.music = music;
 });
 // });
+
+let saveToken = (musicUserToken) => {
+	return fetch('', {
+		method: "post",
+		body: JSON.stringify({token: musicUserToken}),
+	});
+}

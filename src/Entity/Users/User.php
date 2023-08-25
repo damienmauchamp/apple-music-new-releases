@@ -30,8 +30,7 @@ class User extends AbstractElement {
 	 * @throws Exception
 	 */
 	private function load() {
-		$manager = $this->app->manager();
-		$data = $manager->findOne2('users', ['id' => $this->id]);
+		$data = $this->app->manager()->findOne2('users', ['id' => $this->id]);
 		if(!$data) {
 			// todo : define exception and logout
 			throw new Exception("Cannot load user");
@@ -86,4 +85,17 @@ class User extends AbstractElement {
 		return $this->firstname;
 	}
 
+	/**
+	 * @throws Exception
+	 */
+	public function updateToken(): self {
+		$res = $this->app->manager()->update('users', [
+			'musickit_user_token' => $this->music_token,
+			'date_generated' => $this->music_token_created->format('Y-m-d H:i:s.u'),
+		], ['id' => $this->id]);
+		if(!$res) {
+			throw new Exception('Error while saving new MusicKit token');
+		}
+		return $this;
+	}
 }
