@@ -15,13 +15,12 @@
 		"vlucas/phpdotenv": "^5.4",
 		"sunra/php-simple-html-dom-parser": "^1.5",
 		"pouler/apple-music-api": "^0.4.0",
-		"ext-curl": "*",
 		"guzzlehttp/guzzle": "7.7.x-dev",
-		"ext-pdo": "*",
 		"firebase/php-jwt": "dev-main",
-		"ext-openssl": "*",
+		"ext-curl": "*",
 		"ext-json": "*",
-		"voku/simple_html_dom": "dev-master"
+		"ext-openssl": "*",
+		"ext-pdo": "*"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",
