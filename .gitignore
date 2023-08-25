@@ -19,3 +19,4 @@ v2
 
 #
 .htaccess
+server/keys/*.p8

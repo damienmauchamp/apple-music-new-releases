@@ -1,7 +1,9 @@
 {
 	"autoload": {
 		"psr-4": {
-			"AppleMusic\\": "classes/"
+			"AppleMusic\\": "classes/",
+			"src\\": "src",
+			"Entity\\": "src/Entity"
 		}
 	},
 	"minimum-stability": "dev",
@@ -12,7 +14,13 @@
 		"vlucas/phpdotenv": "^5.4",
 		"sunra/php-simple-html-dom-parser": "^1.5",
 		"pouler/apple-music-api": "^0.4.0",
-		"d_mchp/applemusic-api-php": "dev-main"
+		"d_mchp/applemusic-api-php": "dev-main",
+		"ext-curl": "*",
+		"guzzlehttp/guzzle": "7.7.x-dev",
+		"ext-pdo": "*",
+		"firebase/php-jwt": "dev-main",
+		"ext-openssl": "*",
+		"ext-json": "*"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",
@@ -25,5 +33,8 @@
 		"scrap": "Global scrapped update",
 		"fetch-debug": "Global update with display",
 		"scrap-debug": "Global scrapped update with display"
+	},
+	"require-dev": {
+		"symfony/var-dumper": "5.4.x-dev"
 	}
 }
