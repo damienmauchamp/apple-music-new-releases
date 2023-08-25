@@ -14,23 +14,23 @@ fetch('./developer_token.php').then(response => response.json()).then(res => {
 		}
 	});
 
-	// setup click handlers
-	document.getElementById('add-to-q-btn').addEventListener('click', () => {
-		const idInput = document.getElementById('id-input');
-		const typeInput = document.getElementById('type-input');
-
-		/***
-			  Add an item to the playback queue
-			  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992716-setqueue
-		 ***/
-		music.setQueue({
-			[typeInput.value]: idInput.value
-		});
-
-		idInput.value = '';
-		typeInput.value = '';
-	});
-
+	// // setup click handlers
+	// document.getElementById('add-to-q-btn').addEventListener('click', () => {
+	// 	const idInput = document.getElementById('id-input');
+	// 	const typeInput = document.getElementById('type-input');
+	//
+	// 	/***
+	// 		  Add an item to the playback queue
+	// 		  https://developer.apple.com/documentation/musickitjs/musickit/musickitinstance/2992716-setqueue
+	// 	 ***/
+	// 	music.setQueue({
+	// 		[typeInput.value]: idInput.value
+	// 	});
+	//
+	// 	idInput.value = '';
+	// 	typeInput.value = '';
+	// });
+	//
 	// document.getElementById('play-btn').addEventListener('click', () => {
 	// 	/***
 	// 		  Resume or start playback of media item
