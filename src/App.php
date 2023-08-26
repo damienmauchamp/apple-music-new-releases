@@ -2,8 +2,10 @@
 
 namespace src;
 
+use DomainException;
 use Dotenv\Dotenv;
 use Entity\Users\User;
+use Exception;
 use src\Database\Manager;
 use src\Token\JWT;
 
@@ -73,7 +75,7 @@ class App {
 	}
 
 	public function getAppleAuthKey(): string {
-		
+
 		if($this->env('APPLE_AUTH_KEY')) {
 			return $this->env('APPLE_AUTH_KEY');
 		}
@@ -85,12 +87,30 @@ class App {
 		return file_get_contents($path);
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function getDeveloperToken(int $expiracy = 3600): string {
 		$private_key = $this->getAppleAuthKey();
 		$team_id = $this->env('APPLE_TEAM_ID');
 		$key_id = $this->env('APPLE_KEY_ID');
 		$expiracy = $_POST['expiracy'] ?? 3600;
-		return JWT::getToken($private_key, $key_id, $team_id, null, (int) $expiracy);
+
+		if(!$private_key) {
+			throw new Exception('Unable to generate developer token : no APPLE_AUTH_KEY_FILE or APPLE_AUTH_KEY found');
+		}
+		if(!$team_id) {
+			throw new Exception('Unable to generate developer token : no APPLE_TEAM_ID found');
+		}
+		if(!$key_id) {
+			throw new Exception('Unable to generate developer token : no APPLE_KEY_ID found');
+		}
+
+		try {
+			return JWT::getToken($private_key, $key_id, $team_id, null, (int) $expiracy);
+		} catch(DomainException $exception) {
+			throw new Exception(sprintf('Unable to generate developer token : %s', $exception->getMessage()));
+		}
 	}
 
 }
