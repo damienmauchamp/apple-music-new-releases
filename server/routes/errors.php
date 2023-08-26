@@ -6,11 +6,13 @@ use src\App;
 
 //SimpleRouter::get('/not-found', 'PageController@notFound');
 SimpleRouter::get('/not-found', function () {
+	http_response_code(404);
 	return '404 not-found';
 })->name('error.404');
 
 //SimpleRouter::get('/forbidden', 'PageController@notFound');
 SimpleRouter::get('/forbidden', function () {
+	http_response_code(403);
 	return '403 forbidden';
 })->name('error.403');
 
