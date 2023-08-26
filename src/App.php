@@ -69,10 +69,15 @@ class App {
 	}
 
 	private function getAppleAuthKeyPath(): string {
-		return sprintf('%s/server/keys/%s', self::BASE_DIR, $this->env('APPLE_AUTH_KEY'));
+		return sprintf('%s/server/keys/%s', self::BASE_DIR, $this->env('APPLE_AUTH_KEY_FILE'));
 	}
 
 	public function getAppleAuthKey(): string {
+		
+		if($this->env('APPLE_AUTH_KEY')) {
+			return $this->env('APPLE_AUTH_KEY');
+		}
+
 		$path = $this->getAppleAuthKeyPath();
 		if(!is_file($path)) {
 			return '';
