@@ -18,6 +18,6 @@ v2
 *desktop.ini
 
 #
-.htaccess
+/.htaccess
 server/keys/*.p8
 composer.lock
