@@ -20,7 +20,8 @@
 		"ext-curl": "*",
 		"ext-json": "*",
 		"ext-openssl": "*",
-		"ext-pdo": "*"
+		"ext-pdo": "*",
+		"pecee/simple-router": "dev-master"
 	},
 	"scripts": {
 		"fetch": "php global.php refresh= nodisplay=",

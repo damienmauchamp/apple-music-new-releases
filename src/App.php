@@ -7,9 +7,11 @@ use Dotenv\Dotenv;
 use Entity\Users\User;
 use Exception;
 use src\Database\Manager;
+use src\Router\RouterTrait;
 use src\Token\JWT;
 
 class App {
+	use RouterTrait;
 
 	private const BASE_DIR = __DIR__.'/..';
 
@@ -112,5 +114,28 @@ class App {
 			throw new Exception(sprintf('Unable to generate developer token : %s', $exception->getMessage()));
 		}
 	}
+
+	// region Router
+	public function loadRoutes(string $dir = '',
+							   string $file = '*'): void {
+		if($dir) {
+			$routes_path = sprintf(self::BASE_DIR.'/server/routes/%s/%s.php', $dir, $file);
+			$routes = glob($routes_path);
+		}
+		else {
+			$routes = array_merge(
+				glob(sprintf(self::BASE_DIR.'/server/routes/%s.php', $file)),
+				glob(sprintf(self::BASE_DIR.'/server/routes/*/%s.php', $file))
+			);
+		}
+
+		foreach($routes as $route) {
+			if(preg_match('/disabled/', $route)) {
+				continue;
+			}
+			require_once $route;
+		}
+	}
+	// endregion Router
 
 }
