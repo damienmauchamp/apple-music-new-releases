@@ -10,6 +10,7 @@ $app = App::get();
 $app->loadRoutes('auth');
 $app->loadRoutes('users');
 $app->loadRoutes('', 'errors');
+$app->loadRoutes('api');
 
 SimpleRouter::setDefaultNamespace('\src\Controllers');
 
