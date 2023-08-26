@@ -46,7 +46,7 @@ class MusicKit extends AbstractAPI {
 		if(!$user) {
 			throw new Exception('No user found');
 		}
-		return $this->setMusicKitToken($user['token']);
+		return $this->setMusicKitToken($user['musickit_user_token']);
 	}
 
 	public function setMusicKitToken(string $music_kit_token): self {
