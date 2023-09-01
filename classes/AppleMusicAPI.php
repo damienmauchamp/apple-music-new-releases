@@ -2,6 +2,7 @@
 
 namespace AppleMusic;
 
+use GuzzleHttp\Client;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -9,14 +10,16 @@ use Monolog\Handler\StreamHandler;
 
 class AppleMusicAPI {
 
-	private $url = 'https://api.music.apple.com/v1';
+	private string $url = 'https://api.music.apple.com/v1';
 	private $storefront;
 
 	private $developer_token;
-	private $music_user_token;
+	private string $music_user_token;
 
 	const LOG_FILE = DEFAULT_PATH.'/logs/apple_music_api.log';
-	private $logger;
+	private Logger $logger;
+
+//	private Client $client;
 
 	public function __construct(?string $developer_token = null, string $music_user_token = '') {
 		$this->developer_token = $developer_token ?: getenv('DEVELOPER_TOKEN') ?: ($_ENV['DEVELOPER_TOKEN'] ?? '');
@@ -26,6 +29,8 @@ class AppleMusicAPI {
 
 		$this->logger = new Logger('AppleMusicAPI');
 		$this->logger->pushHandler(new RotatingFileHandler(self::LOG_FILE, 7, Logger::API));
+
+//		$this->client = new Client();
 	}
 
 	public function get(string $endpoint, array $params = []): array {
@@ -54,6 +59,10 @@ class AppleMusicAPI {
 	}
 
 	private function request(string $method, string $endpoint, array $params = []): array {
+
+		//
+//		defaults' => [ 'verify' => false
+
 		$curl = curl_init();
 
 		$url = "{$this->url}{$endpoint}";
