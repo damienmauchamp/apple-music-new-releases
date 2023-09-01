@@ -1,0 +1,38 @@
+{
+	"dependencies": {
+		"vue": "^3.3.4",
+		"vue-loader": "^17.2.2",
+		"vue-template-compiler": "^2.7.14"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.22.11",
+		"@babel/preset-env": "^7.22.14",
+		"@symfony/webpack-encore": "^4.4.0",
+		"@webpack-cli/generators": "^3.0.7",
+		"babel-loader": "^9.1.3",
+		"css-loader": "^6.8.1",
+		"html-webpack-plugin": "^5.5.3",
+		"prettier": "^2.8.7",
+		"webpack": "^5.88.2",
+		"webpack-cli": "^5.1.4",
+		"webpack-dev-server": "^4.15.1",
+		"workbox-webpack-plugin": "^6.5.4",
+		"@vue/cli-plugin-babel": "~5.0.0",
+		"@vue/cli-plugin-pwa": "~5.0.0",
+		"@vue/cli-plugin-eslint": "~5.0.0",
+		"@vue/cli-service": "~5.0.0"
+	},
+	"version": "1.0.0",
+	"description": "My webpack project",
+	"name": "my-webpack-project",
+	"scripts": {
+		"wp:build": "webpack --mode=production --node-env=production",
+		"wp:build:dev": "webpack --mode=development",
+		"wp:build:prod": "webpack --mode=production --node-env=production",
+		"wp:watch": "webpack --watch",
+		"wp:serve": "webpack serve",
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build",
+		"lint": "vue-cli-service lint"
+	}
+}

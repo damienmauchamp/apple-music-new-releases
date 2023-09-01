@@ -2,6 +2,18 @@
 
 Fully responsive, based on Apple Music's stylesheet.
 
+## TMP npm
+
+```
+npm run build
+```
+
+or
+
+```
+yarn build
+```
+
 ## TMP .env
 
 ```dotenv
