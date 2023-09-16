@@ -25,10 +25,10 @@
 		"pecee/simple-router": "dev-master"
 	},
 	"scripts": {
-		"fetch": "php global.php refresh= nodisplay=",
-		"scrap": "php global_scrapping.php refresh= nodisplay=",
-		"fetch-debug": "php global.php refresh=",
-		"scrap-debug": "php global_scrapping.php refresh="
+		"fetch": "@php global.php refresh= nodisplay=",
+		"scrap": "@php global_scrapping.php refresh= nodisplay=",
+		"fetch-debug": "@php global.php refresh=",
+		"scrap-debug": "@php global_scrapping.php refresh="
 	},
 	"scripts-descriptions": {
 		"fetch": "Global update",

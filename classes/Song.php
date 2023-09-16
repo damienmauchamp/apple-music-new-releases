@@ -21,6 +21,8 @@ class Song extends AbstractItem {
 	private $artistName;
 	protected $date;
 	private $artwork;
+	private $artistLink;
+	private $albumLink;
 	private $link;
 	private $explicit;
 	private $isStreamable;

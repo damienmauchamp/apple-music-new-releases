@@ -38,8 +38,8 @@ class API {
 
 	public function searchArtist($search) {
 		$this->entity = 'musicArtist';
-		$results = json_decode($this->curlSearch($search), true);
-
+		$text = $this->curlSearch($search);
+		$results = json_decode($text, true);
 		return $this->fetch($results, "artistsSearch");
 	}
 
@@ -115,13 +115,14 @@ class API {
 	 * @return Artist|Album|array|null
 	 */
 	protected function fetch($results, $type, $scrapped = false) {
+		$results = $results ?? [];
 		switch($type) {
 			case "songs":
 				$songs = [];
 
 				if(!$scrapped) {
 					if(isset($results["results"])) {
-						foreach($results["results"] as $collection) {
+						foreach($results["results"] ?? [] as $collection) {
 							if($collection["wrapperType"] === "track") {
 
 								/*if (strstr($collection["artistName"], 'Dinos')) {
@@ -258,23 +259,21 @@ class API {
 				$albums = [];
 
 				if(!$scrapped) {
-					if(isset($results["results"])) {
-						foreach($results["results"] as $collection) {
-							if($collection["wrapperType"] === "collection") {
-								$album = Album::withArray(
-									[
-										//                        "_id" => null,
-										"id" => $collection["collectionId"],
-										"name" => $collection["collectionName"],
-										"artistName" => $collection["artistName"],
-										"date" => $collection["releaseDate"],
-										"artwork" => $collection["artworkUrl100"],
-										"explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
-										//                        "link" => $collection["collectionViewUrl"],
-									]
-								);
-								$albums[] = $album;
-							}
+					foreach($results["results"] ?? [] as $collection) {
+						if($collection["wrapperType"] === "collection") {
+							$album = Album::withArray(
+								[
+									//                        "_id" => null,
+									"id" => $collection["collectionId"],
+									"name" => $collection["collectionName"],
+									"artistName" => $collection["artistName"],
+									"date" => $collection["releaseDate"],
+									"artwork" => $collection["artworkUrl100"],
+									"explicit" => $collection["collectionExplicitness"] == "explicit" ? true : false,
+									//                        "link" => $collection["collectionViewUrl"],
+								]
+							);
+							$albums[] = $album;
 						}
 					}
 				}
@@ -341,7 +340,7 @@ class API {
 				}
 				return $searchResults;*/
 				$ids = [];
-				foreach($results["results"] as $collection) {
+				foreach($results["results"] ?? [] as $collection) {
 					$id = isset($collection["artistId"]) ? $collection["artistId"] : 0;
 
 					if(Artist::isAdded($id)) {
@@ -613,8 +612,14 @@ class API {
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		$header = ["Cache-Control: no-cache"];
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-
 		return curl_exec($ch);
+//		$body = curl_exec($ch);
+//		print_r([
+//			'body' => $body,
+//			'err' => curl_error($ch),
+//			'getinfo' => curl_getinfo($ch),
+//		]);
+//		return $body;
 	}
 
 	public function update($lastUpdate, $scrapped = false, $artistName = '') {
