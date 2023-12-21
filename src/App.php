@@ -96,7 +96,7 @@ class App {
 		$private_key = $this->getAppleAuthKey();
 		$team_id = $this->env('APPLE_TEAM_ID');
 		$key_id = $this->env('APPLE_KEY_ID');
-		$expiracy = $_POST['expiracy'] ?? 3600;
+//		$expiracy = $_POST['expiracy'] ?? 3600;
 
 		if(!$private_key) {
 			throw new Exception('Unable to generate developer token : no APPLE_AUTH_KEY_FILE or APPLE_AUTH_KEY found');

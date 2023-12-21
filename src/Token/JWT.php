@@ -22,7 +22,7 @@ class JWT {
 		}
 
 		$header = [
-			"kid" => sprintf('"%"', $key_id),
+			"kid" => sprintf('"%s"', $key_id),
 			"typ" => "JWT"
 		];
 

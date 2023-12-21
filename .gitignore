@@ -22,3 +22,5 @@ v2
 /.htaccess
 server/keys/*.p8
 composer.lock
+
+dist/
