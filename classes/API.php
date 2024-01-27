@@ -5,7 +5,6 @@ namespace AppleMusic;
 use AppleMusic\Album as Album;
 use AppleMusic\DB as db;
 use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Sunra\PhpSimple\HtmlDomParser;
 
@@ -16,7 +15,7 @@ class API {
 	private $limit = 200;
 	private $sort = "recent";
 
-	const LOG_FILE = DEFAULT_PATH.'/logs/itunes_api.log';
+	const LOG_FILE = DEFAULT_PATH . '/logs/itunes_api.log';
 	private $logger;
 
 	/**
@@ -32,14 +31,14 @@ class API {
 
 	private function logRequest(string $type, $scrapped, array $data = []): void {
 		$complement = $scrapped ? 'SCRAPPED' : '';
-		$this->logger->info("Fetching {$type} {$this->id} {$complement}".json_encode($data));
+		$this->logger->info("Fetching {$type} {$this->id} {$complement}" . json_encode($data));
 	}
-
 
 	public function searchArtist($search) {
 		$this->entity = 'musicArtist';
 		$text = $this->curlSearch($search);
 		$results = json_decode($text, true);
+
 		return $this->fetch($results, "artistsSearch");
 	}
 
@@ -51,7 +50,7 @@ class API {
 
 	public function fetchAlbums($scrapped = false, $artistName = '') {
 		$json = $this->curlRequest($scrapped, $artistName);
-		$url = $this->setAlbumsUrl($scrapped, $artistName, false).$this->getUrlTimestamp();
+		$url = $this->setAlbumsUrl($scrapped, $artistName, false) . $this->getUrlTimestamp();
 
 		$db = new db();
 		$db->logCurlRequest($this->id, $this->entity, $url, $json, $scrapped ? '1' : '0');
@@ -65,7 +64,7 @@ class API {
 			'url' => $url,
 		]);
 
-		if($scrapped) {
+		if ($scrapped) {
 			return [
 				'albums' => $this->fetch($results, "albums", $scrapped),
 				'songs' => $this->fetch($results, "songs", $scrapped),
@@ -80,7 +79,7 @@ class API {
 		$this->entity = 'song';
 		//$this->limit = 200;
 		$json = $this->curlRequest($scrapped, $artistName);
-		$url = $this->setAlbumsUrl($scrapped, $artistName, false).$this->getUrlTimestamp();
+		$url = $this->setAlbumsUrl($scrapped, $artistName, false) . $this->getUrlTimestamp();
 
 		$db = new db();
 		$db->logCurlRequest($this->id, $this->entity, $url, $json, $scrapped ? '1' : '0');
@@ -94,7 +93,7 @@ class API {
 			'url' => $url,
 		]);
 
-		if($scrapped) {
+		if ($scrapped) {
 			return [
 				'albums' => $this->fetch($results, "albums", $scrapped),
 				'songs' => $this->fetch($results, "songs", $scrapped),
@@ -116,14 +115,14 @@ class API {
 	 */
 	protected function fetch($results, $type, $scrapped = false) {
 		$results = $results ?? [];
-		switch($type) {
+		switch ($type) {
 			case "songs":
 				$songs = [];
 
-				if(!$scrapped) {
-					if(isset($results["results"])) {
-						foreach($results["results"] ?? [] as $collection) {
-							if($collection["wrapperType"] === "track") {
+				if (!$scrapped) {
+					if (isset($results["results"])) {
+						foreach ($results["results"] ?? [] as $collection) {
+							if ($collection["wrapperType"] === "track") {
 
 								/*if (strstr($collection["artistName"], 'Dinos')) {
 								file_put_contents(LOG_FILE, "\nCREATING SONG: " . json_encode(array(
@@ -165,31 +164,30 @@ class API {
 							}
 						}
 					}
-				}
-				else {
+				} else {
 					// print_r($results);
-					if(!$results['songs']) {
+					if (!$results['songs']) {
 						return $songs;
 					}
 
-					foreach($results['songs'] as $collection) {
+					foreach ($results['songs'] as $collection) {
 
 						// check if the album is already in the db
 						$db = new db();
 						$verification_existence = $db->selectPerso("SELECT * FROM songs WHERE id = '{$collection['id']}'");
 
 						// print_r(['collection' => $collection]);
-						if($verification_existence) {
+						if ($verification_existence) {
 							// print_r(['verification_existence' => $verification_existence]);
 							continue;
 						}
 
 						//
 						$explicit = isset($collection['attributes']['contentRatingsBySystem']) &&
-							isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
-							isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
+						isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
+						isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
 							($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" ||
-								$collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
+							$collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
 
 						$artworkId = $collection['relationships']['artwork']['data']['id'];
 						$artworkAttributesMatches = array_filter($results['images'], function ($relationship) use ($artworkId) {
@@ -202,7 +200,7 @@ class API {
 						//     print_r($collection);
 						// }
 						$releaseDate = $collection["attributes"]["releaseDate"];
-						if(preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
+						if (preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
 							$releaseDate = "{$collection["attributes"]["releaseDate"]}-01-01";
 						} /*else if (preg_match('/^\d{4}\-\d{2}\-\d{2}/', $collection["attributes"]["releaseDate"])) {
 						$releaseDate = $collection["attributes"]["releaseDate"];
@@ -246,8 +244,8 @@ class API {
 				return $songs;
 			case "artist":
 				$artist = null;
-				foreach($results["results"] ?? [] as $collection) {
-					if($collection["wrapperType"] === "artist") {
+				foreach ($results["results"] ?? [] as $collection) {
+					if ($collection["wrapperType"] === "artist") {
 						$artist = new Artist($collection["artistId"]);
 						$artist->setName($collection["artistName"]);
 						break;
@@ -258,9 +256,9 @@ class API {
 			case "albums":
 				$albums = [];
 
-				if(!$scrapped) {
-					foreach($results["results"] ?? [] as $collection) {
-						if($collection["wrapperType"] === "collection") {
+				if (!$scrapped) {
+					foreach ($results["results"] ?? [] as $collection) {
+						if ($collection["wrapperType"] === "collection") {
 							$album = Album::withArray(
 								[
 									//                        "_id" => null,
@@ -276,29 +274,28 @@ class API {
 							$albums[] = $album;
 						}
 					}
-				}
-				else {
-					if(!$results['albums']) {
+				} else {
+					if (!$results['albums']) {
 						return $albums;
 					}
 
-					foreach($results['albums'] as $collection) {
+					foreach ($results['albums'] as $collection) {
 
 						// check if the album is already in the db
 						$db = new db();
 						$verification_existence = $db->selectPerso("SELECT * FROM albums WHERE id = '{$collection['id']}'");
 
-						if($verification_existence) {
+						if ($verification_existence) {
 							//print_r($verification_existence);
 							continue;
 						}
 
 						//
 						$explicit = isset($collection['attributes']['contentRatingsBySystem']) &&
-							isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
-							isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
+						isset($collection['attributes']['contentRatingsBySystem']['riaa']) &&
+						isset($collection['attributes']['contentRatingsBySystem']['riaa']['name']) &&
 							($collection['attributes']['contentRatingsBySystem']['riaa']['name'] === "Explicit" ||
-								$collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
+							$collection['attributes']['contentRatingsBySystem']['riaa']['value'] > 0);
 
 						$artworkId = $collection['relationships']['artwork']['data']['id'];
 						$artworkAttributesMatches = array_filter($results['images'], function ($relationship) use ($artworkId) {
@@ -308,7 +305,7 @@ class API {
 						$artworkUrl100 = str_replace('{w}x{h}bb.{f}', '100x100bb.jpg', $artworkAttributes['attributes']['url']);
 
 						$releaseDate = $collection["attributes"]["releaseDate"];
-						if(preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
+						if (preg_match('/^\d{4}$/', $collection["attributes"]["releaseDate"])) {
 							$releaseDate = "{$collection["attributes"]["releaseDate"]}-01-01";
 						} /*else if (preg_match('/^\d{4}\-\d{2}\-\d{2}/', $collection["attributes"]["releaseDate"])) {
 						$releaseDate = $collection["attributes"]["releaseDate"];
@@ -340,12 +337,12 @@ class API {
 				}
 				return $searchResults;*/
 				$ids = [];
-				foreach($results["results"] ?? [] as $collection) {
+				foreach ($results["results"] ?? [] as $collection) {
 					$id = isset($collection["artistId"]) ? $collection["artistId"] : 0;
 
-					if(Artist::isAdded($id)) {
+					if (Artist::isAdded($id)) {
 						$n = isset($ids[$id]) ? ($ids[$id]["n"] + 1) : 1;
-						if($n === 1) {
+						if ($n === 1) {
 							$ids[$id]["id"] = $id;
 							//                        $ids[$id]["text"] = $collection["artistName"];
 						}
@@ -356,11 +353,11 @@ class API {
 				}
 				//                $ids[$id]["text"] = $collection["artistName"];
 
-				foreach($ids as $idA => $a) {
+				foreach ($ids as $idA => $a) {
 					$max = 0;
 					$index = null;
-					foreach($a["names"] as $name => $x) {
-						if($x > $max) {
+					foreach ($a["names"] as $name => $x) {
+						if ($x > $max) {
 							$max = $x;
 							$index = $name;
 						}
@@ -371,7 +368,7 @@ class API {
 					//                    $ids[$idA]["text"] = "$index (" . $ids[$idA]["n"] . ")";
 					$ids[$idA]["text"] = "$index";
 					//$ids[$idA]["html"] = "<span class=\"artist-search-name\">$index</span> " . "<span class=\"artist-search-count\">" . $ids[$idA]["n"] . "</span>";
-					$ids[$idA]["html"] = "<span class=\"artist-search-name\">{$index}</span> "."<span class=\"artist-search-count\">{$genre}</span>";
+					$ids[$idA]["html"] = "<span class=\"artist-search-name\">{$index}</span> " . "<span class=\"artist-search-count\">{$genre}</span>";
 				}
 
 				// ordre
@@ -390,40 +387,40 @@ class API {
 		/*if ($this->id == "331066376") {
 		file_put_contents(LOG_FILE, "\nSONG REQUEST: https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country\n", FILE_APPEND);
 		}*/
-		if($scrapped) {
+		if ($scrapped) {
 			$this->entity = 'all';
 			// return "https://music.apple.com/{$this->country}/artist/aaa/{$this->id}";
 			$artistUrlName = $artistName ? strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $artistName), '-')) : 'xxx';
 			// echo "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}\n";
 
 			$scrapped_url = "https://itunes.apple.com/{$this->country}/artist/{$artistUrlName}/{$this->id}";
-			if($display && ((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"]))) {
+			if ($display && ((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"]))) {
 				echo "Scrapping : {$scrapped_url}\n";
 			}
 
 			return $scrapped_url;
 		}
 
-		return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit".($this->sort ? "&sort=$this->sort" : "")."&country=$this->country";
+		return "https://itunes.apple.com/lookup?id=$this->id&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
 	}
 
 	private function setArtistsSearchUrl($search) {
 		//return "https://itunes.apple.com/search?term=$search&country=$this->country";
-		return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit".($this->sort ? "&sort=$this->sort" : "")."&country=$this->country";
+		return "https://itunes.apple.com/search?term=$search&entity=$this->entity&limit=$this->limit" . ($this->sort ? "&sort=$this->sort" : "") . "&country=$this->country";
 	}
 
 	private function getUrlTimestamp() {
-		return '&timestamp='.(string) time();
+		return '&timestamp=' . (string) time();
 	}
 
 	private function curlRequest($scrapped = false, $artistName = '') {
-		if($scrapped) {
+		if ($scrapped) {
 			return $this->curlScrappedRequest($artistName);
 		}
 
 		$ch = curl_init();
 		// curl_setopt($ch, CURLOPT_URL, $this->setAlbumsUrl(false, $artistName));
-		$url = $this->setAlbumsUrl(false, $artistName).$this->getUrlTimestamp();
+		$url = $this->setAlbumsUrl(false, $artistName) . $this->getUrlTimestamp();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		// echo $this->setAlbumsUrl($scrapped);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -461,7 +458,7 @@ class API {
 
 		$options = [
 
-			// CURLOPT_CUSTOMREQUEST => 'GET',        //set request type post or get
+			                                    // CURLOPT_CUSTOMREQUEST => 'GET',        //set request type post or get
 			CURLOPT_POST => false,              //set to GET
 			CURLOPT_USERAGENT => $user_agent,   //set user agent
 			CURLOPT_COOKIEFILE => "cookie.txt", //set cookie file
@@ -479,7 +476,7 @@ class API {
 			CURLOPT_HTTPHEADER => $header,
 		];
 
-		$url = $this->setAlbumsUrl(true, $artistName).$this->getUrlTimestamp();
+		$url = $this->setAlbumsUrl(true, $artistName) . $this->getUrlTimestamp();
 
 		$ch = curl_init($url);
 		curl_setopt_array($ch, $options);
@@ -495,7 +492,7 @@ class API {
 		$header['content'] = trim($content);
 
 		$dom = HtmlDomParser::str_get_html($header["content"]);
-		if(!$dom) {
+		if (!$dom) {
 			return json_encode([
 				'results' => [
 					'albumsCount' => 0,
@@ -510,7 +507,7 @@ class API {
 
 		$elems = $dom->find('script#shoebox-ember-data-store');
 		$data = [];
-		foreach($elems as $e) {
+		foreach ($elems as $e) {
 			$data = json_decode($e->innertext, true);
 			break;
 		}
@@ -522,14 +519,14 @@ class API {
 		// echo '<pre>' . print_r($data, true) . '</pre>';
 		// echo '<pre>' . print_r($data, true) . '</pre>';exit();
 
-		if(isset($data['included'])) {
-			foreach($data['included'] as $include) {
+		if (isset($data['included'])) {
+			foreach ($data['included'] as $include) {
 				//echo "{$include['type']} - " . ($include['type'] === "lockup/album" ? "OUI" : "NON") . "\n";
-				if($include['type'] === 'lockup/album') {
+				if ($include['type'] === 'lockup/album') {
 
 					// If the release date is the only the year
 					$attribute_releaseDate = $include['attributes']['releaseDate'];
-					if(preg_match('/^\d{4}$/', $attribute_releaseDate)) {
+					if (preg_match('/^\d{4}$/', $attribute_releaseDate)) {
 						$attribute_releaseDate = "01-01-{$attribute_releaseDate}";
 					}
 
@@ -537,11 +534,11 @@ class API {
 					$today = new \DateTime();
 					$interval = $releaseDate->diff($today);
 					$day = $interval->format('%r%a');
-					if($day < 7) {
+					if ($day < 7) {
 						$albums[] = $include;
 					}
 				}
-				if($include['type'] === 'lockup/song') {
+				if ($include['type'] === 'lockup/song') {
 
 					// if (empty($include['attributes']['releaseDate'])) {
 					//     print_r($include);
@@ -549,18 +546,18 @@ class API {
 
 					// "collectionId" => preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $collection["attributes"]["url"]),
 
-					if(!isset($include['attributes']['releaseDate']) && !preg_match('/- Single$/', $include['attributes']['collectionName'])) {
+					if (!isset($include['attributes']['releaseDate']) && !preg_match('/- Single$/', $include['attributes']['collectionName'])) {
 						$collectionId = preg_replace('/^(.*)\/(\d+)\?i=(\d+)$/', '$2', $include["attributes"]["url"]);
 
 						$collections = array_filter($data['included'], static function ($entity) use ($collectionId) {
 							return $entity['type'] === 'lockup/album' && $entity['id'] === $collectionId;
 						});
-						if(!$collections) {
+						if (!$collections) {
 							continue;
 						}
 
 						$collection = array_shift($collections);
-						if(!isset($collection['attributes']['releaseDate'])) {
+						if (!isset($collection['attributes']['releaseDate'])) {
 							continue;
 						}
 
@@ -583,11 +580,10 @@ class API {
 					//     $interval,
 					//     $day,
 					// ]);
-					if($day < 7) {
+					if ($day < 7) {
 						$songs[] = $include;
 					}
-				}
-				else if($include['type'] === 'image') {
+				} else if ($include['type'] === 'image') {
 					$images[] = $include;
 				}
 			}
@@ -607,11 +603,12 @@ class API {
 
 	private function curlSearch($search) {
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->setArtistsSearchUrl($search).$this->getUrlTimestamp());
+		curl_setopt($ch, CURLOPT_URL, $this->setArtistsSearchUrl($search) . $this->getUrlTimestamp());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		$header = ["Cache-Control: no-cache"];
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
 		return curl_exec($ch);
 //		$body = curl_exec($ch);
 //		print_r([
@@ -625,19 +622,18 @@ class API {
 	public function update($lastUpdate, $scrapped = false, $artistName = '') {
 		$albums = $songs = [];
 
-		if(!$scrapped) {
+		if (!$scrapped) {
 			//file_put_contents(LOG_FILE, "Fetching albums\n", FILE_APPEND);
 			$albums = $this->fetchAlbums($scrapped, $artistName);
 			//file_put_contents(LOG_FILE, "Fetching songs\n", FILE_APPEND);
 			$songs = $this->fetchSongs($scrapped, $artistName);
-		}
-		else {
+		} else {
 			$entities = $this->fetchAlbums($scrapped, $artistName);
 			$albums = $entities['albums'];
 			$songs = $entities['songs'];
 
-			if((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"])) {
-				echo "Albums : ".count($albums).", songs : ".count($songs)."\n\n";
+			if ((isset($_GET["nodisplay"]) && !$_GET["nodisplay"]) || !isset($_GET["nodisplay"])) {
+				echo "Albums : " . count($albums) . ", songs : " . count($songs) . "\n\n";
 			}
 		}
 
@@ -647,29 +643,29 @@ class API {
 		];
 
 		/** @var Album $album */
-		foreach($albums as $album) {
-			$albumDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($album->getDate()));
-			$lastUpdateDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($lastUpdate));
-			if(strtotime($albumDate) >= strtotime($lastUpdateDate)) {
+		foreach ($albums as $album) {
+			$albumDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($album->getDate()));
+			$lastUpdateDate = $lastUpdate ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate)) : null;
+			if (!$lastUpdate || strtotime($albumDate) >= strtotime($lastUpdateDate)) {
 				$new["albums"][] = $album;
 				$album->addAlbum($this->id);
 			}
 		}
 
 		/** @var Song $song */
-		foreach($songs as $song) {
-			$songDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($song->getDate()));
-			$lastUpdateDate = date(DEFAULT_DATE_FORMAT." 00:00:00", strtotime($lastUpdate));
-			if(strtotime($songDate) >= strtotime($lastUpdateDate)) {
+		foreach ($songs as $song) {
+			$songDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($song->getDate()));
+			$lastUpdateDate = $lastUpdate ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate)) : null;
+			if (!$lastUpdate || strtotime($songDate) >= strtotime($lastUpdateDate)) {
 				//file_put_contents(LOG_FILE, "\nADDING SONG " . json_encode(['collectionId' => $song->getCollectionId(), 'collectionName' => $song->getCollectionName(), 'trackName' => $song->getTrackName(), 'artistName' => $song->getArtistName()]) . "\n", FILE_APPEND);
 				$new["songs"][] = $song;
 				$song->addSong($this->id);
 			}
 //			else {
 			/*if (strstr($song->getArtistName(), 'Dinos')) {
-		$array_log = ["songDate" => strtotime($songDate), "lastUpdateDate" => strtotime($lastUpdateDate)];
-		file_put_contents(LOG_FILE, "\nNOT ADDING SONG " . json_encode($song) . ", reason: " . json_encode($array_log) . " \n", FILE_APPEND);
-		}*/
+			$array_log = ["songDate" => strtotime($songDate), "lastUpdateDate" => strtotime($lastUpdateDate)];
+			file_put_contents(LOG_FILE, "\nNOT ADDING SONG " . json_encode($song) . ", reason: " . json_encode($array_log) . " \n", FILE_APPEND);
+			}*/
 //			}
 		}
 
@@ -680,7 +676,7 @@ class API {
 
 	private function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
 		$sort_col = [];
-		foreach($arr as $key => $row) {
+		foreach ($arr as $key => $row) {
 			$sort_col[$key] = $row[$col];
 		}
 
