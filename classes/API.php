@@ -644,9 +644,9 @@ class API {
 
 		/** @var Album $album */
 		foreach ($albums as $album) {
-			$albumDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($album->getDate()));
+			$albumDate = $album->getDate() ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($album->getDate())) : null;
 			$lastUpdateDate = $lastUpdate ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate)) : null;
-			if (!$lastUpdate || strtotime($albumDate) >= strtotime($lastUpdateDate)) {
+			if ($albumDate && (!$lastUpdate || strtotime($albumDate) >= strtotime($lastUpdateDate))) {
 				$new["albums"][] = $album;
 				$album->addAlbum($this->id);
 			}
@@ -654,9 +654,9 @@ class API {
 
 		/** @var Song $song */
 		foreach ($songs as $song) {
-			$songDate = date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($song->getDate()));
+			$songDate = $song->getDate() ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($song->getDate())) : null;
 			$lastUpdateDate = $lastUpdate ? date(DEFAULT_DATE_FORMAT . " 00:00:00", strtotime($lastUpdate)) : null;
-			if (!$lastUpdate || strtotime($songDate) >= strtotime($lastUpdateDate)) {
+			if ($songDate && (!$lastUpdate || strtotime($songDate) >= strtotime($lastUpdateDate))) {
 				//file_put_contents(LOG_FILE, "\nADDING SONG " . json_encode(['collectionId' => $song->getCollectionId(), 'collectionName' => $song->getCollectionName(), 'trackName' => $song->getTrackName(), 'artistName' => $song->getArtistName()]) . "\n", FILE_APPEND);
 				$new["songs"][] = $song;
 				$song->addSong($this->id);

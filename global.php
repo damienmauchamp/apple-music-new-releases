@@ -2,7 +2,7 @@
 //*/30  * * * * php global.php refresh= nodisplay= >/dev/null 2>&1
 // delay=7
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 require_once "start.php";
 $root = "";
 global $news;
@@ -14,7 +14,8 @@ use AppleMusic\User;
 $db = new db();
 
 $idArtist = $_GET['idArtist'] ?? $argv[3] ?? null;
-if(!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
+// dd($idArtist, $argv);
+if (!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
 	$idArtist = null;
 }
 
@@ -25,13 +26,13 @@ if(!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
 // ]);
 // exit();
 
-foreach($db->getUsersIDs() as $user) {
+foreach ($db->getUsersIDs() as $user) {
 	$idUser = $user["id"];
 	logRefresh("no display --- $idUser");
 	$_SESSION["id_user"] = $idUser;
 
 	// reduce lastUpdated by a week
-	if($delay) {
+	if ($delay) {
 		$db->editLastUpdated($delay, $idUser);
 	}
 
