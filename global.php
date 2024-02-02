@@ -26,8 +26,17 @@ if (!$idArtist || !preg_match('/^[0-9]+$/', $idArtist)) {
 // ]);
 // exit();
 
+printCli('Starting update');
+
+if ($idArtist) {
+	printCli('Artist ID: ' . $idArtist);
+}
+
 foreach ($db->getUsersIDs() as $user) {
 	$idUser = $user["id"];
+
+	printCli('Updating for user: ' . $idUser);
+
 	logRefresh("no display --- $idUser");
 	$_SESSION["id_user"] = $idUser;
 
@@ -42,6 +51,9 @@ foreach ($db->getUsersIDs() as $user) {
 	echo json_encode(true);
 	//exit;
 }
+
+printCli('Update complete');
+
 $idUser = null;
 $_SESSION = null;
 exit;
