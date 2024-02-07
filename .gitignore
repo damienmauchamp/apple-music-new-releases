@@ -1,5 +1,6 @@
 # directories
 vendor
+node_modules
 tests
 .idea
 v2
@@ -21,3 +22,5 @@ v2
 /.htaccess
 server/keys/*.p8
 composer.lock
+
+dist/
